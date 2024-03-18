@@ -1,6 +1,4 @@
-/target/
-/assets/env
-/.idea/
+target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -13,7 +11,7 @@
 *.iws
 *.iml
 *.ipr
-../.idea/
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -32,7 +30,7 @@
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
-../.idea/libraries
+
 ### VS Code ###
 .vscode/
 
