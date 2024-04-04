@@ -1,12 +1,12 @@
 package org.example.ticketbox.utils.errorHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletResponse;
 import org.example.ticketbox.utils.exceptions.Exception;
 import org.example.ticketbox.utils.exceptions.api.InvalidEndpointException;
 import org.example.ticketbox.utils.response.Message;
 import org.example.ticketbox.utils.response.Meta;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
