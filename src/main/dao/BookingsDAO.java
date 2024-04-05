@@ -1,12 +1,13 @@
 package main.dao;
 
+import main.dao.implement.AbstractDAO;
+import main.dao.interfaces.IBookingDAO;
 import main.model.Booking;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class BookingsDAO implements DAOInterface<Booking> {
-
+public class BookingsDAO extends AbstractDAO<Booking> implements IBookingDAO {
     @Override
     public ArrayList<Booking> selectAll() {
         ArrayList<Booking> result = new ArrayList<Booking>();

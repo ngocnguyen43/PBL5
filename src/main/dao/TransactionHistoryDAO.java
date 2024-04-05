@@ -1,5 +1,6 @@
 package main.dao;
 
+import main.dao.interfaces.DAOInterface;
 import main.model.TransactionHistory;
 
 import java.sql.*;

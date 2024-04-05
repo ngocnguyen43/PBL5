@@ -1,4 +1,4 @@
-package main.Service;
+package main.service;
 
 import main.utils.exceptions.api.InvalidEndpointException;
 

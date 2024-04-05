@@ -6,7 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import main.Service.IInjectService;
+import main.service.IInjectService;
 import main.utils.errorHandler.ErrorHandler;
 import main.utils.exceptions.api.InvalidEndpointException;
 
