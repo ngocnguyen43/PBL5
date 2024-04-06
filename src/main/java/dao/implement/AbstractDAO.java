@@ -6,16 +6,19 @@ import utils.mapper.interfaces.IMapper;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public abstract class AbstractDAO<T> implements DAOInterface<T> {
+
+    private final Logger logger = Logger.getLogger(AbstractDAO.class.getName());
     public Connection getConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://" + EnvConfig.load().get("DB_URL") + "/" + EnvConfig.load().get("DB_NAME");
             return DriverManager.getConnection(url, EnvConfig.load().get("USER_NAME"), EnvConfig.load().get("PASSWORD"));
         } catch (ClassNotFoundException | SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.log(Level.SEVERE,e.getMessage());
             return null;
         }
     }
@@ -38,8 +41,7 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
             return list;
         } catch (SQLException e) {
             // TODO: handle exception
-            e.printStackTrace();
-            return null;
+            logger.log(Level.SEVERE,e.getMessage());
 
         } finally {
             try {
@@ -54,9 +56,10 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
                 }
             } catch (Exception e2) {
                 // TODO: handle exception
-                return null;
+                logger.log(Level.WARNING,e2.getMessage());
             }
         }
+        return null;
     }
 
     private void setParams(PreparedStatement statement, Object... parameters) {
@@ -80,7 +83,7 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
             }
         } catch (SQLException e) {
             // TODO: handle exception
-            e.printStackTrace();
+           logger.log(Level.SEVERE,e.getMessage());
         }
     }
 

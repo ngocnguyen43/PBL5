@@ -1,12 +1,8 @@
-package dao;
+package dao.implement;
 
-import dao.implement.AbstractDAO;
 import dao.interfaces.IBookingDAO;
-
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Named;
-import utils.mapper.implement.BookingMapper;
 import model.Booking;
+import utils.mapper.implement.BookingMapper;
 
 import java.util.List;
 

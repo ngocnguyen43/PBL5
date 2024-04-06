@@ -1,9 +1,11 @@
 package model;
 
+import model.abstracts.AbstractUser;
+
 import java.util.Date;
 import java.util.Objects;
 
-public class Employees {
+public class Employee extends AbstractUser {
     private String employeeId;
     private String userId;
     private String fullName;
@@ -13,21 +15,6 @@ public class Employees {
     private String position;
     private Date dateOfBirth;
     private String photo;
-
-    public Employees(String employeeId, String userId, String fullName, String gender, String email, String phoneNumber, String position, Date dateOfBirth, String photo) {
-        this.employeeId = employeeId;
-        this.userId = userId;
-        this.fullName = fullName;
-        this.gender = gender;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.position = position;
-        this.dateOfBirth = dateOfBirth;
-        this.photo = photo;
-    }
-
-    public Employees() {
-    }
 
     public String getPhoto() {
         return photo;
@@ -101,34 +88,7 @@ public class Employees {
         this.position = position;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(employeeId, userId, fullName, email, phoneNumber, position);
-    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Employees employees = (Employees) o;
-        return Objects.equals(employeeId, employees.employeeId) &&
-                Objects.equals(userId, employees.userId) &&
-                Objects.equals(fullName, employees.fullName) &&
-                Objects.equals(email, employees.email) &&
-                Objects.equals(phoneNumber, employees.phoneNumber) &&
-                Objects.equals(position, employees.position);
-    }
 
-    @Override
-    public String toString() {
-        return "Employees{" +
-                "employeeId='" + employeeId + '\'' +
-                ", userId='" + userId + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", position='" + position + '\'' +
-                '}';
-    }
 }
 

@@ -1,10 +1,8 @@
 package service.impl;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import jakarta.servlet.http.HttpServletResponse;
 import dao.interfaces.IBookingDAO;
+import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletResponse;
 import model.Booking;
 import service.interfaces.IBookingService;
 import utils.response.Data;

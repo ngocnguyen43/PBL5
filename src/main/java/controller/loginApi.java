@@ -1,6 +1,5 @@
 //package org.example.ticketbox.Controller;
 //
-//import org.example.ticketbox.Model.Users;
 //import org.example.ticketbox.database.UserDAO;
 //import org.json.simple.JSONObject;
 //
