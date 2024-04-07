@@ -125,7 +125,7 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
     }
 
     @Override
-    public void insert(String sql, Object... params) {
+    public void insert(String sql, Object... params) throws SQLException {
         // TODO Auto-generated method stub
         Connection connection = null;
         PreparedStatement statement = null;
@@ -147,6 +147,7 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
                 }
             }
             e.printStackTrace();
+            throw e;
         } finally {
             try {
                 if (connection != null) {

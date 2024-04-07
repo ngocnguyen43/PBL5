@@ -12,7 +12,7 @@ public class BookingMapper implements IMapper<Booking> {
     @Override
     public Booking mapRow(ResultSet result) {
         Booking booking = new Booking();
-       try{
+        try {
             booking.setBookingId(result.getString("booking_id"));
             booking.setTicketId(result.getString("ticket_id"));
             booking.setUserId(result.getString("user_id"));
