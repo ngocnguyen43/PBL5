@@ -37,4 +37,13 @@ public abstract class AbstractUser {
         this.roleId = roleId;
     }
 
+    @Override
+    public String toString() {
+        return "AbstractUser{" +
+                "userId='" + userId + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", roleId='" + roleId + '\'' +
+                '}';
+    }
 }

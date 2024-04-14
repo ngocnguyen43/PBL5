@@ -2,34 +2,30 @@ package dto;
 
 import dto.abstracts.AbstractUserDto;
 
-public class CustomerDto extends AbstractUserDto {
+public class EmployeeDto extends AbstractUserDto {
     private String fullName;
+    private String gender;
     private String email;
     private String phoneNumber;
     private String position;
-    private  String customerId;
-
-    public String getCustomerId() {
-        return customerId;
-    }
+    private  String photo;
+    private  String employeeId;
 
     @Override
     public String toString() {
-        return "CustomerDto{" +
+        return "EmployeeDto{" +
                 "fullName='" + fullName + '\'' +
+                ", gender='" + gender + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", position='" + position + '\'' +
-                ", customerId='" + customerId + '\'' +
+                ", photo='" + photo + '\'' +
+                ", employeeId='" + employeeId + '\'' +
                 ", userId='" + userId + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", roleId='" + roleId + '\'' +
                 '}';
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
     }
 
     public String getFullName() {
@@ -38,6 +34,14 @@ public class CustomerDto extends AbstractUserDto {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getEmail() {
@@ -62,5 +66,21 @@ public class CustomerDto extends AbstractUserDto {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
     }
 }

@@ -19,6 +19,8 @@ public class BookingsDAO extends AbstractDAO<Booking> implements IBookingDAO {
         String sql = "SELECT * FROM bookings";
         return query(sql, new BookingMapper());
     }
+
+
 //    @Override
 //    public ArrayList<Booking> selectAll() {
 //        ArrayList<Booking> result = new ArrayList<Booking>();

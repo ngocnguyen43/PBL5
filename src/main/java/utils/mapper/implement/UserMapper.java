@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 public class UserMapper implements IMapper<User> {
     Logger logger = Logger.getLogger(UserMapper.class.getName());
     private boolean withPassword = false;
-
     public UserMapper(boolean withPassword) {
         this.withPassword = withPassword;
     }

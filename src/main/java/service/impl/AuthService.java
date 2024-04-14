@@ -23,6 +23,8 @@ import utils.response.Meta;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AuthService implements IAuthService {
     private final Logger logger = Logger.getLogger(AuthService.class.getName());
@@ -33,6 +35,17 @@ public class AuthService implements IAuthService {
 
     @Override
     public Message Register(CustomerDto dto) throws RegistrationFailedException {
+        if(dto.getEmail()==null){
+            throw new RegistrationFailedException();
+        }
+
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(dto.getEmail());
+        if (!matcher.matches()) {
+            throw new RegistrationFailedException();
+        }
+
         boolean isExist = this.iCustomerDAO.FindOneByEmail(dto.getEmail()) != null;
         if (isExist) {
             throw new RegistrationFailedException();
