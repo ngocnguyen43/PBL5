@@ -7,4 +7,5 @@ public interface EndPoint {
     String AUTH = "/auth";
 
     String CUSTOMER = "/customers";
+    String EMPLOYEE = "/employees";
 }

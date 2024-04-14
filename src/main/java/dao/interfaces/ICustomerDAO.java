@@ -2,14 +2,27 @@ package dao.interfaces;
 
 import model.Booking;
 import model.Customer;
+import model.User;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-public interface ICustomerDAO extends DAOInterface<Customer>  {
+public interface ICustomerDAO extends DAOInterface<Customer> {
     Customer FindOneByEmail(String email);
 
     List<Customer> FindAll();
 
-    void  CreateOne(Customer customer) throws SQLException;
+    Customer FindOneById(String customerId);
+
+    void CreateOne(Customer customer) throws SQLException;
+
+    void CreateAll(ArrayList<Customer> arr) throws SQLException;
+
+    void DeleteOneById(String customer_id) throws SQLException;
+
+    void DeleteAll(ArrayList<Customer> arr) throws SQLException;
+
+    void UpdateOne(Customer customer) throws SQLException;
+
 }

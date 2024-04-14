@@ -172,6 +172,8 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
             connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql);
             setParams(statement, params);
+            // In câu lệnh SQL trước khi thực thi
+//            System.out.println("Executing SQL: " + statement.toString());
             statement.executeUpdate();
             connection.commit();
 //			return params[0];

@@ -22,4 +22,10 @@ public class UserDAO extends AbstractDAO<User> implements IUserDAO {
         List<User> users = query(sql, new UserMapper(withPassword), username);
         return users.isEmpty() ? null : users.get(0);
     }
+    @Override
+    public void DeleteOneById(String userId) throws SQLException{
+        String sql = "DELETE from users WHERE user_id =?";
+        delete(sql, userId);
+    }
+
 }

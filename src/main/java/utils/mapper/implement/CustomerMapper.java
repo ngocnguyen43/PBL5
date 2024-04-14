@@ -14,8 +14,9 @@ public class CustomerMapper implements IMapper<Customer> {
     public Customer mapRow(ResultSet result) {
         Customer customer = new Customer();
         try {
-            customer.setUserId(result.getString("customer_id"));
+            customer.setCustomerId(result.getString("customer_id"));
             customer.setUserId(result.getString("user_id"));
+            customer.setFullName(result.getString("full_name"));
             customer.setEmail(result.getString("email"));
             customer.setPhoneNumber(result.getString("phone_number"));
             customer.setPosition(result.getString("position"));

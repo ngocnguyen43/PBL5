@@ -9,4 +9,5 @@ public interface IUserDAO extends DAOInterface<User> {
     void CreateOne(User user) throws SQLException;
 
     User FindOneByUsername(String username,boolean withPassword);
+    void DeleteOneById(String userId) throws SQLException;
 }
