@@ -2,7 +2,6 @@ package model;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Objects;
 
 public class Schedules {
     private String scheduleId;
@@ -10,24 +9,49 @@ public class Schedules {
     private String tripCode;
     private String departurePoint;
     private String arrivalPoint;
-    private Date departureDatetime;
-    private int estimatedTravelTime;
+    private String arrivalAt;
+    private String startAt;
+
+    public String getStartAt() {
+        return startAt;
+    }
+
+    public void setStartAt(String startAt) {
+        this.startAt = startAt;
+    }
+
+    private float estimatedTravelTime;
     private int seatCapacity;
     private BigDecimal seatPrice;
     private String notes;
+    private String photo;
 
-    public Schedules(String scheduleId, String providerId, String tripCode, String departurePoint, String arrivalPoint, Date departureDatetime, int estimatedTravelTime, int seatCapacity, BigDecimal seatPrice, String notes) {
-        this.scheduleId = scheduleId;
-        this.providerId = providerId;
-        this.tripCode = tripCode;
-        this.departurePoint = departurePoint;
-        this.arrivalPoint = arrivalPoint;
-        this.departureDatetime = departureDatetime;
-        this.estimatedTravelTime = estimatedTravelTime;
-        this.seatCapacity = seatCapacity;
-        this.seatPrice = seatPrice;
-        this.notes = notes;
+    public String getPhoto() {
+        return photo;
     }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    private Date createdAt;
+    private Date updatedAt;
 
     public String getScheduleId() {
         return scheduleId;
@@ -69,19 +93,19 @@ public class Schedules {
         this.arrivalPoint = arrivalPoint;
     }
 
-    public Date getDepartureDatetime() {
-        return departureDatetime;
+    public String getArrivalAt() {
+        return arrivalAt;
     }
 
-    public void setDepartureDatetime(Date departureDatetime) {
-        this.departureDatetime = departureDatetime;
+    public void setArrivalAt(String arrivalAt) {
+        this.arrivalAt = arrivalAt;
     }
 
-    public int getEstimatedTravelTime() {
+    public float getEstimatedTravelTime() {
         return estimatedTravelTime;
     }
 
-    public void setEstimatedTravelTime(int estimatedTravelTime) {
+    public void setEstimatedTravelTime(float estimatedTravelTime) {
         this.estimatedTravelTime = estimatedTravelTime;
     }
 
@@ -107,43 +131,5 @@ public class Schedules {
 
     public void setNotes(String notes) {
         this.notes = notes;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(scheduleId, providerId, tripCode, departurePoint, arrivalPoint, departureDatetime, estimatedTravelTime, seatCapacity, seatPrice, notes);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Schedules schedules = (Schedules) o;
-        return estimatedTravelTime == schedules.estimatedTravelTime &&
-                seatCapacity == schedules.seatCapacity &&
-                Objects.equals(scheduleId, schedules.scheduleId) &&
-                Objects.equals(providerId, schedules.providerId) &&
-                Objects.equals(tripCode, schedules.tripCode) &&
-                Objects.equals(departurePoint, schedules.departurePoint) &&
-                Objects.equals(arrivalPoint, schedules.arrivalPoint) &&
-                Objects.equals(departureDatetime, schedules.departureDatetime) &&
-                Objects.equals(seatPrice, schedules.seatPrice) &&
-                Objects.equals(notes, schedules.notes);
-    }
-
-    @Override
-    public String toString() {
-        return "Schedules{" +
-                "scheduleId='" + scheduleId + '\'' +
-                ", providerId='" + providerId + '\'' +
-                ", tripCode='" + tripCode + '\'' +
-                ", departurePoint='" + departurePoint + '\'' +
-                ", arrivalPoint='" + arrivalPoint + '\'' +
-                ", departureDatetime=" + departureDatetime +
-                ", estimatedTravelTime=" + estimatedTravelTime +
-                ", seatCapacity=" + seatCapacity +
-                ", seatPrice=" + seatPrice +
-                ", notes='" + notes + '\'' +
-                '}';
     }
 }
