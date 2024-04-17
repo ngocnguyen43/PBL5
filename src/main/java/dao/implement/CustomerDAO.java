@@ -2,7 +2,9 @@ package dao.implement;
 
 import dao.interfaces.ICustomerDAO;
 import model.Customer;
+import model.Provider;
 import utils.mapper.implement.CustomerMapper;
+import utils.mapper.implement.ProviderMapper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,7 +30,11 @@ public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
         List<Customer> customers = query(sql, new CustomerMapper(), customerId);
         return customers.isEmpty() ? null : customers.get(0);
     }
-
+    public Customer FindOneByUserId(String userId) {
+        String sql = "SELECT * FROM customer WHERE user_id = ?";
+        List<Customer> customers = query(sql, new CustomerMapper(), userId);
+        return customers.isEmpty() ? null : customers.get(0);
+    }
     @Override
     public void CreateOne(Customer customer) throws SQLException {
         String sql = "INSERT INTO customer (user_id," + "customer_id," + "email," + "phone_number," + "position," + "photo)" + " VALUES(?,?,?,?,?,?)";

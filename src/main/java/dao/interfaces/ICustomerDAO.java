@@ -10,11 +10,9 @@ import java.util.List;
 
 public interface ICustomerDAO extends DAOInterface<Customer> {
     Customer FindOneByEmail(String email);
-
     List<Customer> FindAll();
-
     Customer FindOneById(String customerId);
-
+    Customer FindOneByUserId(String userId);
     void CreateOne(Customer customer) throws SQLException;
 
     void CreateAll(ArrayList<Customer> arr) throws SQLException;
