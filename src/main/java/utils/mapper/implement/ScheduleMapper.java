@@ -9,6 +9,11 @@ import java.util.logging.Logger;
 
 public class ScheduleMapper implements IMapper<Schedules> {
     private final Logger logger = Logger.getLogger(Schedules.class.getName());
+    private Boolean shouldShowDate;
+
+    public ScheduleMapper(Boolean shouldShowDate) {
+        this.shouldShowDate = shouldShowDate;
+    }
 
     @Override
     public Schedules mapRow(ResultSet result) {
@@ -23,10 +28,15 @@ public class ScheduleMapper implements IMapper<Schedules> {
             schedules.setStartAt(result.getString("start_at"));
             schedules.setEstimatedTravelTime(result.getFloat("estimated_travel_time"));
             schedules.setSeatCapacity(result.getInt("seat_capacity"));
-            schedules.setSeatPrice(result.getBigDecimal("seat_price"));
+            schedules.setSeatPrice(result.getFloat("seat_price"));
             schedules.setNotes(result.getString("notes"));
-            schedules.setCreatedAt(result.getDate("created_at"));
-            schedules.setUpdatedAt(result.getDate("updated_at"));
+            if (shouldShowDate) {
+                schedules.setCreatedAt(result.getString("created_at"));
+                schedules.setUpdatedAt(result.getString("updated_at"));
+            } else {
+                schedules.setCreatedAt(null);
+                schedules.setUpdatedAt(null);
+            }
             schedules.setPhoto(result.getString("photo"));
             return schedules;
         } catch (Exception e) {

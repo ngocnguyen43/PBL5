@@ -1,7 +1,6 @@
 package model;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 public class Schedules {
     private String scheduleId;
@@ -22,7 +21,7 @@ public class Schedules {
 
     private float estimatedTravelTime;
     private int seatCapacity;
-    private BigDecimal seatPrice;
+    private float seatPrice;
     private String notes;
     private String photo;
 
@@ -34,24 +33,27 @@ public class Schedules {
         this.photo = photo;
     }
 
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    private Date createdAt;
-    private Date updatedAt;
+    private final long unix = System.currentTimeMillis() / 1000L;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String createdAt = unix + "";
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String updatedAt = unix + "";
 
     public String getScheduleId() {
         return scheduleId;
@@ -117,11 +119,11 @@ public class Schedules {
         this.seatCapacity = seatCapacity;
     }
 
-    public BigDecimal getSeatPrice() {
+    public Float getSeatPrice() {
         return seatPrice;
     }
 
-    public void setSeatPrice(BigDecimal seatPrice) {
+    public void setSeatPrice(float seatPrice) {
         this.seatPrice = seatPrice;
     }
 

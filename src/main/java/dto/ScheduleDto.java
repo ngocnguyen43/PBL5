@@ -4,13 +4,13 @@ import java.math.BigDecimal;
 
 public class ScheduleDto {
     private String providerId;
-    private String departureId;
-    private String arrivalId;
+    private String departurePoint;
+    private String arrivalPoint;
     private String arrivalAt;
     private String startAt;
-    private Float estimatedTravelTime;
-    private Integer seatCapacity;
-    private BigDecimal seatPrice;
+    private float estimatedTravelTime;
+    private int seatCapacity;
+    private float seatPrice;
     private String notes;
 
     public String getProviderId() {
@@ -21,20 +21,20 @@ public class ScheduleDto {
         this.providerId = providerId;
     }
 
-    public String getDepartureId() {
-        return departureId;
+    public String getDeparturePoint() {
+        return departurePoint;
     }
 
-    public void setDepartureId(String departureId) {
-        this.departureId = departureId;
+    public void setDeparturePoint(String departurePoint) {
+        this.departurePoint = departurePoint;
     }
 
-    public String getArrivalId() {
-        return arrivalId;
+    public String getArrivalPoint() {
+        return arrivalPoint;
     }
 
-    public void setArrivalId(String arrivalId) {
-        this.arrivalId = arrivalId;
+    public void setArrivalPoint(String arrivalPoint) {
+        this.arrivalPoint = arrivalPoint;
     }
 
     public String getArrivalAt() {
@@ -53,11 +53,11 @@ public class ScheduleDto {
         this.startAt = startAt;
     }
 
-    public Float getEstimatedTravelTime() {
+    public float getEstimatedTravelTime() {
         return estimatedTravelTime;
     }
 
-    public void setEstimatedTravelTime(Float estimatedTravelTime) {
+    public void setEstimatedTravelTime(float estimatedTravelTime) {
         this.estimatedTravelTime = estimatedTravelTime;
     }
 
@@ -69,11 +69,11 @@ public class ScheduleDto {
         this.seatCapacity = seatCapacity;
     }
 
-    public BigDecimal getSeatPrice() {
+    public float getSeatPrice() {
         return seatPrice;
     }
 
-    public void setSeatPrice(BigDecimal seatPrice) {
+    public void setSeatPrice(float seatPrice) {
         this.seatPrice = seatPrice;
     }
 
