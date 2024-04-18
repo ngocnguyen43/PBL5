@@ -33,4 +33,10 @@ public class SchedulesDAO extends AbstractDAO<Schedules> implements IScheduleDAO
 
         insert(sql, schedules.getScheduleId(), schedules.getProviderId(), schedules.getTripCode(), schedules.getDeparturePoint(), schedules.getArrivalPoint(), schedules.getEstimatedTravelTime(), schedules.getSeatCapacity(), schedules.getSeatPrice(), schedules.getNotes(), schedules.getPhoto(), schedules.getCreatedAt(), schedules.getUpdatedAt(), schedules.getArrivalAt(), schedules.getStartAt());
     }
+
+    @Override
+    public void UpdateStatus(String id, String status) throws SQLException {
+        String sql = "UPDATE schedules SET status = ? WHERE schedule_id = ?";
+        update(sql, status, id);
+    }
 }

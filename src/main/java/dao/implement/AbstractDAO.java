@@ -92,7 +92,7 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
     }
 
     @Override
-    public void update(String sql, Object... params) {
+    public void update(String sql, Object... params) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
@@ -112,6 +112,7 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
                 }
             }
             e.printStackTrace();
+            throw  e;
         } finally {
             try {
                 if (connection != null) {

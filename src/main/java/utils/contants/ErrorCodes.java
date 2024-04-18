@@ -38,4 +38,5 @@ public interface ErrorCodes {
 
     Integer HealthCheckFailedException = 19;
     Integer BadRequestException = 20;
+
 }

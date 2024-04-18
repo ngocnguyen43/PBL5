@@ -1,13 +1,13 @@
 package service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.interfaces.IScheduleDAO;
 import dto.ScheduleDto;
+import dto.UpdateScheduleStatusDto;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Schedules;
 import service.interfaces.IScheduleService;
-import utils.exceptions.api.BadRequestException;
+import utils.exceptions.server.InternalServerException;
 import utils.helper.Helper;
 import utils.helper.IDGenerator;
 import utils.response.Data;
@@ -34,7 +34,7 @@ public class ScheduleService implements IScheduleService {
     }
 
     @Override
-    public Message CreateOne(ScheduleDto dto) throws BadRequestException {
+    public Message CreateOne(ScheduleDto dto) throws InternalServerException {
         Schedules model = Helper.objectMapper(dto, Schedules.class);
         String id = IDGenerator.generate(10);
         String tripCode = IDGenerator.generate(10);
@@ -42,11 +42,23 @@ public class ScheduleService implements IScheduleService {
         model.setTripCode(tripCode);
         try {
             this.iScheduleDAO.CreateOne(model);
-            Meta meta = new Meta.Builder(200).build();
+            Meta meta = new Meta.Builder(HttpServletResponse.SC_CREATED).withMessage(MessageResponse.CREATED).build();
             return new Message.Builder(meta).build();
         } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage());
-            throw new BadRequestException();
+            throw new InternalServerException();
+        }
+    }
+
+    @Override
+    public Message UpdateStatus(UpdateScheduleStatusDto dto) throws InternalServerException {
+        try {
+            this.iScheduleDAO.UpdateStatus(dto.getId(), dto.getStatus());
+            Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
+            return new Message.Builder(meta).build();
+        } catch (Exception e) {
+            logger.log(Level.WARNING, e.getMessage());
+            throw new InternalServerException();
         }
     }
 }
