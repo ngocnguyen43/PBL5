@@ -1,10 +1,12 @@
 package service.impl;
 
 import dao.interfaces.IScheduleDAO;
+import dao.interfaces.IScheduleRequestDAO;
 import dto.ScheduleDto;
 import dto.UpdateScheduleStatusDto;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
+import model.ScheduleRequest;
 import model.Schedules;
 import service.interfaces.IScheduleService;
 import utils.exceptions.server.InternalServerException;
@@ -23,6 +25,8 @@ public class ScheduleService implements IScheduleService {
     @Inject
     private IScheduleDAO iScheduleDAO;
 
+    @Inject
+    private IScheduleRequestDAO iScheduleRequestDAO;
     private final Logger logger = Logger.getLogger(ScheduleService.class.getName());
 
     @Override
@@ -36,12 +40,17 @@ public class ScheduleService implements IScheduleService {
     @Override
     public Message CreateOne(ScheduleDto dto) throws InternalServerException {
         Schedules model = Helper.objectMapper(dto, Schedules.class);
-        String id = IDGenerator.generate(10);
+        String scheduleId = IDGenerator.generate(10);
         String tripCode = IDGenerator.generate(10);
-        model.setScheduleId(id);
+        model.setScheduleId(scheduleId);
         model.setTripCode(tripCode);
+        ScheduleRequest scheduleRequest = Helper.objectMapper(model, ScheduleRequest.class);
+        String requestId = IDGenerator.generate(10);
+        scheduleRequest.setRequestId(requestId);
+        scheduleRequest.setType("Create");
         try {
             this.iScheduleDAO.CreateOne(model);
+            this.iScheduleRequestDAO.CreateOne(scheduleRequest);
             Meta meta = new Meta.Builder(HttpServletResponse.SC_CREATED).withMessage(MessageResponse.CREATED).build();
             return new Message.Builder(meta).build();
         } catch (Exception e) {

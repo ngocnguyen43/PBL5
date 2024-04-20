@@ -1,22 +1,12 @@
 package model;
 
-import java.util.Date;
-import java.util.Objects;
-
 public class ScheduleRequest {
     private String requestId;
-    private String providerId;
-    private Date submissionDate;
+    private String scheduleId;
     private String status;
-    private String requestDetails;
-
-    public ScheduleRequest(String requestId, String providerId, Date submissionDate, String status, String requestDetails) {
-        this.requestId = requestId;
-        this.providerId = providerId;
-        this.submissionDate = submissionDate;
-        this.status = status;
-        this.requestDetails = requestDetails;
-    }
+    private String createdAt;
+    private String updatedAt;
+    private String type;
 
     public String getRequestId() {
         return requestId;
@@ -26,20 +16,12 @@ public class ScheduleRequest {
         this.requestId = requestId;
     }
 
-    public String getProviderId() {
-        return providerId;
+    public String getScheduleId() {
+        return scheduleId;
     }
 
-    public void setProviderId(String providerId) {
-        this.providerId = providerId;
-    }
-
-    public Date getSubmissionDate() {
-        return submissionDate;
-    }
-
-    public void setSubmissionDate(Date submissionDate) {
-        this.submissionDate = submissionDate;
+    public void setScheduleId(String scheduleId) {
+        this.scheduleId = scheduleId;
     }
 
     public String getStatus() {
@@ -50,39 +32,27 @@ public class ScheduleRequest {
         this.status = status;
     }
 
-    public String getRequestDetails() {
-        return requestDetails;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setRequestDetails(String requestDetails) {
-        this.requestDetails = requestDetails;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(requestId, providerId, submissionDate, status, requestDetails);
+    public String getUpdatedAt() {
+        return updatedAt;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ScheduleRequest that = (ScheduleRequest) o;
-        return Objects.equals(requestId, that.requestId) &&
-                Objects.equals(providerId, that.providerId) &&
-                Objects.equals(submissionDate, that.submissionDate) &&
-                Objects.equals(status, that.status) &&
-                Objects.equals(requestDetails, that.requestDetails);
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    @Override
-    public String toString() {
-        return "ScheduleRequest{" +
-                "requestId='" + requestId + '\'' +
-                ", providerId='" + providerId + '\'' +
-                ", submissionDate=" + submissionDate +
-                ", status='" + status + '\'' +
-                ", requestDetails='" + requestDetails + '\'' +
-                '}';
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `pbl5` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE  IF NOT EXISTS `pbl5` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `pbl5`;
 -- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
@@ -28,7 +28,7 @@ CREATE TABLE `bookings` (
   `booking_id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ticket_id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `booking_date` datetime DEFAULT NULL,
+  `booking_date` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` enum('Confirmed','Canceled') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`booking_id`),
   KEY `ticket_id` (`ticket_id`),
@@ -75,7 +75,6 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES ('4V7BzOc0RO','M_W8PGm8q3',NULL,'customer1@example.com',NULL,NULL,NULL),('unXXdgd6M5','BCT2OxI5ZH',NULL,'customer2@example.com',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,7 +93,7 @@ CREATE TABLE `employees` (
   `email` char(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `phone_number` char(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `position` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `date_of_birth` date DEFAULT NULL,
+  `date_of_birth` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `photo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`employee_id`),
   UNIQUE KEY `user_id` (`user_id`),
@@ -108,6 +107,7 @@ CREATE TABLE `employees` (
 
 LOCK TABLES `employees` WRITE;
 /*!40000 ALTER TABLE `employees` DISABLE KEYS */;
+INSERT INTO `employees` VALUES ('imb6Wl1xNx','C9DCHegnqC','Nhat Vyx','Nu','test1@gmail.com','0902301415','Đà Nẵng ',NULL,NULL);
 /*!40000 ALTER TABLE `employees` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -123,7 +123,7 @@ CREATE TABLE `message` (
   `sender_id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `receiver_id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `message_content` text COLLATE utf8mb4_unicode_ci,
-  `message_date` datetime DEFAULT NULL,
+  `message_date` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `message_type` enum('Customer','Employee') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`message_id`),
   KEY `receiver_id` (`receiver_id`),
@@ -151,7 +151,7 @@ DROP TABLE IF EXISTS `revenuestatistics`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `revenuestatistics` (
   `id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `date` date DEFAULT NULL,
+  `date` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `revenue_amount` decimal(15,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -175,7 +175,7 @@ DROP TABLE IF EXISTS `roles`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `roles` (
   `role_id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role_name` enum('ADMIN','EMPLOYEE','CUSTOMER') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role_name` enum('ADMIN','EMPLOYEE','CUSTOMER','PROVIDER') COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`role_id`),
   UNIQUE KEY `role_name` (`role_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -187,36 +187,38 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES ('1','ADMIN'),('3','EMPLOYEE'),('2','CUSTOMER');
+INSERT INTO `roles` VALUES ('1','ADMIN'),('3','EMPLOYEE'),('4','CUSTOMER'),('2','PROVIDER');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `schedulerequest`
+-- Table structure for table `schedule_request`
 --
 
-DROP TABLE IF EXISTS `schedulerequest`;
+DROP TABLE IF EXISTS `schedule_request`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `schedulerequest` (
-  `request_id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `provider_id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `submission_date` date DEFAULT NULL,
-  `status` enum('Approved','Pending') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `request_details` text COLLATE utf8mb4_unicode_ci,
+CREATE TABLE `schedule_request` (
+  `request_id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `schedule_id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('Approved','Pending','Reject') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Pending',
+  `created_at` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `updated_at` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` enum('Create','Delete') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Create',
   PRIMARY KEY (`request_id`),
-  KEY `provider_id` (`provider_id`),
-  CONSTRAINT `schedulerequest_ibfk_1` FOREIGN KEY (`provider_id`) REFERENCES `ticketproviders` (`providers_id`)
+  KEY `schedule_request_schedule_id_fkey` (`schedule_id`),
+  CONSTRAINT `schedule_request_schedule_id_fkey` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`schedule_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `schedulerequest`
+-- Dumping data for table `schedule_request`
 --
 
-LOCK TABLES `schedulerequest` WRITE;
-/*!40000 ALTER TABLE `schedulerequest` DISABLE KEYS */;
-/*!40000 ALTER TABLE `schedulerequest` ENABLE KEYS */;
+LOCK TABLES `schedule_request` WRITE;
+/*!40000 ALTER TABLE `schedule_request` DISABLE KEYS */;
+INSERT INTO `schedule_request` VALUES ('iu6rv1GTnE','Kn6cQF0f8_','Pending','1713618166','1713618166','Create');
+/*!40000 ALTER TABLE `schedule_request` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -229,15 +231,19 @@ DROP TABLE IF EXISTS `schedules`;
 CREATE TABLE `schedules` (
   `schedule_id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `provider_id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `trip_code` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `departure_id` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `arrival_id` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `departure_datetime` datetime DEFAULT NULL,
-  `estimated_travel_time` int DEFAULT NULL,
-  `seat_capacity` int DEFAULT NULL,
-  `seat_price` decimal(10,2) DEFAULT NULL,
+  `trip_code` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `departure_id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `arrival_id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `estimated_travel_time` double NOT NULL,
+  `seat_capacity` int NOT NULL,
+  `seat_price` decimal(10,2) NOT NULL,
   `notes` text COLLATE utf8mb4_unicode_ci,
   `photo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('Approved','Pending','Reject') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Pending',
+  `updated_at` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `arrival_at` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `start_at` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`schedule_id`),
   KEY `arrival_id` (`arrival_id`),
   KEY `departure_id` (`departure_id`),
@@ -254,6 +260,7 @@ CREATE TABLE `schedules` (
 
 LOCK TABLES `schedules` WRITE;
 /*!40000 ALTER TABLE `schedules` DISABLE KEYS */;
+INSERT INTO `schedules` VALUES ('Kn6cQF0f8_','w3akEkA20K','X0eLjya1XU','z1Hi-sCfmD','3aZm8R4XEE',2.5,60,3000.00,'nah','nah','1713618166','Pending','1713618166','1713334575','1713334575'),('pNcebYuZBn','w3akEkA20K','CFkUbWcD8e','z1Hi-sCfmD','3aZm8R4XEE',2.5,60,3000.00,'nah','nah','1713451844','Reject','1713451844','1713334575','1713334575'),('tPfqfWIQdz','w3akEkA20K','9HEWZad5CP','eSNOfLj4Ey','z1Hi-sCfmD',1.5,60,1750.00,'yah','yah','1713451375','Pending','1713451375','1713334575','1713334575');
 /*!40000 ALTER TABLE `schedules` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -331,6 +338,7 @@ CREATE TABLE `station` (
 
 LOCK TABLES `station` WRITE;
 /*!40000 ALTER TABLE `station` DISABLE KEYS */;
+INSERT INTO `station` VALUES ('3aZm8R4XEE','Ho Chi Minh'),('eSNOfLj4Ey','Ha Noi'),('z1Hi-sCfmD','Da Nang');
 /*!40000 ALTER TABLE `station` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -364,6 +372,7 @@ CREATE TABLE `ticketproviders` (
 
 LOCK TABLES `ticketproviders` WRITE;
 /*!40000 ALTER TABLE `ticketproviders` DISABLE KEYS */;
+INSERT INTO `ticketproviders` VALUES ('w3akEkA20K','C9DCHegnqC','nah','test@gmail.com',NULL,NULL,NULL,NULL,1,NULL);
 /*!40000 ALTER TABLE `ticketproviders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -407,7 +416,7 @@ CREATE TABLE `transactionhistory` (
   `transaction_id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ticket_id` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `transaction_date` datetime DEFAULT NULL,
+  `transaction_date` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `quantity_sold` int DEFAULT NULL,
   PRIMARY KEY (`transaction_id`),
   KEY `ticket_id` (`ticket_id`),
@@ -451,7 +460,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('BCT2OxI5ZH','minhngoc','$2b$10$zX13r2LJ8KgWteS2sO/EVOgf1TuQV/HBPD6VYbsPTz39ElWbYs9nG','2'),('M_W8PGm8q3','Ngoc','$2b$10$WAGIHSZT8Da9c8cab1hm5.qWFihC6IqnGaJhPx5SQHKnpIjizqFw.','2');
+INSERT INTO `users` VALUES ('C9DCHegnqC','test1','$2b$10$A.THHxk8/xIsaADDSg5dnOeqlVUyQIoHZQxgG.nOlOn2AiIpi6ypq','2'),('uAWWXTO6c9','nhatvy10102003','$2b$10$itNPZWkBwEecPEhiiwYYkua2ORCPKbnP/RPoJ.qQnNH8ywQbLJWn2','3');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -464,4 +473,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-07 20:15:26
+-- Dump completed on 2024-04-20 20:06:26
