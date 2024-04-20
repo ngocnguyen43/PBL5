@@ -8,4 +8,6 @@ public interface EndPoint {
 
     String CUSTOMER = "/customers";
     String EMPLOYEE = "/employees";
+
+    String ADMIN = "/admin";
 }

@@ -1,67 +1,17 @@
-package model;
+package dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import java.math.BigDecimal;
 
-public class Schedules {
-    private String scheduleId;
+public class ScheduleDto {
     private String providerId;
-    private String tripCode;
     private String departurePoint;
     private String arrivalPoint;
     private String arrivalAt;
     private String startAt;
-
-    public String getStartAt() {
-        return startAt;
-    }
-
-    public void setStartAt(String startAt) {
-        this.startAt = startAt;
-    }
-
     private float estimatedTravelTime;
     private int seatCapacity;
     private float seatPrice;
     private String notes;
-    private String photo;
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    private final long unix = System.currentTimeMillis() / 1000L;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String createdAt = unix + "";
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String updatedAt = unix + "";
-
-    public String getScheduleId() {
-        return scheduleId;
-    }
-
-    public void setScheduleId(String scheduleId) {
-        this.scheduleId = scheduleId;
-    }
 
     public String getProviderId() {
         return providerId;
@@ -69,14 +19,6 @@ public class Schedules {
 
     public void setProviderId(String providerId) {
         this.providerId = providerId;
-    }
-
-    public String getTripCode() {
-        return tripCode;
-    }
-
-    public void setTripCode(String tripCode) {
-        this.tripCode = tripCode;
     }
 
     public String getDeparturePoint() {
@@ -103,6 +45,14 @@ public class Schedules {
         this.arrivalAt = arrivalAt;
     }
 
+    public String getStartAt() {
+        return startAt;
+    }
+
+    public void setStartAt(String startAt) {
+        this.startAt = startAt;
+    }
+
     public float getEstimatedTravelTime() {
         return estimatedTravelTime;
     }
@@ -111,15 +61,15 @@ public class Schedules {
         this.estimatedTravelTime = estimatedTravelTime;
     }
 
-    public int getSeatCapacity() {
+    public Integer getSeatCapacity() {
         return seatCapacity;
     }
 
-    public void setSeatCapacity(int seatCapacity) {
+    public void setSeatCapacity(Integer seatCapacity) {
         this.seatCapacity = seatCapacity;
     }
 
-    public Float getSeatPrice() {
+    public float getSeatPrice() {
         return seatPrice;
     }
 
@@ -134,4 +84,14 @@ public class Schedules {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    private String photo;
 }

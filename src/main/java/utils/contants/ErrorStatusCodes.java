@@ -26,5 +26,6 @@ public interface ErrorStatusCodes {
     Integer
             UnimplementedException = 404;
     Integer HealthCheckFailedException = 503;
+    Integer BadRequestException = 400;
 
 }

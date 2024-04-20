@@ -1,4 +1,4 @@
-package controller;
+package controller.booking;
 
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;

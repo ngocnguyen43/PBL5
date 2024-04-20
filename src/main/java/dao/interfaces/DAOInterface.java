@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface DAOInterface<T> {
-    void update(String sql, Object... params);
+    void update(String sql, Object... params) throws SQLException;
 
     void insert(String sql, Object... params) throws SQLException;
 
