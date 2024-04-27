@@ -48,6 +48,15 @@ public class CustomerService implements ICustomerService {
 
     }
     @Override
+    public Message FindOneByUserID(String userId){
+        Customer customers = iCustomerDAO.FindOneByUserId(userId);
+        Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
+
+        Data data = new Data.Builder(null).withResults(customers).build();
+        return new Message.Builder(meta).withData(data).build();
+
+    }
+    @Override
     public Message UpdateCustomer(CustomerDto customerDto) throws DatabaseOperationException{
         Customer customer = Helper.objectMapper(customerDto, Customer.class);
         try {

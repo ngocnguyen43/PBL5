@@ -36,9 +36,7 @@ public class EmployeesController extends HttpServlet {
 //    }
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         EmployeeDto employeeDto = Helper.paramsToString(req.getParameterMap()).toModel(EmployeeDto.class);
-        System.out.printf(employeeDto.toString());
         ErrorHandler.handle(resp, () -> this.iEmployeeService.InsertEmployee(employeeDto));
-        System.out.println("ok");
     }
 
 //    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

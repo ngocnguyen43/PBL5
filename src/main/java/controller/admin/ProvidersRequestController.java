@@ -1,0 +1,46 @@
+package controller.admin;
+
+import dto.ProviderDto;
+import jakarta.inject.Inject;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import service.interfaces.IProviderService;
+import utils.contants.EndPoint;
+import utils.errorHandler.ErrorHandler;
+import utils.helper.Helper;
+import utils.response.Message;
+import utils.response.MessageResponse;
+import utils.response.Meta;
+
+import java.io.IOException;
+
+@WebServlet(urlPatterns = {EndPoint.API + EndPoint.VERSION + EndPoint.PROVIDERREQUEST})
+@MultipartConfig
+
+public class ProvidersRequestController extends HttpServlet {
+    @Inject
+    private IProviderService iProviderService;
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    }
+
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ProviderDto providerDto = Helper.paramsToString(req.getParameterMap()).toModel(ProviderDto.class);
+        ErrorHandler.handle(resp, () -> this.iProviderService.RequestProvider(providerDto));
+    }
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ProviderDto providerDto = Helper.paramsToString(req.getParameterMap()).toModel(ProviderDto.class);
+        System.out.println("ProDto :"+providerDto.toString());
+        ErrorHandler.handle(resp, () -> this.iProviderService.ConfirmProvider(providerDto));
+    }
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    }
+
+}

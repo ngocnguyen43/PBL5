@@ -2,7 +2,7 @@ package model;
 
 import java.util.Objects;
 
-public class TicketProviders {
+public class Provider {
     private String providersId;
     private String userId;
     private String fullName;
@@ -11,7 +11,7 @@ public class TicketProviders {
     private String position;
     private String providerName;
     private String contactInfo;
-    private boolean isConfirmed;
+    private int isConfirmed = 0;
     private String photo;
 
     public void setPhoto(String photo) {
@@ -22,7 +22,18 @@ public class TicketProviders {
         return photo;
     }
 
-    public TicketProviders(String providersId, String userId, String fullName, String email, String phoneNumber, String position, String providerName, String contactInfo, boolean isConfirmed, String photo) {
+    public Provider() {
+    }
+
+    public int getIsConfirmed() {
+        return isConfirmed;
+    }
+
+    public void setIsConfirmed(int isConfirmed) {
+        this.isConfirmed = isConfirmed;
+    }
+
+    public Provider(String providersId, String userId, String fullName, String email, String phoneNumber, String position, String providerName, String contactInfo, int isConfirmed, String photo) {
         this.providersId = providersId;
         this.userId = userId;
         this.fullName = fullName;
@@ -99,11 +110,11 @@ public class TicketProviders {
         this.contactInfo = contactInfo;
     }
 
-    public boolean isConfirmed() {
+    public int isConfirmed() {
         return isConfirmed;
     }
 
-    public void setConfirmed(boolean confirmed) {
+    public void setConfirmed(int confirmed) {
         isConfirmed = confirmed;
     }
 
@@ -116,7 +127,7 @@ public class TicketProviders {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TicketProviders that = (TicketProviders) o;
+        Provider that = (Provider) o;
         return isConfirmed == that.isConfirmed &&
                 Objects.equals(providersId, that.providersId) &&
                 Objects.equals(userId, that.userId) &&
@@ -130,7 +141,7 @@ public class TicketProviders {
 
     @Override
     public String toString() {
-        return "TicketProviders{" +
+        return "Provider{" +
                 "providersId='" + providersId + '\'' +
                 ", userId='" + userId + '\'' +
                 ", fullName='" + fullName + '\'' +
