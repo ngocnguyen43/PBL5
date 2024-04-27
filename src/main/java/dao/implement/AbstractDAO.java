@@ -1,4 +1,5 @@
 package dao.implement;
+
 import config.EnvConfig;
 import dao.interfaces.DAOInterface;
 import utils.mapper.interfaces.IMapper;
@@ -12,13 +13,14 @@ import java.util.logging.Logger;
 public abstract class AbstractDAO<T> implements DAOInterface<T> {
 
     private final Logger logger = Logger.getLogger(AbstractDAO.class.getName());
+
     public Connection getConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://" + EnvConfig.load().get("DB_URL") + "/" + EnvConfig.load().get("DB_NAME");
             return DriverManager.getConnection(url, EnvConfig.load().get("USER_NAME"), EnvConfig.load().get("PASSWORD"));
         } catch (ClassNotFoundException | SQLException e) {
-            logger.log(Level.SEVERE,e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage());
             return null;
         }
     }
@@ -41,7 +43,7 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
             return list;
         } catch (SQLException e) {
             // TODO: handle exception
-            logger.log(Level.SEVERE,e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage());
 
         } finally {
             try {
@@ -56,7 +58,7 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
                 }
             } catch (Exception e2) {
                 // TODO: handle exception
-                logger.log(Level.WARNING,e2.getMessage());
+                logger.log(Level.WARNING, e2.getMessage());
             }
         }
         return null;
@@ -76,6 +78,8 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
                     statement.setInt(index, (Integer) parameter);
                 } else if (parameter instanceof Timestamp) {
                     statement.setTimestamp(index, (Timestamp) parameter);
+                } else if (parameter instanceof Float) {
+                    statement.setFloat(index, (float) parameter);
                 } else {
                     statement.setNull(index, Types.NULL);
                 }
@@ -83,12 +87,12 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
             }
         } catch (SQLException e) {
             // TODO: handle exception
-           logger.log(Level.SEVERE,e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage());
         }
     }
 
     @Override
-    public void update(String sql, Object... params) {
+    public void update(String sql, Object... params) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
@@ -108,6 +112,7 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
                 }
             }
             e.printStackTrace();
+            throw  e;
         } finally {
             try {
                 if (connection != null) {

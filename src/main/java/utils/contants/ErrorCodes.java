@@ -37,4 +37,6 @@ public interface ErrorCodes {
     Integer UnimplementedException = 18;
 
     Integer HealthCheckFailedException = 19;
+    Integer BadRequestException = 20;
+
 }
