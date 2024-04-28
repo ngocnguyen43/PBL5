@@ -36,15 +36,6 @@ public class ProvidersController extends HttpServlet {
     }
 
 
-//    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        String ProviderId = req.getRequestURI().split("/")[2]; // Lấy ID khách hàng từ URL
-//        // Xử lý dữ liệu khách hàng ở đây
-//        ProviderDto ProviderDto = Helper.paramsToString(req.getParameterMap()).toModel(ProviderDto.class);
-//        // Set ID cho khách hàng
-//        ProviderDto.setProviderId(ProviderId);
-//        ErrorHandler.handle(resp, () -> this.iProviderService.UpdateProvider(ProviderDto));
-//    }
-
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProviderDto providerDto = Helper.paramsToString(req.getParameterMap()).toModel(ProviderDto.class);

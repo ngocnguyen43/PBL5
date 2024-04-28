@@ -27,8 +27,6 @@ public class ScheduleMapper implements IMapper<Schedules> {
             schedules.setArrivalAt(result.getString("arrival_at"));
             schedules.setStartAt(result.getString("start_at"));
             schedules.setEstimatedTravelTime(result.getFloat("estimated_travel_time"));
-            schedules.setSeatCapacity(result.getInt("seat_capacity"));
-            schedules.setSeatPrice(result.getFloat("seat_price"));
             schedules.setNotes(result.getString("notes"));
             if (shouldShowDate) {
                 schedules.setCreatedAt(result.getString("created_at"));

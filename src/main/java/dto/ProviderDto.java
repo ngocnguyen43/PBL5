@@ -9,28 +9,9 @@ public class ProviderDto extends AbstractUserDto {
     private String position;
     private String providerName;
     private String contactInfo;
-    private  int isConfirmed = 0;
     private  String providersId;
     private String photo;
 
-    @Override
-    public String toString() {
-        return "ProviderDto{" +
-                "fullName='" + fullName + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", position='" + position + '\'' +
-                ", providerName='" + providerName + '\'' +
-                ", contactInfo='" + contactInfo + '\'' +
-                ", isConfirmed=" + isConfirmed +
-                ", providersId='" + providersId + '\'' +
-                ", photo='" + photo + '\'' +
-                ", userId='" + userId + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", roleId='" + roleId + '\'' +
-                '}';
-    }
 
     public String getProviderName() {
         return providerName;
@@ -48,13 +29,6 @@ public class ProviderDto extends AbstractUserDto {
         this.contactInfo = contactInfo;
     }
 
-    public int getIsConfirmed() {
-        return isConfirmed;
-    }
-
-    public void setIsConfirmed(int confirmed) {
-        this.isConfirmed = confirmed;
-    }
 
     public String getFullName() {
         return fullName;

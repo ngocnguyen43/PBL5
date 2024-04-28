@@ -23,7 +23,6 @@ public class ProviderMapper implements IMapper<Provider> {
             provider.setPosition(result.getString("position"));
             provider.setProviderName(result.getString("provider_name"));
             provider.setContactInfo(result.getString("contact_info"));
-            provider.setConfirmed(result.getInt("is_confirmed"));
             provider.setPhoto(result.getString("photo"));
             return provider;
         } catch (Exception e) {

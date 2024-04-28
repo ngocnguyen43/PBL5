@@ -20,8 +20,6 @@ public class Schedules {
     }
 
     private float estimatedTravelTime;
-    private int seatCapacity;
-    private float seatPrice;
     private String notes;
     private String photo;
 
@@ -111,21 +109,6 @@ public class Schedules {
         this.estimatedTravelTime = estimatedTravelTime;
     }
 
-    public int getSeatCapacity() {
-        return seatCapacity;
-    }
-
-    public void setSeatCapacity(int seatCapacity) {
-        this.seatCapacity = seatCapacity;
-    }
-
-    public Float getSeatPrice() {
-        return seatPrice;
-    }
-
-    public void setSeatPrice(float seatPrice) {
-        this.seatPrice = seatPrice;
-    }
 
     public String getNotes() {
         return notes;
