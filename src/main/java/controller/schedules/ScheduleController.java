@@ -21,9 +21,5 @@ public class ScheduleController extends HttpServlet {
     @Inject
     private IScheduleService iScheduleService;
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ScheduleDto dto = Helper.paramsToString(req.getParameterMap()).toModel(ScheduleDto.class);
-        ErrorHandler.handle(resp, () -> this.iScheduleService.CreateOne(dto));
-    }
+
 }

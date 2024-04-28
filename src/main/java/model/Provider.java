@@ -11,7 +11,6 @@ public class Provider {
     private String position;
     private String providerName;
     private String contactInfo;
-    private int isConfirmed = 0;
     private String photo;
 
     public void setPhoto(String photo) {
@@ -25,13 +24,6 @@ public class Provider {
     public Provider() {
     }
 
-    public int getIsConfirmed() {
-        return isConfirmed;
-    }
-
-    public void setIsConfirmed(int isConfirmed) {
-        this.isConfirmed = isConfirmed;
-    }
 
     public Provider(String providersId, String userId, String fullName, String email, String phoneNumber, String position, String providerName, String contactInfo, int isConfirmed, String photo) {
         this.providersId = providersId;
@@ -42,7 +34,6 @@ public class Provider {
         this.position = position;
         this.providerName = providerName;
         this.contactInfo = contactInfo;
-        this.isConfirmed = isConfirmed;
         this.photo = photo;
     }
 
@@ -110,34 +101,12 @@ public class Provider {
         this.contactInfo = contactInfo;
     }
 
-    public int isConfirmed() {
-        return isConfirmed;
-    }
-
-    public void setConfirmed(int confirmed) {
-        isConfirmed = confirmed;
-    }
 
     @Override
     public int hashCode() {
-        return Objects.hash(providersId, userId, fullName, email, phoneNumber, position, providerName, contactInfo, isConfirmed);
+        return Objects.hash(providersId, userId, fullName, email, phoneNumber, position, providerName, contactInfo);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Provider that = (Provider) o;
-        return isConfirmed == that.isConfirmed &&
-                Objects.equals(providersId, that.providersId) &&
-                Objects.equals(userId, that.userId) &&
-                Objects.equals(fullName, that.fullName) &&
-                Objects.equals(email, that.email) &&
-                Objects.equals(phoneNumber, that.phoneNumber) &&
-                Objects.equals(position, that.position) &&
-                Objects.equals(providerName, that.providerName) &&
-                Objects.equals(contactInfo, that.contactInfo);
-    }
 
     @Override
     public String toString() {
@@ -150,7 +119,6 @@ public class Provider {
                 ", position='" + position + '\'' +
                 ", providerName='" + providerName + '\'' +
                 ", contactInfo='" + contactInfo + '\'' +
-                ", isConfirmed=" + isConfirmed +
                 '}';
     }
 }

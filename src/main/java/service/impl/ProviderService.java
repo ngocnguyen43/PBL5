@@ -1,5 +1,7 @@
 package service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.interfaces.ICustomerDAO;
 import dao.interfaces.IProviderDAO;
 import dao.interfaces.IUserDAO;
@@ -38,7 +40,7 @@ public class ProviderService implements IProviderService {
     @Override
     public Message FindAllProvider() {
         List<Provider> providers = iProviderDAO.FindAll();
-        for (Provider provider : providers ) {
+        for (Provider provider : providers) {
             System.out.printf(provider.toString());
         }
         Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
@@ -47,8 +49,9 @@ public class ProviderService implements IProviderService {
         return new Message.Builder(meta).withData(data).build();
 
     }
+
     @Override
-    public Message FindOneByID(String ProviderId){
+    public Message FindOneByID(String ProviderId) {
         Provider Providers = iProviderDAO.FindOneById(ProviderId);
         Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
 
@@ -56,8 +59,9 @@ public class ProviderService implements IProviderService {
         return new Message.Builder(meta).withData(data).build();
 
     }
-    public Message InsertProvider(ProviderDto providerDto) throws RegistrationFailedException{
-        if(providerDto.getEmail()==null){
+
+    public Message InsertProvider(ProviderDto providerDto) throws RegistrationFailedException, JsonProcessingException {
+        if (providerDto.getEmail() == null) {
             throw new RegistrationFailedException();
         }
 
@@ -78,12 +82,12 @@ public class ProviderService implements IProviderService {
 
         Provider provider = Helper.objectMapper(providerDto, Provider.class);
         User user = Helper.objectMapper(providerDto, User.class);
-
+        System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(provider));
         provider.setProvidersId(providerId);
         provider.setUserId(userId);
         user.setUserId(userId);
         user.setPassword(HashPassword.Hash(user.getPassword()));
-        user.setRoleId("4");
+        user.setRoleId("2");
 
         try {
             this.iUserDAO.CreateOne(user);
@@ -91,14 +95,15 @@ public class ProviderService implements IProviderService {
             Meta meta = new Meta.Builder(HttpServletResponse.SC_CREATED).withMessage(MessageResponse.CREATED).build();
             return new Message.Builder(meta).build();
         } catch (Exception e) {
-            logger.log(Level.WARNING, e.getMessage());
+            logger.log(Level.INFO, e.getMessage());
             throw new RegistrationFailedException();
         }
     }
-    public Message RequestProvider(ProviderDto providerDto) throws RegistrationFailedException{
-        System.out.println("Provider: "+providerDto.toString());
+
+    public Message RequestProvider(ProviderDto providerDto) throws RegistrationFailedException {
+        System.out.println("Provider: " + providerDto.toString());
         Customer customer = this.iCustomerDAO.FindOneByUserId(providerDto.getUserId());
-        System.out.println("Customer: "+customer.toString());
+        System.out.println("Customer: " + customer.toString());
 
         Provider provider = Helper.objectMapper(providerDto, Provider.class);
         provider.setFullName(customer.getFullName());
@@ -106,12 +111,11 @@ public class ProviderService implements IProviderService {
         provider.setPosition(customer.getPosition());
         provider.setPhoneNumber(customer.getPhoneNumber());
         provider.setUserId(customer.getUserId());
-        provider.setConfirmed(0);
 
         String providerId = IDGenerator.generate(10);
         provider.setProvidersId(providerId);
 
-        System.out.println("Provider New:"+provider.toString());
+        System.out.println("Provider New:" + provider.toString());
         try {
             this.iProviderDAO.CreateOne(provider);
             Meta meta = new Meta.Builder(HttpServletResponse.SC_CREATED).withMessage(MessageResponse.CREATED).build();
@@ -121,34 +125,37 @@ public class ProviderService implements IProviderService {
             throw new RegistrationFailedException();
         }
     }
+
     @Override
-    public Message UpdateProvider(ProviderDto ProviderDto) throws DatabaseOperationException{
+    public Message UpdateProvider(ProviderDto ProviderDto) throws DatabaseOperationException {
         Provider provider = Helper.objectMapper(ProviderDto, Provider.class);
         try {
             iProviderDAO.UpdateOne(provider);
             Meta meta = new Meta.Builder(HttpServletResponse.SC_CREATED).withMessage(MessageResponse.CREATED).build();
             return new Message.Builder(meta).build();
-        } catch (Exception e){
+        } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage());
             throw new DatabaseOperationException(e.getMessage());
         }
     }
+
     @Override
-    public Message ConfirmProvider(ProviderDto providerDto) throws DatabaseOperationException{
+    public Message ConfirmProvider(ProviderDto providerDto) throws DatabaseOperationException {
         Provider provider = Helper.objectMapper(providerDto, Provider.class);
         try {
             iProviderDAO.ConfirmProvider(provider);
             Meta meta = new Meta.Builder(HttpServletResponse.SC_CREATED).withMessage(MessageResponse.CREATED).build();
             return new Message.Builder(meta).build();
-        } catch (Exception e){
+        } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage());
             throw new DatabaseOperationException(e.getMessage());
         }
     }
-    public Message DeleteProvider(ProviderDto providerDto) throws DatabaseOperationException{
-        System.out.println("pro DTO: "+providerDto.toString());
+
+    public Message DeleteProvider(ProviderDto providerDto) throws DatabaseOperationException {
+        System.out.println("pro DTO: " + providerDto.toString());
         Provider provider = Helper.objectMapper(providerDto, Provider.class);
-        System.out.println("Pro Service: "+provider.toString());
+        System.out.println("Pro Service: " + provider.toString());
         try {
             Provider provider1 = iProviderDAO.FindOneById(provider.getProvidersId());
             String userId = provider1.getUserId();
@@ -156,7 +163,7 @@ public class ProviderService implements IProviderService {
             iUserDAO.DeleteOneById(userId);
             Meta meta = new Meta.Builder(HttpServletResponse.SC_CREATED).withMessage(MessageResponse.CREATED).build();
             return new Message.Builder(meta).build();
-        } catch (Exception e){
+        } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage());
             throw new DatabaseOperationException(e.getMessage());
         }

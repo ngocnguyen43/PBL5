@@ -24,14 +24,12 @@ public class SchedulesDAO extends AbstractDAO<Schedules> implements IScheduleDAO
                 "departure_id," +
                 "arrival_id," +
                 "estimated_travel_time," +
-                "seat_capacity," +
-                "seat_price,notes," +
+                "notes," +
                 "photo,created_at," +
                 "updated_at,arrival_at," +
-                "start_at) VALUES  (?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
-        System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(schedules));
+                "start_at) VALUES  (?,?,?,?,?,?,?,?,?,?,?,?) ";
 
-        insert(sql, schedules.getScheduleId(), schedules.getProviderId(), schedules.getTripCode(), schedules.getDeparturePoint(), schedules.getArrivalPoint(), schedules.getEstimatedTravelTime(), schedules.getSeatCapacity(), schedules.getSeatPrice(), schedules.getNotes(), schedules.getPhoto(), schedules.getCreatedAt(), schedules.getUpdatedAt(), schedules.getArrivalAt(), schedules.getStartAt());
+        insert(sql, schedules.getScheduleId(), schedules.getProviderId(), schedules.getTripCode(), schedules.getDeparturePoint(), schedules.getArrivalPoint(), schedules.getEstimatedTravelTime(),  schedules.getNotes(), schedules.getPhoto(), schedules.getCreatedAt(), schedules.getUpdatedAt(), schedules.getArrivalAt(), schedules.getStartAt());
     }
 
     @Override
