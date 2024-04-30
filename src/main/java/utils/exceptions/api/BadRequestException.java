@@ -5,8 +5,8 @@ import utils.contants.ErrorStatusCodes;
 import utils.exceptions.Exception;
 
 public class BadRequestException extends Exception {
-    public BadRequestException() {
-        this.message = "Bad Request";
+    public BadRequestException(String message) {
+        this.message = message;
         this.errorCode = ErrorCodes.BadRequestException;
         this.statusCode = ErrorStatusCodes.BadRequestException;
     }

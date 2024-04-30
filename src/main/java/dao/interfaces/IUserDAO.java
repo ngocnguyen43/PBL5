@@ -10,4 +10,5 @@ public interface IUserDAO extends DAOInterface<User> {
 
     User FindOneByUsername(String username,boolean withPassword);
     void DeleteOneById(String userId) throws SQLException;
+    User FindOneByUsernameOrEmail(String username,String email,boolean withPassword);
 }

@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.Train;
 import service.interfaces.ITrainService;
 import utils.exceptions.api.BadRequestException;
+import utils.exceptions.server.InternalServerException;
 import utils.helper.Helper;
 import utils.helper.IDGenerator;
 import utils.response.Data;
@@ -33,7 +34,7 @@ public class TrainService implements ITrainService {
     }
 
     @Override
-    public Message CreateOne(TrainDto dto) throws BadRequestException {
+    public Message CreateOne(TrainDto dto) throws BadRequestException, InternalServerException {
         Train train = Helper.objectMapper(dto, Train.class);
         String id = IDGenerator.generate(10);
 
@@ -45,12 +46,12 @@ public class TrainService implements ITrainService {
             return new Message.Builder(meta).withData(data).build();
         } catch (Exception e) {
             this.logger.log(Level.WARNING, e.getMessage());
-            throw new BadRequestException();
+            throw new InternalServerException();
         }
     }
 
     @Override
-    public Message UpdateOne(TrainDto dto, String id) throws BadRequestException {
+    public Message UpdateOne(TrainDto dto, String id) throws BadRequestException, InternalServerException {
         Train updateData = Helper.objectMapper(dto, Train.class);
         updateData.setId(id);
         try {
@@ -60,7 +61,7 @@ public class TrainService implements ITrainService {
             Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
             return new Message.Builder(meta).withData(data).build();
         } catch (Exception e) {
-            throw new BadRequestException();
+            throw new InternalServerException();
         }
     }
 
@@ -73,13 +74,13 @@ public class TrainService implements ITrainService {
     }
 
     @Override
-    public Message DeleteOne(String id) throws BadRequestException {
+    public Message DeleteOne(String id) throws BadRequestException, InternalServerException {
         try {
             this.iTrainDAO.DeleteOne(id);
             Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
             return new Message.Builder(meta).build();
         } catch (Exception e) {
-            throw new BadRequestException();
+            throw new InternalServerException();
         }
     }
 }

@@ -61,43 +61,44 @@ public class ProviderService implements IProviderService {
     }
 
     public Message InsertProvider(ProviderDto providerDto) throws RegistrationFailedException, JsonProcessingException {
-        if (providerDto.getEmail() == null) {
-            throw new RegistrationFailedException();
-        }
-
-        String emailRegex = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        Matcher matcher = pattern.matcher(providerDto.getEmail());
-        if (!matcher.matches()) {
-            throw new RegistrationFailedException();
-        }
-
-        boolean isExist = this.iProviderDAO.FindOneByEmail(providerDto.getEmail()) != null;
-        if (isExist) {
-            throw new RegistrationFailedException();
-        }
-
-        String userId = IDGenerator.generate(10);
-        String providerId = IDGenerator.generate(10);
-
-        Provider provider = Helper.objectMapper(providerDto, Provider.class);
-        User user = Helper.objectMapper(providerDto, User.class);
-        System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(provider));
-        provider.setProvidersId(providerId);
-        provider.setUserId(userId);
-        user.setUserId(userId);
-        user.setPassword(HashPassword.Hash(user.getPassword()));
-        user.setRoleId("2");
-
-        try {
-            this.iUserDAO.CreateOne(user);
-            this.iProviderDAO.CreateOne(provider);
-            Meta meta = new Meta.Builder(HttpServletResponse.SC_CREATED).withMessage(MessageResponse.CREATED).build();
-            return new Message.Builder(meta).build();
-        } catch (Exception e) {
-            logger.log(Level.INFO, e.getMessage());
-            throw new RegistrationFailedException();
-        }
+//        if (providerDto.getEmail() == null) {
+//            throw new RegistrationFailedException();
+//        }
+//
+//        String emailRegex = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
+//        Pattern pattern = Pattern.compile(emailRegex);
+//        Matcher matcher = pattern.matcher(providerDto.getEmail());
+//        if (!matcher.matches()) {
+//            throw new RegistrationFailedException();
+//        }
+//
+//        boolean isExist = this.iProviderDAO.FindOneByEmail(providerDto.getEmail()) != null;
+//        if (isExist) {
+//            throw new RegistrationFailedException();
+//        }
+//
+//        String userId = IDGenerator.generate(10);
+//        String providerId = IDGenerator.generate(10);
+//
+//        Provider provider = Helper.objectMapper(providerDto, Provider.class);
+//        User user = Helper.objectMapper(providerDto, User.class);
+//        System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(provider));
+//        provider.setProvidersId(providerId);
+//        provider.setUserId(userId);
+//        user.setUserId(userId);
+//        user.setPassword(HashPassword.Hash(user.getPassword()));
+//        user.setRoleId("2");
+//
+//        try {
+//            this.iUserDAO.CreateOne(user);
+//            this.iProviderDAO.CreateOne(provider);
+//            Meta meta = new Meta.Builder(HttpServletResponse.SC_CREATED).withMessage(MessageResponse.CREATED).build();
+//            return new Message.Builder(meta).build();
+//        } catch (Exception e) {
+//            logger.log(Level.INFO, e.getMessage());
+//            throw new RegistrationFailedException();
+//        }
+        return null;
     }
 
     public Message RequestProvider(ProviderDto providerDto) throws RegistrationFailedException {
