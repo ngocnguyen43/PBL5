@@ -4,6 +4,7 @@ import config.EnvConfig;
 import dao.interfaces.DAOInterface;
 import utils.mapper.interfaces.IMapper;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +81,8 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
                     statement.setTimestamp(index, (Timestamp) parameter);
                 } else if (parameter instanceof Float) {
                     statement.setFloat(index, (float) parameter);
+                } else if (parameter instanceof BigDecimal) {
+                    statement.setBigDecimal(index, (BigDecimal) parameter);
                 } else {
                     statement.setNull(index, Types.NULL);
                 }

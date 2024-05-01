@@ -1,5 +1,6 @@
 package controller.schedules;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dto.ScheduleDto;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
@@ -29,6 +30,7 @@ public class SchedulesController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ScheduleDto dto = Helper.paramsToString(req.getParameterMap()).toModel(ScheduleDto.class);
+        System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(dto));
         ErrorHandler.handle(resp, () -> this.iScheduleService.CreateOne(dto));
     }
 }

@@ -1,7 +1,6 @@
 package dao.interfaces;
 
 import model.Carriage;
-import model.Train;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -16,4 +15,6 @@ public interface ICarriageDAO extends DAOInterface<Carriage> {
     Carriage FindOne(String id);
 
     void DeleteOne(String id);
+
+    void BulkCreate(List<Carriage> carriages) throws SQLException;
 }

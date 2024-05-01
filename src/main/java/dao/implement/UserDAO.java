@@ -11,8 +11,8 @@ public class UserDAO extends AbstractDAO<User> implements IUserDAO {
 
     @Override
     public void CreateOne(User user) throws SQLException {
-        String sql = "INSERT INTO users (user_id," + "email," + "full_name," + "phone_number," + "created_at," + "updated_at," + "deleted_at," + "username," + "password)" + " VALUES(?,?,?,?,?,?,?,?,?)";
-        insert(sql, user.getUserId(), user.getEmail(), user.getFullName(), user.getPhoneNumber(), user.getCreatedAt(), user.getUpdatedAt(), user.getDeletedAt(), user.getUsername(), user.getPassword());
+        String sql = "INSERT INTO users (user_id," + "email," + "full_name," + "phone_number," + "created_at," + "updated_at," + "deleted_at," + "username," + "password," + "role_id )" + " VALUES(?,?,?,?,?,?,?,?,?,?)";
+        insert(sql, user.getUserId(), user.getEmail(), user.getFullName(), user.getPhoneNumber(), user.getCreatedAt(), user.getUpdatedAt(), user.getDeletedAt(), user.getUsername(), user.getPassword(), user.getRoleId());
 
     }
 

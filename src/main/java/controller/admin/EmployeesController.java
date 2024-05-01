@@ -1,6 +1,5 @@
 package controller.admin;
 
-import dto.CustomerDto;
 import dto.EmployeeDto;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
@@ -9,7 +8,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import service.interfaces.ICustomerService;
 import service.interfaces.IEmployeeService;
 import utils.contants.EndPoint;
 import utils.errorHandler.ErrorHandler;

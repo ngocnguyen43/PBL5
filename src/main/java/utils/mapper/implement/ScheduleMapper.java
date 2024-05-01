@@ -1,14 +1,14 @@
 package utils.mapper.implement;
 
-import model.Schedules;
+import model.Schedule;
 import utils.mapper.interfaces.IMapper;
 
 import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ScheduleMapper implements IMapper<Schedules> {
-    private final Logger logger = Logger.getLogger(Schedules.class.getName());
+public class ScheduleMapper implements IMapper<Schedule> {
+    private final Logger logger = Logger.getLogger(Schedule.class.getName());
     private Boolean shouldShowDate;
 
     public ScheduleMapper(Boolean shouldShowDate) {
@@ -16,27 +16,29 @@ public class ScheduleMapper implements IMapper<Schedules> {
     }
 
     @Override
-    public Schedules mapRow(ResultSet result) {
-        Schedules schedules = new Schedules();
+    public Schedule mapRow(ResultSet result) {
+        Schedule schedule = new Schedule();
         try {
-            schedules.setScheduleId(result.getString("schedule_id"));
-            schedules.setProviderId(result.getString("provider_id"));
-            schedules.setTripCode(result.getString("trip_code"));
-            schedules.setDeparturePoint(result.getString("departure_id"));
-            schedules.setArrivalPoint(result.getString("arrival_id"));
-            schedules.setArrivalAt(result.getString("arrival_at"));
-            schedules.setStartAt(result.getString("start_at"));
-            schedules.setEstimatedTravelTime(result.getFloat("estimated_travel_time"));
-            schedules.setNotes(result.getString("notes"));
+            schedule.setScheduleId(result.getString("schedule_id"));
+            schedule.setUserId(result.getString("provider_id"));
+            schedule.setTripCode(result.getString("trip_code"));
+            schedule.setDeparturePoint(result.getString("departure_id"));
+            schedule.setArrivalPoint(result.getString("arrival_id"));
+            schedule.setArrivalAt(result.getString("arrival_at"));
+            schedule.setStartAt(result.getString("start_at"));
+            schedule.setEstimatedTravelTime(result.getFloat("estimated_travel_time"));
+            schedule.setNotes(result.getString("notes"));
             if (shouldShowDate) {
-                schedules.setCreatedAt(result.getString("created_at"));
-                schedules.setUpdatedAt(result.getString("updated_at"));
+                schedule.setCreatedAt(result.getString("created_at"));
+                schedule.setUpdatedAt(result.getString("updated_at"));
             } else {
-                schedules.setCreatedAt(null);
-                schedules.setUpdatedAt(null);
+                schedule.setCreatedAt(null);
+                schedule.setUpdatedAt(null);
             }
-            schedules.setPhoto(result.getString("photo"));
-            return schedules;
+            schedule.setPhoto(result.getString("photo"));
+            schedule.setStatus(result.getString("status"));
+            schedule.setTrainId(result.getString("train_id"));
+            return schedule;
         } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage());
         }

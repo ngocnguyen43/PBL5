@@ -1,4 +1,4 @@
-package controller.admin;
+package controller.scheduleRequests;
 
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
@@ -12,8 +12,8 @@ import utils.errorHandler.ErrorHandler;
 
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {EndPoint.API + EndPoint.VERSION + EndPoint.ADMIN + "/schedule-requests"})
-public class ScheduleRequestController extends HttpServlet {
+@WebServlet(urlPatterns = {EndPoint.API + EndPoint.VERSION + EndPoint.ADMIN + "/schedule_requests"})
+public class ScheduleRequestsController extends HttpServlet {
     @Inject
     private IScheduleRequestService iScheduleRequestService;
 

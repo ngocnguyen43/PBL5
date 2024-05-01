@@ -1,10 +1,7 @@
 package dao.implement;
 
-import dao.interfaces.ICustomerDAO;
 import dao.interfaces.IEmployeeDAO;
-import model.Customer;
 import model.Employee;
-import utils.mapper.implement.CustomerMapper;
 import utils.mapper.implement.EmployeeMapper;
 
 import java.sql.SQLException;

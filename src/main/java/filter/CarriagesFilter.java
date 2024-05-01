@@ -23,10 +23,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@WebFilter(urlPatterns = {EndPoint.API + EndPoint.VERSION + "/trains"})
-public class TrainsFilter implements Filter {
-    private final Logger logger = Logger.getLogger(TrainsFilter.class.getName());
-
+@WebFilter(urlPatterns = {EndPoint.API + EndPoint.VERSION + "/carriages"})
+public class CarriagesFilter implements Filter {
+    private final Logger logger = Logger.getLogger(CarriagesFilter.class.getName());
     @Inject
     private IUserPermissionDAO iUserPermissionDAO;
 
@@ -48,13 +47,13 @@ public class TrainsFilter implements Filter {
             System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(user));
             switch (httpRequest.getMethod()) {
                 case "GET": {
-                    UserPermission userPermission = this.iUserPermissionDAO.FindOneByUserIdAndRoleName(user.getUserId(), USER_PERMISSIONS.READ_TRAINS);
+                    UserPermission userPermission = this.iUserPermissionDAO.FindOneByUserIdAndRoleName(user.getUserId(), USER_PERMISSIONS.READ_CARRIAGES);
                     if (userPermission == null) throw new ForbiddenException();
                     filterChain.doFilter(httpRequest, httpResponse);
                     break;
                 }
                 case "POST": {
-                    UserPermission userPermission = this.iUserPermissionDAO.FindOneByUserIdAndRoleName(user.getUserId(), USER_PERMISSIONS.CREATE_TRAIN);
+                    UserPermission userPermission = this.iUserPermissionDAO.FindOneByUserIdAndRoleName(user.getUserId(), USER_PERMISSIONS.CREATE_CARRIAGE);
                     if (userPermission == null) throw new ForbiddenException();
                     filterChain.doFilter(httpRequest, httpResponse);
                     break;

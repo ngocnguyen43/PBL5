@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,6 +16,7 @@ import java.util.logging.Logger;
 public class Helper {
     private final String data;
     private static final Logger logger = Logger.getLogger(Helper.class.getName());
+
     public Helper(String data) {
         this.data = data;
     }
@@ -26,7 +29,7 @@ public class Helper {
                 sb.append(line);
             }
         } catch (IOException e) {
-            logger.log(Level.SEVERE,e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage());
         }
 //		System.out.println(sb.toString());
         return new Helper(sb.toString());
@@ -62,4 +65,24 @@ public class Helper {
         return null;
     }
 
+    public static List<Helper> arrayParamsToString(Map<String, String[]> paramsMap) {
+        List<Helper> helpers = new ArrayList<>();
+        for (String[] array : paramsMap.values()) {
+            for (String jsonString : array) {
+                helpers.add(new Helper(jsonString));
+            }
+        }
+        return helpers;
+    }
+
+    public static <T> List<T> toListModel(List<Helper> helpers, Class<T> tClass) {
+        List<T> modelList = new ArrayList<>();
+        for (Helper helper : helpers) {
+            T model = helper.toModel(tClass);
+            if (model != null) {
+                modelList.add(model);
+            }
+        }
+        return modelList;
+    }
 }

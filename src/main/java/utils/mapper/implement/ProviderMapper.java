@@ -1,6 +1,5 @@
 package utils.mapper.implement;
 
-import model.Customer;
 import model.Provider;
 import utils.mapper.interfaces.IMapper;
 

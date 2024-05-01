@@ -34,6 +34,7 @@ public class UserMapper implements IMapper<User> {
             user.setCreatedAt(result.getString("created_at"));
             user.setUpdatedAt(result.getString("updated_at"));
             user.setDeletedAt(result.getString("deleted_at"));
+            user.setRoleId(result.getString("role_id"));
             return user;
         } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage());

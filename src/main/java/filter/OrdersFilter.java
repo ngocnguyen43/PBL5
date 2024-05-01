@@ -1,12 +1,14 @@
 package filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dao.interfaces.IRoleDAO;
 import dao.interfaces.IUserPermissionDAO;
 import jakarta.inject.Inject;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Role;
 import model.User;
 import model.UserPermission;
 import utils.contants.EndPoint;
@@ -20,13 +22,15 @@ import utils.response.Meta;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@WebFilter(urlPatterns = {EndPoint.API + EndPoint.VERSION + "/trains"})
-public class TrainsFilter implements Filter {
-    private final Logger logger = Logger.getLogger(TrainsFilter.class.getName());
-
+@WebFilter(urlPatterns = {EndPoint.API + EndPoint.VERSION + "/orders"})
+public class OrdersFilter implements Filter {
+    private final Logger logger = Logger.getLogger(OrdersFilter.class.getName());
+    @Inject
+    private IRoleDAO iRoleDAO;
     @Inject
     private IUserPermissionDAO iUserPermissionDAO;
 
@@ -39,22 +43,28 @@ public class TrainsFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
+        User user = (User) httpRequest.getAttribute("user");
+        Role role = this.iRoleDAO.FindOneByName("ADMIN");
+        if (Objects.equals(user.getRoleId(), role.getRoleId())) {
+            filterChain.doFilter(httpRequest, httpResponse);
+            return;
+        }
         try {
             List<String> allowedMethods = Arrays.asList("GET", "POST");
             if (!allowedMethods.contains(httpRequest.getMethod())) {
                 throw new MethodNotAllowedException();
             }
-            User user = (User) httpRequest.getAttribute("user");
+            httpRequest.setAttribute("userId", user.getUserId());
             System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(user));
             switch (httpRequest.getMethod()) {
                 case "GET": {
-                    UserPermission userPermission = this.iUserPermissionDAO.FindOneByUserIdAndRoleName(user.getUserId(), USER_PERMISSIONS.READ_TRAINS);
+                    UserPermission userPermission = this.iUserPermissionDAO.FindOneByUserIdAndRoleName(user.getUserId(), USER_PERMISSIONS.READ_ORDERS);
                     if (userPermission == null) throw new ForbiddenException();
                     filterChain.doFilter(httpRequest, httpResponse);
                     break;
                 }
                 case "POST": {
-                    UserPermission userPermission = this.iUserPermissionDAO.FindOneByUserIdAndRoleName(user.getUserId(), USER_PERMISSIONS.CREATE_TRAIN);
+                    UserPermission userPermission = this.iUserPermissionDAO.FindOneByUserIdAndRoleName(user.getUserId(), USER_PERMISSIONS.CREATE_ORDER);
                     if (userPermission == null) throw new ForbiddenException();
                     filterChain.doFilter(httpRequest, httpResponse);
                     break;

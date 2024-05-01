@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import model.ScheduleRequest;
 import service.interfaces.IScheduleRequestService;
+import utils.exceptions.server.InternalServerException;
 import utils.response.Data;
 import utils.response.Message;
 import utils.response.MessageResponse;
@@ -30,5 +31,19 @@ public class ScheduleRequestService implements IScheduleRequestService {
             logger.log(Level.WARNING, e.getMessage());
         }
         return null;
+    }
+
+    @Override
+    public Message UpdateStatus(String id, String status) throws InternalServerException {
+        try {
+            iScheduleRequestDAO.UpdateStatus(id, status);
+            ScheduleRequest scheduleRequest = this.iScheduleRequestDAO.FindOneById(id);
+            Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
+            Data data = new Data.Builder(null).withResults(scheduleRequest).build();
+            return new Message.Builder(meta).withData(data).build();
+        } catch (Exception e) {
+            logger.log(Level.WARNING, e.getMessage());
+            throw new InternalServerException();
+        }
     }
 }

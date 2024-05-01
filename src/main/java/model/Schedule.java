@@ -2,9 +2,9 @@ package model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-public class Schedules {
+public class Schedule {
     private String scheduleId;
-    private String providerId;
+    private String userId;
     private String tripCode;
     private String departurePoint;
     private String arrivalPoint;
@@ -61,12 +61,12 @@ public class Schedules {
         this.scheduleId = scheduleId;
     }
 
-    public String getProviderId() {
-        return providerId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setProviderId(String providerId) {
-        this.providerId = providerId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getTripCode() {
@@ -116,5 +116,25 @@ public class Schedules {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    private String status;
+    private String trainId;
+
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getTrainId() {
+        return trainId;
+    }
+
+    public void setTrainId(String trainId) {
+        this.trainId = trainId;
     }
 }

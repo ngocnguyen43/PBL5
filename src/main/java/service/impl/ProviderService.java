@@ -1,7 +1,6 @@
 package service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.interfaces.ICustomerDAO;
 import dao.interfaces.IProviderDAO;
 import dao.interfaces.IUserDAO;
@@ -10,11 +9,9 @@ import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Customer;
 import model.Provider;
-import model.User;
 import service.interfaces.IProviderService;
 import utils.exceptions.api.DatabaseOperationException;
 import utils.exceptions.api.RegistrationFailedException;
-import utils.helper.HashPassword;
 import utils.helper.Helper;
 import utils.helper.IDGenerator;
 import utils.response.Data;
@@ -25,8 +22,6 @@ import utils.response.Meta;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ProviderService implements IProviderService {
     @Inject

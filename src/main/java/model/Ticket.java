@@ -3,22 +3,13 @@ package model;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Tickets {
+public class Ticket {
     private String ticketId;
     private String scheduleId;
     private int quantity;
     private BigDecimal price;
     private String status;
     private String photo;
-
-    public Tickets(String ticketId, String scheduleId, int quantity, BigDecimal price, String status, String photo) {
-        this.ticketId = ticketId;
-        this.scheduleId = scheduleId;
-        this.quantity = quantity;
-        this.price = price;
-        this.status = status;
-        this.photo = photo;
-    }
 
     public void setPhoto(String photo) {
         this.photo = photo;
@@ -77,12 +68,12 @@ public class Tickets {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Tickets tickets = (Tickets) o;
-        return quantity == tickets.quantity &&
-                Objects.equals(ticketId, tickets.ticketId) &&
-                Objects.equals(scheduleId, tickets.scheduleId) &&
-                Objects.equals(price, tickets.price) &&
-                Objects.equals(status, tickets.status);
+        Ticket ticket = (Ticket) o;
+        return quantity == ticket.quantity &&
+                Objects.equals(ticketId, ticket.ticketId) &&
+                Objects.equals(scheduleId, ticket.scheduleId) &&
+                Objects.equals(price, ticket.price) &&
+                Objects.equals(status, ticket.status);
     }
 
     @Override

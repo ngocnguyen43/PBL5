@@ -11,6 +11,8 @@ public class User {
     private String deletedAt;
     private String photo;
     private String phoneNumber;
+    private String roleId;
+
 
     private final long unix = System.currentTimeMillis() / 1000L;
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -96,5 +98,14 @@ public class User {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
 }
 
