@@ -28,4 +28,6 @@ public interface ErrorStatusCodes {
     Integer HealthCheckFailedException = 503;
     Integer BadRequestException = 400;
 
+    Integer MethodNotAllowedException = 405;
+    Integer ForbiddenException = 403;
 }

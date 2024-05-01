@@ -5,10 +5,10 @@ import utils.contants.ErrorStatusCodes;
 import utils.exceptions.Exception;
 import utils.response.MessageResponse;
 
-public class MethodNotAllowed extends Exception {
-    public MethodNotAllowed() {
-        this.errorCode = ErrorCodes.InvalidEndpointException;
-        this.statusCode = ErrorStatusCodes.;
-        this.message = "Method not allowed";
+public class MethodNotAllowedException extends Exception {
+    public MethodNotAllowedException() {
+        this.errorCode = ErrorCodes.MethodNotAllowedException;
+        this.statusCode = ErrorStatusCodes.MethodNotAllowedException;
+        this.message = MessageResponse.METHOD_NOT_ALLOWED;
     }
 }

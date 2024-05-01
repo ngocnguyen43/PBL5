@@ -2,16 +2,21 @@ package service.impl;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import dao.interfaces.IPermissionDAO;
 import dao.interfaces.IUserDAO;
+import dao.interfaces.IUserPermissionDAO;
 import dto.CustomerDto;
 import dto.TokenDto;
 import dto.UserDto;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Permission;
 import model.User;
+import model.UserPermission;
 import org.codehaus.jackson.map.ObjectMapper;
 import service.interfaces.IAuthService;
 import utils.contants.ENV;
+import utils.contants.USER_PERMISSIONS;
 import utils.exceptions.api.BadRequestException;
 import utils.exceptions.api.InvalidCredentialsException;
 import utils.exceptions.server.InternalServerException;
@@ -26,6 +31,7 @@ import utils.response.Meta;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -35,6 +41,10 @@ public class AuthService implements IAuthService {
     private final Logger logger = Logger.getLogger(AuthService.class.getName());
     @Inject
     private IUserDAO iUserDAO;
+    @Inject
+    private IPermissionDAO iPermissionDAO;
+    @Inject
+    private IUserPermissionDAO iUserPermissionDAO;
 
     @Override
     public Message Register(CustomerDto dto) throws BadRequestException, InternalServerException {
@@ -53,9 +63,26 @@ public class AuthService implements IAuthService {
 
         user.setUserId(userId);
         user.setPassword(HashPassword.Hash(user.getPassword()));
+        String[] permissionNames = new String[]{USER_PERMISSIONS.READ_SELF, USER_PERMISSIONS.UPDATE_SELF, USER_PERMISSIONS.DELETE_SELF, USER_PERMISSIONS.CREATE_ORDER, USER_PERMISSIONS.UPDATE_ORDER, USER_PERMISSIONS.DELETE_ORDER};
+        List<Permission> grantPermissions = this.iPermissionDAO.FindAllPermissions(permissionNames);
+        System.out.println(grantPermissions.size());
 
+        List<UserPermission> userPermissions = grantPermissions.stream().map(element -> {
+            UserPermission permission = new UserPermission();
+            permission.setId(IDGenerator.generate(10));
+            permission.setUserId(userId);
+            permission.setPermissionId(element.getPermissionId());
+            return permission;
+        }).toList();
+
+//        try {
+//            System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(userPermissions));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
         try {
             this.iUserDAO.CreateOne(user);
+            this.iUserPermissionDAO.BulkCreateUserPermissions(userPermissions);
             Meta meta = new Meta.Builder(HttpServletResponse.SC_CREATED).withMessage(MessageResponse.CREATED).build();
             return new Message.Builder(meta).build();
         } catch (Exception e) {
@@ -76,7 +103,6 @@ public class AuthService implements IAuthService {
         if (user == null) throw new InvalidCredentialsException(MessageResponse.INVALID_EMAIL_OR_PASSWORD);
         String hashedPassword = user.getPassword();
 //        try {
-
         if (!DecryptPassword.Decrypt(dto.getPassword(), hashedPassword))
             throw new InvalidCredentialsException(MessageResponse.INVALID_EMAIL_OR_PASSWORD);
         try {
@@ -88,7 +114,8 @@ public class AuthService implements IAuthService {
         String token = JWT.create()
                 .withExpiresAt(new Date(ENV.ACCESS_TOKEN_EXPIRES_TIME))
                 .withClaim("user_id", user.getUserId())
-                .withClaim("token_type","access")
+                .withClaim("token_type", "access")
+                .withClaim("jti", IDGenerator.generate(20))
                 .sign(algorithm);
         TokenDto tokenDto = new TokenDto();
         tokenDto.setAccessToken(token);

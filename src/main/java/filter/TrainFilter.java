@@ -1,2 +1,4 @@
-package filter;public class TrainFilter {
+package filter;
+
+public class TrainFilter {
 }

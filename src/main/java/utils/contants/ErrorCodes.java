@@ -39,4 +39,6 @@ public interface ErrorCodes {
     Integer HealthCheckFailedException = 19;
     Integer BadRequestException = 20;
 
+    Integer MethodNotAllowedException = 21;
+    Integer ForbiddenException = 22;
 }

@@ -1,11 +1,13 @@
 package controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.User;
 
 import java.io.IOException;
 
@@ -26,8 +28,11 @@ public class TestController extends HttpServlet {
 //        } catch (WriterException e) {
 //            throw new RuntimeException(e);
 //        }
-        Cookie uiColorCookie = new Cookie("color", "red");
-        resp.addCookie(uiColorCookie);
-        System.out.println(req.getAttribute("test"));
+//        Cookie uiColorCookie = new Cookie("color", "red");
+//        resp.addCookie(uiColorCookie);
+//        System.out.println(req.getAttribute("test"));
+        User user = (User) req.getAttribute("user");
+        System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(user));
+
     }
 }

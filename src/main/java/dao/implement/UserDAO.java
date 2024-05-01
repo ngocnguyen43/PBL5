@@ -24,6 +24,13 @@ public class UserDAO extends AbstractDAO<User> implements IUserDAO {
     }
 
     @Override
+    public User FindOneByUserId(String userId, boolean withPassword) {
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+        List<User> users = query(sql, new UserMapper(withPassword), userId);
+        return users.isEmpty() ? null : users.get(0);
+    }
+
+    @Override
     public void DeleteOneById(String userId) throws SQLException {
         String sql = "DELETE from users WHERE user_id =?";
         delete(sql, userId);

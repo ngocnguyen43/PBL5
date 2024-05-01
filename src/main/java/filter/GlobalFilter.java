@@ -3,13 +3,12 @@ package filter;
 import config.ResponseConfig;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import utils.contants.EndPoint;
 
 import java.io.IOException;
-@WebFilter(urlPatterns = {"/*"})
+
+@WebFilter(filterName = "global-filter", urlPatterns = {"/*"})
 public class GlobalFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
