@@ -10,10 +10,14 @@ import java.util.logging.Logger;
 public class UserMapper implements IMapper<User> {
     Logger logger = Logger.getLogger(UserMapper.class.getName());
     private boolean withPassword = false;
+
     public UserMapper(boolean withPassword) {
         this.withPassword = withPassword;
     }
-    public UserMapper(){}
+
+    public UserMapper() {
+    }
+
     @Override
     public User mapRow(ResultSet result) {
         User user = new User();
@@ -23,7 +27,13 @@ public class UserMapper implements IMapper<User> {
             if (this.withPassword) {
                 user.setPassword(result.getString("password"));
             }
-            user.setRoleId(result.getString("role_id"));
+            user.setEmail(result.getString("email"));
+            user.setPhoto(result.getString("photo"));
+            user.setFullName(result.getString("full_name"));
+            user.setPhoneNumber(result.getString("phone_number"));
+            user.setCreatedAt(result.getString("created_at"));
+            user.setUpdatedAt(result.getString("updated_at"));
+            user.setDeletedAt(result.getString("deleted_at"));
             return user;
         } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage());

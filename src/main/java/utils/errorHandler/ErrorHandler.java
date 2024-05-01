@@ -30,6 +30,7 @@ public class ErrorHandler {
         } catch (java.lang.Exception e) {
             if (e instanceof Exception) {
                 Meta meta = new Meta.Builder(((Exception) e).getStatusCode()).withErrCode(((Exception) e).getErrorCode()).withError(e.getMessage()).build();
+                res.setStatus(((Exception) e).getStatusCode());
                 res.getWriter().print(new ObjectMapper().writeValueAsString(new Message.Builder(meta).build()));
                 res.getWriter().flush();
             } else {

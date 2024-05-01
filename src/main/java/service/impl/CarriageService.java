@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.Carriage;
 import service.interfaces.ICarriageService;
 import utils.exceptions.api.BadRequestException;
+import utils.exceptions.server.InternalServerException;
 import utils.helper.Helper;
 import utils.helper.IDGenerator;
 import utils.response.Data;
@@ -32,7 +33,7 @@ public class CarriageService implements ICarriageService {
     }
 
     @Override
-    public Message CreateOne(CarriageDto dto) throws BadRequestException {
+    public Message CreateOne(CarriageDto dto) throws BadRequestException, InternalServerException {
         Carriage carriage = Helper.objectMapper(dto, Carriage.class);
         String id = IDGenerator.generate(10);
         carriage.setId(id);
@@ -44,12 +45,12 @@ public class CarriageService implements ICarriageService {
             return new Message.Builder(meta).withData(data).build();
         } catch (Exception e) {
             this.logger.log(Level.WARNING, e.getMessage());
-            throw new BadRequestException();
+            throw new InternalServerException();
         }
     }
 
     @Override
-    public Message UpdateOne(CarriageDto dto, String id) throws BadRequestException {
+    public Message UpdateOne(CarriageDto dto, String id) throws BadRequestException, InternalServerException {
         Carriage updateData = Helper.objectMapper(dto, Carriage.class);
         updateData.setId(id);
         try {
@@ -59,7 +60,7 @@ public class CarriageService implements ICarriageService {
             Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
             return new Message.Builder(meta).withData(data).build();
         } catch (Exception e) {
-            throw new BadRequestException();
+            throw new InternalServerException();
         }
     }
 
@@ -72,13 +73,13 @@ public class CarriageService implements ICarriageService {
     }
 
     @Override
-    public Message DeleteOne(String id) throws BadRequestException {
+    public Message DeleteOne(String id) throws BadRequestException, InternalServerException {
         try {
             this.iCarriageDAO.DeleteOne(id);
             Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
             return new Message.Builder(meta).build();
         } catch (Exception e) {
-            throw new BadRequestException();
+            throw new InternalServerException();
         }
     }
 }

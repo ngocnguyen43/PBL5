@@ -112,7 +112,7 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
                 }
             }
             e.printStackTrace();
-            throw  e;
+            throw e;
         } finally {
             try {
                 if (connection != null) {
@@ -203,6 +203,51 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
 
             } catch (Exception e2) {
                 e2.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void bulkCreate(String sql, List<Object[]> paramsList) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = getConnection();
+            connection.setAutoCommit(false);
+            statement = connection.prepareStatement(sql);
+
+            // Iterate through the list of parameters and add batches
+            for (Object[] params : paramsList) {
+                setParams(statement, params);
+                statement.addBatch();
+            }
+
+            // Execute batch
+            statement.executeBatch();
+
+            // Commit transaction
+            connection.commit();
+
+        } catch (SQLException e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (Exception e2) {
+                    logger.log(Level.WARNING, "Error rolling back transaction", e2);
+                }
+            }
+            logger.log(Level.SEVERE, "Error executing bulk create", e);
+            throw e;
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e2) {
+                logger.log(Level.WARNING, "Error closing connection or statement", e2);
             }
         }
     }

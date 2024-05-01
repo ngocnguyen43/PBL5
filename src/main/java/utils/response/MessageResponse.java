@@ -27,4 +27,7 @@ public interface MessageResponse {
 
     String DUPLICATED = "Duplicated";
     String INVALID_ID = "Invalid id";
+
+    String METHOD_NOT_ALLOWED = "Method not allowed";
+    String FORBIDDEN = "Forbidden";
 }
