@@ -16,5 +16,6 @@ public interface DAOInterface<T> {
 
     <T> List<T> query(String sql, IMapper<T> mapper, Object... parameters);
 
+    <T> List<T> query(String sql, IMapper<T> mapper,  List<Object[]> params);
 }
 

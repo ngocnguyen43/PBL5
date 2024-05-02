@@ -1,13 +1,11 @@
 package controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import utils.helper.Helper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,6 +14,11 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/test/1"})
 public class TestController extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        String data = "Ha noi mua thu";

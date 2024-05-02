@@ -42,7 +42,7 @@ public class TokenFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
         String path = httpRequest.getRequestURI();
         System.out.println(path);
-        if (path.startsWith("/api/v1/auth/") || path.startsWith("/test")) {
+        if (path.startsWith("/api/v1/auth/") || path.startsWith("/test") || path.startsWith("/chat")) {
             filterChain.doFilter(httpRequest, httpResponse);
             return;
         }

@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 public abstract class AbstractDAO<T> implements DAOInterface<T> {
 
+
     private final Logger logger = Logger.getLogger(AbstractDAO.class.getName());
 
     public Connection getConnection() {
@@ -71,6 +72,35 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
             for (int i = 0; i < parameters.length; i++) {
                 Object parameter = parameters[i];
                 int index = i + 1;
+                if (parameter instanceof Long) {
+                    statement.setLong(index, (Long) parameter);
+                } else if (parameter instanceof String) {
+                    statement.setString(index, (String) parameter);
+                } else if (parameter instanceof Integer) {
+                    statement.setInt(index, (Integer) parameter);
+                } else if (parameter instanceof Timestamp) {
+                    statement.setTimestamp(index, (Timestamp) parameter);
+                } else if (parameter instanceof Float) {
+                    statement.setFloat(index, (float) parameter);
+                } else if (parameter instanceof BigDecimal) {
+                    statement.setBigDecimal(index, (BigDecimal) parameter);
+                } else {
+                    statement.setNull(index, Types.NULL);
+                }
+
+            }
+        } catch (SQLException e) {
+            // TODO: handle exception
+            logger.log(Level.SEVERE, e.getMessage());
+        }
+    }
+
+    private void setParams(PreparedStatement statement, int pos, Object... parameters) {
+        try {
+
+            for (int i = 0; i < parameters.length; i++) {
+                Object parameter = parameters[i];
+                int index = pos + i + 1;
                 if (parameter instanceof Long) {
                     statement.setLong(index, (Long) parameter);
                 } else if (parameter instanceof String) {
@@ -253,5 +283,46 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
                 logger.log(Level.WARNING, "Error closing connection or statement", e2);
             }
         }
+    }
+
+    @Override
+    public <T> List<T> query(String sql, IMapper<T> mapper, List<Object[]> paramsList) {
+        List<T> list = new ArrayList<T>();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        try {
+            connection = getConnection();
+            connection.setAutoCommit(false);
+            statement = connection.prepareStatement(sql);
+
+            // Iterate through the list of parameters and add batches
+            int pos = 0;
+            for (Object[] params : paramsList) {
+                setParams(statement, pos, params);
+                pos += params.length;
+            }
+            System.out.println(statement.toString());
+            // Execute batch
+            result = statement.executeQuery();
+            while (result.next()) {
+                list.add(mapper.mapRow(result));
+            }
+            return list;
+
+
+        } catch (SQLException e) {
+            logger.log(Level.WARNING, e.getMessage()); // Handle or log the exception as needed
+        } finally {
+            // Close resources
+            try {
+                if (result != null) result.close();
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                logger.log(Level.WARNING, e.getMessage()); // Handle or log the exception as needed
+            }
+        }
+        return null;
     }
 }

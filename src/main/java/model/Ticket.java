@@ -1,23 +1,15 @@
 package model;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 public class Ticket {
     private String ticketId;
-    private String scheduleId;
-    private int quantity;
+    private String orderId;
+    private String userId;
+    private BigDecimal totalPrice;
     private BigDecimal price;
-    private String status;
+    private BigDecimal extraFee;
     private String photo;
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
 
     public String getTicketId() {
         return ticketId;
@@ -27,20 +19,28 @@ public class Ticket {
         this.ticketId = ticketId;
     }
 
-    public String getScheduleId() {
-        return scheduleId;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setScheduleId(String scheduleId) {
-        this.scheduleId = scheduleId;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public BigDecimal getPrice() {
@@ -51,40 +51,74 @@ public class Ticket {
         this.price = price;
     }
 
-    public String getStatus() {
-        return status;
+    public BigDecimal getExtraFee() {
+        return extraFee;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setExtraFee(BigDecimal extraFee) {
+        this.extraFee = extraFee;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(ticketId, scheduleId, quantity, price, status);
+    public String getPhoto() {
+        return photo;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Ticket ticket = (Ticket) o;
-        return quantity == ticket.quantity &&
-                Objects.equals(ticketId, ticket.ticketId) &&
-                Objects.equals(scheduleId, ticket.scheduleId) &&
-                Objects.equals(price, ticket.price) &&
-                Objects.equals(status, ticket.status);
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
-    @Override
-    public String toString() {
-        return "Tickets{" +
-                "ticketId='" + ticketId + '\'' +
-                ", scheduleId='" + scheduleId + '\'' +
-                ", quantity=" + quantity +
-                ", price=" + price +
-                ", status='" + status + '\'' +
-                '}';
+    public static class Builder {
+        private String ticketId;
+        private String orderId;
+        private String userId;
+        private BigDecimal totalPrice;
+        private BigDecimal price;
+        private BigDecimal extraFee;
+        private String photo;
+
+        public Builder(String ticketId) {
+            this.ticketId = ticketId;
+        }
+
+
+        public Builder WithOrderId(String orderId) {
+            this.orderId = orderId;
+            return this;
+        }
+
+        public Builder WithUserId(String userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Builder WithPrice(BigDecimal price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder WithExtraFee(BigDecimal extraFee) {
+            this.extraFee = extraFee;
+            return this;
+        }
+
+        public Builder WithPhoto(String photo) {
+            this.photo = photo;
+            return this;
+        }
+
+        public Ticket build() {
+            Ticket ticket = new Ticket();
+            ticket.setTicketId(this.ticketId);
+            ticket.setOrderId(this.orderId);
+            ticket.setTicketId(this.ticketId);
+            ticket.setUserId(this.userId);
+            ticket.setPrice(this.price);
+            ticket.setExtraFee(this.extraFee);
+            ticket.setTotalPrice(this.price.add(this.extraFee));
+            ticket.setPhoto(this.photo);
+            return ticket;
+        }
+
     }
 }
 

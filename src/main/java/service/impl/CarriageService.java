@@ -1,10 +1,12 @@
 package service.impl;
 
 import dao.interfaces.ICarriageDAO;
+import dao.interfaces.ISeatDAO;
 import dto.CarriageDto;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Carriage;
+import model.SeatStatus;
 import service.interfaces.ICarriageService;
 import utils.exceptions.api.BadRequestException;
 import utils.exceptions.server.InternalServerException;
@@ -16,13 +18,17 @@ import utils.response.MessageResponse;
 import utils.response.Meta;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CarriageService implements ICarriageService {
+    private final Logger logger = Logger.getLogger(CarriageService.class.getName());
     @Inject
     private ICarriageDAO iCarriageDAO;
-    private final Logger logger = Logger.getLogger(CarriageService.class.getName());
+
+    @Inject
+    private ISeatDAO iSeatDAO;
 
     @Override
     public Message FindAll() {
@@ -67,6 +73,21 @@ public class CarriageService implements ICarriageService {
     @Override
     public Message FindOne(String id) {
         Carriage carriage = this.iCarriageDAO.FindOne(id);
+        List<SeatStatus> seatStatus = this.iSeatDAO.FindAllSeatsStatusByCarriageId(id);
+        List<Integer> availableSeats = seatStatus.stream().map(element -> {
+            if (Objects.equals(element.getStatus(), "Available")) {
+                return element.getSeatNumber();
+            }
+            return null;
+        }).filter(Objects::nonNull).toList();
+        List<Integer> bookedSeats = seatStatus.stream().map(element -> {
+            if (Objects.equals(element.getStatus(), "Booked")) {
+                return element.getSeatNumber();
+            }
+            return null;
+        }).filter(Objects::nonNull).toList();
+        carriage.setAvailableSeats(availableSeats);
+        carriage.setBookedSeats(bookedSeats);
         Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
         Data data = new Data.Builder(null).withResults(carriage).build();
         return new Message.Builder(meta).withData(data).build();

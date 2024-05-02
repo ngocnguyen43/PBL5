@@ -65,24 +65,5 @@ public class Helper {
         return null;
     }
 
-    public static List<Helper> arrayParamsToString(Map<String, String[]> paramsMap) {
-        List<Helper> helpers = new ArrayList<>();
-        for (String[] array : paramsMap.values()) {
-            for (String jsonString : array) {
-                helpers.add(new Helper(jsonString));
-            }
-        }
-        return helpers;
-    }
 
-    public static <T> List<T> toListModel(List<Helper> helpers, Class<T> tClass) {
-        List<T> modelList = new ArrayList<>();
-        for (Helper helper : helpers) {
-            T model = helper.toModel(tClass);
-            if (model != null) {
-                modelList.add(model);
-            }
-        }
-        return modelList;
-    }
 }

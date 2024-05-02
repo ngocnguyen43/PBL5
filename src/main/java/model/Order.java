@@ -1,11 +1,13 @@
 package model;
 
+
 public class Order {
     private String orderId;
     private String userId;
-    private String orderDate;
     private String status;
     private String paidDate;
+    private final long unix = System.currentTimeMillis() / 1000L;
+    private String orderDate = unix + "";
 
     public String getOrderId() {
         return orderId;
@@ -45,5 +47,36 @@ public class Order {
 
     public void setPaidDate(String paidDate) {
         this.paidDate = paidDate;
+    }
+
+    public static class Builder {
+        private String orderId;
+        private String userId;
+        private String status;
+
+        public Builder(String orderId) {
+            this.orderId = orderId;
+        }
+
+
+        public Builder WithUserId(String userId) {
+            this.userId = userId;
+            return this;
+        }
+
+
+        public Builder WithStatus(String status) {
+            this.status = status;
+            return this;
+        }
+
+        public Order build() {
+            Order order = new Order();
+            order.setOrderId(this.orderId);
+            order.setStatus(this.status);
+            order.setUserId(this.userId);
+
+            return order;
+        }
     }
 }

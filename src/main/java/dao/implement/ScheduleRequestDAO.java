@@ -22,14 +22,15 @@ public class ScheduleRequestDAO extends AbstractDAO<ScheduleRequest> implements 
 
     @Override
     public void UpdateStatus(String id, String status) throws SQLException {
-        String sql = "UPDATE schedule_requests SET status = ? WHERE id = ?";
+        String sql = "UPDATE schedule_requests SET status = ? WHERE request_id = ?";
         update(sql, status, id);
     }
 
     @Override
     public ScheduleRequest FindOneById(String id) {
         String sql = "SELECT * FROM schedule_requests WHERE request_id = ?";
-        List<ScheduleRequest> scheduleRequests = query(sql, new ScheduleRequetMapper());
+        List<ScheduleRequest> scheduleRequests = query(sql, new ScheduleRequetMapper(),id);
         return scheduleRequests.isEmpty() ? null : scheduleRequests.get(0);
     }
+
 }
