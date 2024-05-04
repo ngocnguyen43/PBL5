@@ -20,7 +20,7 @@ public class ScheduleMapper implements IMapper<Schedule> {
         Schedule schedule = new Schedule();
         try {
             schedule.setScheduleId(result.getString("schedule_id"));
-            schedule.setUserId(result.getString("provider_id"));
+            schedule.setUserId(result.getString("user_id"));
             schedule.setTripCode(result.getString("trip_code"));
             schedule.setDeparturePoint(result.getString("departure_id"));
             schedule.setArrivalPoint(result.getString("arrival_id"));
@@ -40,6 +40,7 @@ public class ScheduleMapper implements IMapper<Schedule> {
             schedule.setTrainId(result.getString("train_id"));
             return schedule;
         } catch (Exception e) {
+            e.printStackTrace();
             logger.log(Level.WARNING, e.getMessage());
         }
         return null;
