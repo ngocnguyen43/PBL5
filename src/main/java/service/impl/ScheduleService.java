@@ -1,14 +1,17 @@
 package service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.interfaces.IScheduleDAO;
 import dao.interfaces.IScheduleRequestDAO;
 import dto.ScheduleDto;
 import dto.UpdateScheduleStatusDto;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
-import model.ScheduleRequest;
 import model.Schedule;
+import model.ScheduleRequest;
 import service.interfaces.IScheduleService;
+import utils.exceptions.api.BadRequestException;
 import utils.exceptions.server.InternalServerException;
 import utils.helper.Helper;
 import utils.helper.IDGenerator;
@@ -18,6 +21,7 @@ import utils.response.MessageResponse;
 import utils.response.Meta;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,7 +42,16 @@ public class ScheduleService implements IScheduleService {
     }
 
     @Override
-    public Message CreateOne(ScheduleDto dto) throws InternalServerException {
+    public Message CreateOne(ScheduleDto dto) throws InternalServerException, BadRequestException {
+        if (Objects.equals(dto.getArrivalAt(), dto.getStartAt()) || Long.parseLong(dto.getArrivalAt()) < Long.parseLong(dto.getStartAt()))
+            throw new BadRequestException("Invalid properties");
+        List<Schedule> conflict = this.iScheduleDAO.FindAllConflicts(dto.getStartAt(), dto.getArrivalAt());
+        try {
+            System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(conflict));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        if (!conflict.isEmpty()) throw new BadRequestException("Invalid properties");
         Schedule model = Helper.objectMapper(dto, Schedule.class);
         String scheduleId = IDGenerator.generate(10);
         String tripCode = IDGenerator.generate(10);
@@ -49,8 +62,8 @@ public class ScheduleService implements IScheduleService {
         scheduleRequest.setRequestId(requestId);
         scheduleRequest.setType("Create");
         try {
-            this.iScheduleDAO.CreateOne(model);
-            this.iScheduleRequestDAO.CreateOne(scheduleRequest);
+//            this.iScheduleDAO.CreateOne(model);
+//            this.iScheduleRequestDAO.CreateOne(scheduleRequest);
             Meta meta = new Meta.Builder(HttpServletResponse.SC_CREATED).withMessage(MessageResponse.CREATED).build();
             return new Message.Builder(meta).build();
         } catch (Exception e) {

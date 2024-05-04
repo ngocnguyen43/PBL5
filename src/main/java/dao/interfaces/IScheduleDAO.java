@@ -10,6 +10,8 @@ public interface IScheduleDAO extends DAOInterface<Schedule> {
 
     List<Schedule> FindAll();
 
+    List<Schedule> FindAllConflicts(String startAt,String arrivalAt);
+
     void CreateOne(Schedule schedule) throws SQLException, JsonProcessingException;
 
     void UpdateStatus(String id, String status) throws SQLException;
