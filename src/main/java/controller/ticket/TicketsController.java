@@ -1,5 +1,6 @@
 package controller.ticket;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import dto.TicketDto;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,7 @@ import utils.errorHandler.ErrorHandler;
 import utils.helper.Helper;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(urlPatterns = {EndPoint.API + EndPoint.VERSION + "/tickets"})
 @MultipartConfig
@@ -23,7 +25,11 @@ public class TicketsController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        TicketDto dto = Helper.of(req.getReader()).toModel(TicketDto.class);
-        ErrorHandler.handle(resp, () -> this.iTicketService.CreateOne(dto));
+        TypeReference<List<TicketDto>> dtosType = new TypeReference<>() {
+        };
+
+        List<TicketDto> dtos = Helper.of(req.getReader()).toModel(dtosType);
+//        System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(dtos));
+        ErrorHandler.handle(resp, () -> this.iTicketService.BulkCreate(dtos));
     }
 }

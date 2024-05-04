@@ -8,6 +8,15 @@ public class Order {
     private String paidDate;
     private final long unix = System.currentTimeMillis() / 1000L;
     private String orderDate = unix + "";
+    private String confirmUrlId;
+
+    public String getConfirmUrlId() {
+        return confirmUrlId;
+    }
+
+    public void setConfirmUrlId(String confirmUrlId) {
+        this.confirmUrlId = confirmUrlId;
+    }
 
     public String getOrderId() {
         return orderId;
@@ -53,6 +62,8 @@ public class Order {
         private String orderId;
         private String userId;
         private String status;
+        private String confirmUrlId;
+        private String paidDate;
 
         public Builder(String orderId) {
             this.orderId = orderId;
@@ -70,11 +81,23 @@ public class Order {
             return this;
         }
 
+        public Builder WithPaidDate(String paidDate) {
+            this.paidDate = paidDate;
+            return this;
+        }
+
+        public Builder WithConfirmUrlId(String confirmUrlId) {
+            this.confirmUrlId = confirmUrlId;
+            return this;
+        }
+
         public Order build() {
             Order order = new Order();
             order.setOrderId(this.orderId);
             order.setStatus(this.status);
             order.setUserId(this.userId);
+            order.setPaidDate(this.paidDate);
+            order.setConfirmUrlId(this.confirmUrlId);
 
             return order;
         }

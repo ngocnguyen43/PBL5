@@ -1,14 +1,13 @@
 package utils.helper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,6 +58,16 @@ public class Helper {
     public <T> T toModel(Class<T> tClass) {
         try {
             return new ObjectMapper().readValue(data, tClass);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public <T> T toModel(TypeReference<T> types) {
+        try {
+
+            return new ObjectMapper().readValue(data, types);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

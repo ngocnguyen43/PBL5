@@ -4,6 +4,15 @@ public class TicketInformation {
     private Integer seatNumber;
     private String carriageId;
     private String scheduleId;
+    private String ticketId;
+
+    public String getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(String ticketId) {
+        this.ticketId = ticketId;
+    }
 
     public Integer getSeatNumber() {
         return seatNumber;

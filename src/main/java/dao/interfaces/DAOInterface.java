@@ -12,6 +12,8 @@ public interface DAOInterface<T> {
 
     void bulkCreate(String sql, List<Object[]> params) throws SQLException;
 
+    void bulkCreate(List<String> sql,List<List<Object[]>> params) throws SQLException;
+
     void delete(String sql, Object... params);
 
     <T> List<T> query(String sql, IMapper<T> mapper, Object... parameters);

@@ -17,6 +17,7 @@ import utils.response.Message;
 import utils.response.MessageResponse;
 import utils.response.Meta;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -74,18 +75,20 @@ public class CarriageService implements ICarriageService {
     public Message FindOne(String id) {
         Carriage carriage = this.iCarriageDAO.FindOne(id);
         List<SeatStatus> seatStatus = this.iSeatDAO.FindAllSeatsStatusByCarriageId(id);
-        List<Integer> availableSeats = seatStatus.stream().map(element -> {
+        List<Integer> availableSeats = new java.util.ArrayList<>(seatStatus.stream().map(element -> {
             if (Objects.equals(element.getStatus(), "Available")) {
                 return element.getSeatNumber();
             }
             return null;
-        }).filter(Objects::nonNull).toList();
-        List<Integer> bookedSeats = seatStatus.stream().map(element -> {
+        }).filter(Objects::nonNull).toList());
+        availableSeats.sort(Comparator.naturalOrder());
+        List<Integer> bookedSeats = new java.util.ArrayList<>(seatStatus.stream().map(element -> {
             if (Objects.equals(element.getStatus(), "Booked")) {
                 return element.getSeatNumber();
             }
             return null;
-        }).filter(Objects::nonNull).toList();
+        }).filter(Objects::nonNull).toList());
+        bookedSeats.sort(Comparator.naturalOrder());
         carriage.setAvailableSeats(availableSeats);
         carriage.setBookedSeats(bookedSeats);
         Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();

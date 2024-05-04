@@ -325,4 +325,58 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
         }
         return null;
     }
+
+    @Override
+    public void bulkCreate(List<String> sqls, List<List<Object[]>> listParams) throws SQLException {
+        if (listParams.isEmpty()) throw new RuntimeException();
+        if (sqls.size() != listParams.size()) throw new RuntimeException();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = getConnection();
+            connection.setAutoCommit(false);
+
+            for (var index = 0; index < listParams.size(); index++) {
+                var sql = sqls.get(index);
+                var params = listParams.get(index);
+                statement = connection.prepareStatement(sql);
+                for (Object[] param : params) {
+                    setParams(statement, param);
+                    statement.addBatch();
+                    System.out.println(statement);
+
+                }
+
+            }
+            assert statement != null;
+            // Execute batch
+//            statement.executeBatch();
+
+            // Commit transaction
+            connection.commit();
+
+        } catch (SQLException e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (Exception e2) {
+                    logger.log(Level.WARNING, "Error rolling back transaction", e2);
+                }
+            }
+            logger.log(Level.SEVERE, "Error executing bulk create", e);
+            throw e;
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e2) {
+                logger.log(Level.WARNING, "Error closing connection or statement", e2);
+            }
+        }
+    }
+
 }

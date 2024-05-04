@@ -61,13 +61,6 @@ public class SeatDAO extends AbstractDAO<Seat> implements ISeatDAO {
                 AND seats.seat_number = ?""");
         String combineSqls = String.join(" UNION ALL ", sqls);
         String sql = "select SUM(price) as total FROM ( " + combineSqls + " ) as SEATS_PRICES";
-//        String sql = """
-//                SELECT seats.price
-//                FROM seats
-//                inner join seats_tickets on seats.seat_id = seats_tickets.seat_id
-//                WHERE seats_tickets.schedule_id = ?
-//                AND seats_tickets.carriage_id = ?
-//                AND seats.seat_number = ?""";
         List<Object[]> objects = ticketInformation.stream().map(element -> new Object[]{
                 element.getScheduleId(),
                 element.getCarriageId(),
