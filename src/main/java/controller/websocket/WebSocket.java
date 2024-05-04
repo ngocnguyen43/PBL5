@@ -1,6 +1,8 @@
-package controller.admin;
+package controller.websocket;
 
-import controller.websocket.SocketManager;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dao.interfaces.ISeatDAO;
+import jakarta.inject.Inject;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
@@ -11,6 +13,9 @@ import java.io.IOException;
 public class WebSocket {
     private Session session;
 
+    @Inject
+    private ISeatDAO iSeatDAO;
+
 
     @OnOpen
     public void onOpen(
@@ -20,7 +25,15 @@ public class WebSocket {
 
         this.session = session;
         SocketManager.setUserSession(session.getId(), session);
-        session.getBasicRemote().sendText("OK");
+        String uri = session.getRequestURI().toString();
+        System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(SocketManager.openUrls));
+        boolean isExist = SocketManager.openUrls.contains(uri);
+        System.out.println(uri);
+        if (!isExist) {
+            SocketManager.openUrls.add(uri);
+            session.close();
+        }
+
     }
 
     @OnMessage

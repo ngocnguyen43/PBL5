@@ -1,24 +1,32 @@
 package dto;
 
-import java.math.BigDecimal;
-
 public class ScheduleDto {
-    private String providerId;
+    private String userId;
     private String departurePoint;
     private String arrivalPoint;
     private String arrivalAt;
     private String startAt;
     private float estimatedTravelTime;
-    private int seatCapacity;
     private float seatPrice;
     private String notes;
+    private String trainId;
 
-    public String getProviderId() {
-        return providerId;
+
+
+    public String getTrainId() {
+        return trainId;
     }
 
-    public void setProviderId(String providerId) {
-        this.providerId = providerId;
+    public void setTrainId(String trainId) {
+        this.trainId = trainId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getDeparturePoint() {
@@ -59,14 +67,6 @@ public class ScheduleDto {
 
     public void setEstimatedTravelTime(float estimatedTravelTime) {
         this.estimatedTravelTime = estimatedTravelTime;
-    }
-
-    public Integer getSeatCapacity() {
-        return seatCapacity;
-    }
-
-    public void setSeatCapacity(Integer seatCapacity) {
-        this.seatCapacity = seatCapacity;
     }
 
     public float getSeatPrice() {

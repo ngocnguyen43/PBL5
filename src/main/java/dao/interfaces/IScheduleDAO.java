@@ -1,17 +1,16 @@
 package dao.interfaces;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import model.Schedules;
-import utils.contants.ScheduleStatus;
+import model.Schedule;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public interface IScheduleDAO extends DAOInterface<Schedules> {
+public interface IScheduleDAO extends DAOInterface<Schedule> {
 
-    List<Schedules> FindAll();
+    List<Schedule> FindAll();
 
-    void CreateOne(Schedules schedules) throws SQLException, JsonProcessingException;
+    void CreateOne(Schedule schedule) throws SQLException, JsonProcessingException;
 
     void UpdateStatus(String id, String status) throws SQLException;
 }

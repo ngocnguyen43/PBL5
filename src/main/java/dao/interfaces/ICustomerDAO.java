@@ -1,8 +1,6 @@
 package dao.interfaces;
 
-import model.Booking;
 import model.Customer;
-import model.User;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

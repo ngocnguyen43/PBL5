@@ -3,18 +3,24 @@ package controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.User;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.List;
+
 
 @WebServlet(urlPatterns = {"/test/1"})
 public class TestController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        String data = "Ha noi mua thu";
 //        QRCodeWriter qrCodeWriter = new QRCodeWriter();
 //        try {
@@ -31,8 +37,38 @@ public class TestController extends HttpServlet {
 //        Cookie uiColorCookie = new Cookie("color", "red");
 //        resp.addCookie(uiColorCookie);
 //        System.out.println(req.getAttribute("test"));
-        User user = (User) req.getAttribute("user");
-        System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(user));
+//        User user = (User) req.getAttribute("user");
+//        System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(user));
 
+//        TokenDto[] dtos = Helper.arrayParamsToString(req.getParameterMap()).stream().map(element->{
+//            TokenDto dto = new TokenDto();
+//            dto.setRefreshToken(element.);
+//        })
+        BufferedReader reader = req.getReader();
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line);
+        }
+
+        // Parse the JSON data into a list of objects
+        ObjectMapper objectMapper = new ObjectMapper();
+        MyObject myObjects = objectMapper.readValue(sb.toString(), MyObject.class);
+//
+//        MyObject myObjects =Helper.paramsToString(req.getParameterMap()).toModel(MyObject.class);
+//        // Process the data
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(myObjects));
+    }
+
+    static class MyObject {
+        public List<String> name;
+
+        public List<String> getName() {
+            return name;
+        }
+
+        public void setName(List<String> name) {
+            this.name = name;
+        }
     }
 }

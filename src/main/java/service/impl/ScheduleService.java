@@ -7,7 +7,7 @@ import dto.UpdateScheduleStatusDto;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import model.ScheduleRequest;
-import model.Schedules;
+import model.Schedule;
 import service.interfaces.IScheduleService;
 import utils.exceptions.server.InternalServerException;
 import utils.helper.Helper;
@@ -31,7 +31,7 @@ public class ScheduleService implements IScheduleService {
 
     @Override
     public Message FindAll() {
-        List<Schedules> schedules = this.iScheduleDAO.FindAll();
+        List<Schedule> schedules = this.iScheduleDAO.FindAll();
         Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
         Data data = new Data.Builder(null).withResults(schedules).build();
         return new Message.Builder(meta).withData(data).build();
@@ -39,7 +39,7 @@ public class ScheduleService implements IScheduleService {
 
     @Override
     public Message CreateOne(ScheduleDto dto) throws InternalServerException {
-        Schedules model = Helper.objectMapper(dto, Schedules.class);
+        Schedule model = Helper.objectMapper(dto, Schedule.class);
         String scheduleId = IDGenerator.generate(10);
         String tripCode = IDGenerator.generate(10);
         model.setScheduleId(scheduleId);

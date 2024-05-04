@@ -2,7 +2,12 @@ package dto;
 
 public class TokenDto {
     private String accessToken;
-    private String refreshToken = "";
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    private String refreshToken;
 
     public String getAccessToken() {
         return accessToken;

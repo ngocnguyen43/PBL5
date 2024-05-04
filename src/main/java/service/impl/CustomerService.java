@@ -1,6 +1,5 @@
 package service.impl;
 
-import dao.implement.CustomerDAO;
 import dao.interfaces.ICustomerDAO;
 import dao.interfaces.IUserDAO;
 import dto.CustomerDto;
@@ -9,9 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.Customer;
 import service.interfaces.ICustomerService;
 import utils.exceptions.api.DatabaseOperationException;
-import utils.exceptions.api.InvalidCredentialsException;
-import utils.exceptions.api.InvalidEndpointException;
-import utils.exceptions.api.RegistrationFailedException;
 import utils.helper.Helper;
 import utils.response.Data;
 import utils.response.Message;

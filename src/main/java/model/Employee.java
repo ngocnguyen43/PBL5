@@ -3,7 +3,6 @@ package model;
 import model.abstracts.AbstractUser;
 
 import java.util.Date;
-import java.util.Objects;
 
 public class Employee extends AbstractUser {
     private String employeeId;

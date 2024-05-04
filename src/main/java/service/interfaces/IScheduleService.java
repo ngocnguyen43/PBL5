@@ -2,7 +2,6 @@ package service.interfaces;
 
 import dto.ScheduleDto;
 import dto.UpdateScheduleStatusDto;
-import utils.contants.ScheduleStatus;
 import utils.exceptions.api.BadRequestException;
 import utils.exceptions.server.InternalServerException;
 import utils.response.Message;

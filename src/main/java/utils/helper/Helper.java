@@ -1,6 +1,7 @@
 package utils.helper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -14,6 +15,7 @@ import java.util.logging.Logger;
 public class Helper {
     private final String data;
     private static final Logger logger = Logger.getLogger(Helper.class.getName());
+
     public Helper(String data) {
         this.data = data;
     }
@@ -26,7 +28,7 @@ public class Helper {
                 sb.append(line);
             }
         } catch (IOException e) {
-            logger.log(Level.SEVERE,e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage());
         }
 //		System.out.println(sb.toString());
         return new Helper(sb.toString());
@@ -61,5 +63,16 @@ public class Helper {
         }
         return null;
     }
+
+    public <T> T toModel(TypeReference<T> types) {
+        try {
+
+            return new ObjectMapper().readValue(data, types);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
 
 }

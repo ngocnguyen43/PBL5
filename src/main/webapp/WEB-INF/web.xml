@@ -16,7 +16,7 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>token-filter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/api/v1/*</url-pattern>
     </filter-mapping>
     <resource-env-ref>
         <resource-env-ref-name>BeanManager</resource-env-ref-name>

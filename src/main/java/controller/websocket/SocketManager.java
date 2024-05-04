@@ -1,11 +1,10 @@
 package controller.websocket;
 
-import controller.admin.WebSocket;
 import jakarta.websocket.Session;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.List;
 
 public class SocketManager {
 
@@ -17,13 +16,14 @@ public class SocketManager {
         return users;
     }
 
-    public static  void  setUserSession(String id,Session session){
-        users.put(id,session);
+    public static void setUserSession(String id, Session session) {
+        users.put(id, session);
     }
 
-    public static  void removeUserSession(String id){
+    public static void removeUserSession(String id) {
         users.remove(id);
     }
+
     public static Session getAdmin() {
         return admin;
     }
@@ -31,4 +31,6 @@ public class SocketManager {
     public static void setAdmin(Session admin) {
         SocketManager.admin = admin;
     }
+
+    public static List<String> openUrls = new ArrayList<>();
 }

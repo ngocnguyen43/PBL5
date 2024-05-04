@@ -2,9 +2,7 @@ package dao.implement;
 
 import dao.interfaces.ICustomerDAO;
 import model.Customer;
-import model.Provider;
 import utils.mapper.implement.CustomerMapper;
-import utils.mapper.implement.ProviderMapper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

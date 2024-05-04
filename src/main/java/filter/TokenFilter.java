@@ -23,7 +23,7 @@ import utils.response.Meta;
 
 import java.io.IOException;
 
-@WebFilter(filterName = "token-filter", urlPatterns = "/*")
+@WebFilter(filterName = "token-filter", urlPatterns = "/api/v1/*")
 public class TokenFilter implements Filter {
     @Inject
     private IUserPermissionDAO iUserPermissionDAO;
@@ -42,7 +42,7 @@ public class TokenFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
         String path = httpRequest.getRequestURI();
         System.out.println(path);
-        if (path.startsWith("/api/v1/auth/")) {
+        if (path.startsWith("/api/v1/auth/") || path.startsWith("/test") || path.startsWith("/chat") || path.startsWith("/api/v1/stations")) {
             filterChain.doFilter(httpRequest, httpResponse);
             return;
         }

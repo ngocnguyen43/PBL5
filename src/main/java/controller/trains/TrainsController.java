@@ -1,6 +1,5 @@
 package controller.trains;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dto.TrainDto;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;

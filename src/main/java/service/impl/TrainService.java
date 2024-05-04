@@ -1,9 +1,13 @@
 package service.impl;
 
+import dao.interfaces.ICarriageDAO;
+import dao.interfaces.ISeatDAO;
 import dao.interfaces.ITrainDAO;
 import dto.TrainDto;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Carriage;
+import model.Seat;
 import model.Train;
 import service.interfaces.ITrainService;
 import utils.exceptions.api.BadRequestException;
@@ -15,6 +19,8 @@ import utils.response.Message;
 import utils.response.MessageResponse;
 import utils.response.Meta;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +30,10 @@ public class TrainService implements ITrainService {
     private final Logger logger = Logger.getLogger(TrainService.class.getName());
     @Inject
     private ITrainDAO iTrainDAO;
+    @Inject
+    private ICarriageDAO iCarriageDAO;
+    @Inject
+    private ISeatDAO iSeatDAO;
 
     @Override
     public Message FindAll() {
@@ -37,14 +47,38 @@ public class TrainService implements ITrainService {
     public Message CreateOne(TrainDto dto) throws BadRequestException, InternalServerException {
         Train train = Helper.objectMapper(dto, Train.class);
         String id = IDGenerator.generate(10);
-
+        train.setId(id);
+        List<Carriage> carriages = new ArrayList<>();
+        for (int i = 0; i < dto.getTotalCarriage(); i++) {
+            Carriage carriage = new Carriage();
+            carriage.setTrainId(id);
+            carriage.setName(IDGenerator.generate(5));
+            carriage.setTotalSeats(40);
+            carriage.setId(IDGenerator.generate(10));
+            carriages.add(carriage);
+        }
+        List<Seat> seats = new ArrayList<>();
+        for (Carriage carriage : carriages) {
+            int i = 1;
+            for (int j = 1; j <= carriage.getTotalSeats(); j++) {
+                Seat seat = new Seat();
+                seat.setSeatId(IDGenerator.generate(10));
+                seat.setCarriageId(carriage.getId());
+                seat.setSeatNumber(j);
+                seat.setPrice(new BigDecimal("124567.09"));
+                seats.add(seat);
+            }
+        }
         try {
             this.iTrainDAO.CreateOne(train);
+            this.iCarriageDAO.BulkCreate(carriages);
+            this.iSeatDAO.BulkCreate(seats);
             Train createdTrain = this.iTrainDAO.FindOne(id);
             Data data = new Data.Builder(null).withResults(createdTrain).build();
             Meta meta = new Meta.Builder(HttpServletResponse.SC_CREATED).withMessage(MessageResponse.CREATED).build();
             return new Message.Builder(meta).withData(data).build();
         } catch (Exception e) {
+            e.printStackTrace();
             this.logger.log(Level.WARNING, e.getMessage());
             throw new InternalServerException();
         }

@@ -40,4 +40,16 @@ public class CarriageDAO extends AbstractDAO<Carriage> implements ICarriageDAO {
         String sql = "DELETE FROM carriages WHERE train_id = ?";
         delete(sql, id);
     }
+
+    @Override
+    public void BulkCreate(List<Carriage> carriages) throws SQLException {
+        String sql = "INSERT INTO carriages (carriage_id, carriage_name, total_seats,train_id) VALUES (?,?,?,?)";
+        List<Object[]> objects = carriages.stream().map(element -> new Object[]{
+                element.getId(),
+                element.getName(),
+                element.getTotalSeats(),
+                element.getTrainId(),
+        }).toList();
+        bulkCreate(sql, objects);
+    }
 }
