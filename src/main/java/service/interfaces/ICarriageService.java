@@ -12,7 +12,7 @@ public interface ICarriageService {
 
     Message UpdateOne(CarriageDto dto, String id) throws BadRequestException, InternalServerException;
 
-    Message FindOne(String id);
+    Message FindOne(String id, String scheduleId) throws BadRequestException;
 
     Message DeleteOne(String id) throws BadRequestException, InternalServerException;
 

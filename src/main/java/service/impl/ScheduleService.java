@@ -42,6 +42,16 @@ public class ScheduleService implements IScheduleService {
     }
 
     @Override
+    public Message FindAll(String startAt, String arrivalAt, boolean isReturn) throws BadRequestException {
+        if (startAt == null) throw new BadRequestException("Invalid properties");
+        if (arrivalAt == null && isReturn) throw new BadRequestException("Invalid properties");
+        List<Schedule> schedules = this.iScheduleDAO.FindAll(startAt, arrivalAt, isReturn);
+        Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
+        Data data = new Data.Builder(null).withResults(schedules).build();
+        return new Message.Builder(meta).withData(data).build();
+    }
+
+    @Override
     public Message CreateOne(ScheduleDto dto) throws InternalServerException, BadRequestException {
         if (Objects.equals(dto.getArrivalAt(), dto.getStartAt()) || Long.parseLong(dto.getArrivalAt()) < Long.parseLong(dto.getStartAt()))
             throw new BadRequestException("Invalid properties");
