@@ -1,4 +1,4 @@
-package controller.me;
+package controller.roles;
 
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
@@ -13,15 +13,14 @@ import utils.errorHandler.ErrorHandler;
 
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {EndPoint.API + EndPoint.VERSION + "/me"})
-public class MeController extends HttpServlet {
-
+@WebServlet(urlPatterns = {EndPoint.API + EndPoint.VERSION + "/my_role"})
+public class RoleController extends HttpServlet {
     @Inject
     private IUserService iUserService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User) req.getAttribute("user");
-        ErrorHandler.handle(resp, () -> this.iUserService.FindOne(user.getUserId()));
+        ErrorHandler.handle(resp, () -> this.iUserService.FindRole(user.getUserId()));
     }
 }

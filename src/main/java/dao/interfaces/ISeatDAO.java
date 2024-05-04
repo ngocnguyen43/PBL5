@@ -13,6 +13,6 @@ public interface ISeatDAO extends DAOInterface<Seat> {
     void BulkCreate(List<Seat> seats) throws SQLException;
 
     List<Seat> FindAllByScheduleId(String id, String status);
-    List<SeatStatus> FindAllSeatsStatusByCarriageId(String id);
+    List<SeatStatus> FindAllSeatsStatusByCarriageId(String id,String scheduleId);
     BigDecimal FindPrice(List<TicketInformation> ticketInformation);
 }

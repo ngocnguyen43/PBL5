@@ -8,6 +8,7 @@ import utils.response.Message;
 
 public interface IScheduleService {
     Message FindAll();
+    Message FindAll(String startAt,String arrivalAt,boolean isReturn) throws BadRequestException;
     Message CreateOne(ScheduleDto dto) throws BadRequestException, InternalServerException;
     Message UpdateStatus(UpdateScheduleStatusDto dto) throws InternalServerException;
 }

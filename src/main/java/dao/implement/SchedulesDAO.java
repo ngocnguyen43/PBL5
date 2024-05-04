@@ -16,6 +16,19 @@ public class SchedulesDAO extends AbstractDAO<Schedule> implements IScheduleDAO 
     }
 
     @Override
+    public List<Schedule> FindAll(String startAt, String arrivalAt, boolean isReturn) {
+        String start = 86400000 + Long.parseLong(startAt) + "";
+
+//        String arrival =  86400000 + Long.parseLong(startAt) + "";
+        String sql = """
+                SELECT *
+                FROM pbl5_1.schedules
+                WHERE (CAST(start_at AS UNSIGNED) > CAST(? AS UNSIGNED)
+                AND CAST(start_at AS UNSIGNED) < CAST(? AS UNSIGNED)) ;""";
+        return query(sql, new ScheduleMapper(true), startAt, start);
+    }
+
+    @Override
     public List<Schedule> FindAllConflicts(String startAt, String arrivalAt) {
         String sql = """
                 SELECT *
@@ -24,6 +37,7 @@ public class SchedulesDAO extends AbstractDAO<Schedule> implements IScheduleDAO 
                 AND CAST(start_at AS UNSIGNED) < CAST(? AS UNSIGNED)) OR\s
                 (CAST(arrival_at AS UNSIGNED) > CAST(? AS UNSIGNED)
                 AND CAST(arrival_at AS UNSIGNED) < CAST(? AS UNSIGNED));""";
+
         return query(sql, new ScheduleMapper(false), startAt, arrivalAt, startAt, arrivalAt);
     }
 

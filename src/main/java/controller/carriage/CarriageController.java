@@ -23,8 +23,9 @@ public class CarriageController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String id = req.getPathInfo().substring(1);
-        ErrorHandler.handle(resp, () -> this.iCarriageService.FindOne(id));
+        String id = req.getParameter("id");
+        String scheduleId = req.getParameter("schedule");
+        ErrorHandler.handle(resp, () -> this.iCarriageService.FindOne(id, scheduleId));
     }
 
     @Override
