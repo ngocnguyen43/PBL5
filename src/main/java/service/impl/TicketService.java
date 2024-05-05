@@ -2,7 +2,6 @@ package service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
@@ -40,7 +39,7 @@ public class TicketService implements ITicketService {
     private ITicketDAO iTicketDAO;
 
     @Override
-    public Message BulkCreate(List<TicketDto> dto) {
+    public Message BulkCreate(List<TicketDto> dto, String userId) {
         List<TicketInformation> information = new ArrayList<>();
         List<String> ticketIds = dto.stream().map(e -> IDGenerator.generate(10)).toList();
         for (var element : dto) {
@@ -63,7 +62,7 @@ public class TicketService implements ITicketService {
 
         String orderId = IDGenerator.generate(10);
 
-        Order order = new Order.Builder(orderId).WithUserId(IDGenerator.generate(10)).WithStatus("NAH").WithConfirmUrlId(IDGenerator.generate(30)).build();
+        Order order = new Order.Builder(orderId).WithUserId(userId).WithStatus("NAH").WithConfirmUrlId(IDGenerator.generate(30)).build();
 
         List<Ticket> tickets = dto.stream().map(e -> {
             var index = dto.indexOf(e);
@@ -76,7 +75,6 @@ public class TicketService implements ITicketService {
             String address = Inet4Address.getLocalHost().getHostAddress();
             QRCodeWriter qrCodeWriter = new QRCodeWriter();
             BitMatrix matrix = qrCodeWriter.encode(address + ":8080/api/v1/confirm/" + order.getConfirmUrlId(), BarcodeFormat.QR_CODE, 200, 200);
-            BitMatrix t = new MultiFormatWriter().encode(address + ":8080/api/v1/confirm/" + order.getConfirmUrlId(), BarcodeFormat.QR_CODE, 200, 200);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
             MatrixToImageWriter.writeToStream(matrix, "PNG", bos);

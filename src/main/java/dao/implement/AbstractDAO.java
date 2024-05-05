@@ -1,5 +1,7 @@
 package dao.implement;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import config.EnvConfig;
 import dao.interfaces.DAOInterface;
 import utils.mapper.interfaces.IMapper;
@@ -340,17 +342,20 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
                 var sql = sqls.get(index);
                 var params = listParams.get(index);
                 statement = connection.prepareStatement(sql);
+
                 for (Object[] param : params) {
+                    statement.clearParameters();
                     setParams(statement, param);
                     statement.addBatch();
-                    System.out.println(statement);
+//                    System.out.println(statement);
 
                 }
 
+                assert statement != null;
+                statement.executeBatch();
+
             }
-            assert statement != null;
             // Execute batch
-//            statement.executeBatch();
 
             // Commit transaction
             connection.commit();

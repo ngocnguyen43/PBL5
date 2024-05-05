@@ -72,9 +72,10 @@ public class CarriageService implements ICarriageService {
     }
 
     @Override
-    public Message FindOne(String id) {
+    public Message FindOne(String id, String scheduleId) throws BadRequestException {
+        if (id == null || scheduleId == null) throw new BadRequestException("Invalid properties");
         Carriage carriage = this.iCarriageDAO.FindOne(id);
-        List<SeatStatus> seatStatus = this.iSeatDAO.FindAllSeatsStatusByCarriageId(id);
+        List<SeatStatus> seatStatus = this.iSeatDAO.FindAllSeatsStatusByCarriageId(id, scheduleId);
         List<Integer> availableSeats = new java.util.ArrayList<>(seatStatus.stream().map(element -> {
             if (Objects.equals(element.getStatus(), "Available")) {
                 return element.getSeatNumber();

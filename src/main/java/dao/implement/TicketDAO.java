@@ -31,19 +31,19 @@ public class TicketDAO extends AbstractDAO<Ticket> implements ITicketDAO {
                 "user_id," +
                 "extra_fee,total_price) VALUES  (?,?,?,?,?,?,?) ";
         String seatTicketSql = """
-                UPDATE t
-                SET t.ticket_id = ?, t.status = 'Pending'
-                FROM seats_tickets t INNER JOIN seats ON seats.seat_id = t.seat_id
-                WHERE carriage_id = ? AND schedule_id = ?
+                UPDATE seats_tickets
+                INNER JOIN seats ON seats.seat_id = seats_tickets.seat_id
+                SET seats_tickets.ticket_id = ?, seats_tickets.status = 'Pending'
+                WHERE seats_tickets.carriage_id = ? AND seats_tickets.schedule_id = ?
                 """;
-        String orderSql = "INSERT INTO orders (order_id,user_id,order_date,confirm_url_id) VALUES (?,?,?,?)";
+        String orderSql = "INSERT INTO pbl5_1.order (order_id, user_id, order_date, confirm_url_id) VALUES (?,?,?,?) ";
         List<Object[]> listTickets = tickets.stream().map(e ->
                 new Object[]{
+                        e.getTicketId(),
                         e.getOrderId(),
                         e.getPrice(),
                         e.getPhoto(),
                         e.getUserId(),
-                        e.getPrice(),
                         e.getExtraFee(),
                         e.getTotalPrice()
 
@@ -52,7 +52,8 @@ public class TicketDAO extends AbstractDAO<Ticket> implements ITicketDAO {
         List<Object[]> listSeatTickets = ticketInformation.stream().map(e -> new Object[]{
                 e.getTicketId(),
                 e.getCarriageId(),
-                e.getScheduleId()
+                e.getScheduleId(),
+
         }).toList();
         List<Object[]> orderObject = Arrays.asList(new Object[][]{
                 {order.getOrderId(),
@@ -61,6 +62,6 @@ public class TicketDAO extends AbstractDAO<Ticket> implements ITicketDAO {
                         order.getConfirmUrlId()}
         });
 
-        bulkCreate(Arrays.asList(ticketsSql, seatTicketSql, orderSql), Arrays.asList(listTickets, listSeatTickets, orderObject));
+        bulkCreate(Arrays.asList(orderSql, ticketsSql, seatTicketSql), Arrays.asList(orderObject, listTickets, listSeatTickets));
     }
 }

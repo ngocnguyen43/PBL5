@@ -9,6 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.User;
 import service.interfaces.IScheduleService;
 import utils.contants.EndPoint;
 import utils.errorHandler.ErrorHandler;
@@ -24,7 +25,16 @@ public class SchedulesController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ErrorHandler.handle(resp, () -> this.iScheduleService.FindAll());
+        User user = (User) req.getAttribute("user");
+        if (user == null) {
+            boolean isReturn = Boolean.parseBoolean(req.getParameter("return"));
+            String startAt = req.getParameter("startAt");
+            String arrivalAt = req.getParameter("arrivalAt");
+            ErrorHandler.handle(resp, () -> this.iScheduleService.FindAll(startAt, arrivalAt, isReturn));
+        } else {
+            ErrorHandler.handle(resp, () -> this.iScheduleService.FindAll());
+        }
+
     }
 
     @Override

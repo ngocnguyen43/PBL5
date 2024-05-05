@@ -57,7 +57,7 @@ public class AuthService implements IAuthService {
         if (!matcher.matches()) {
             throw new BadRequestException("Invalid user credentials");
         }
-        Role role = this.iRoleDAO.FindOneByName("ADMIN");
+        Role role = this.iRoleDAO.FindOneByName("CUSTOMER");
         String userId = IDGenerator.generate(10);
         User user = Helper.objectMapper(dto, User.class);
 
@@ -66,7 +66,7 @@ public class AuthService implements IAuthService {
         user.setPassword(HashPassword.Hash(user.getPassword()));
 
 //        String[] permissionNames = new String[]{USER_PERMISSIONS.READ_SELF, USER_PERMISSIONS.UPDATE_SELF, USER_PERMISSIONS.DELETE_SELF, USER_PERMISSIONS.CREATE_ORDER, USER_PERMISSIONS.UPDATE_ORDER, USER_PERMISSIONS.DELETE_ORDER};
-        String[] permissionNames = GetAllPermissions.GetAllForProvider();
+        String[] permissionNames = GetAllPermissions.GetAllForCustomer();
         List<Permission> grantPermissions = this.iPermissionDAO.FindAllPermissions(permissionNames);
 
 //        try {

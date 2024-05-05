@@ -8,7 +8,6 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.interfaces.IUserDAO;
-import dao.interfaces.IUserPermissionDAO;
 import jakarta.inject.Inject;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -16,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.User;
 import utils.contants.ENV;
+import utils.contants.EndPoint;
 import utils.exceptions.Exception;
 import utils.exceptions.api.UnauthorizedException;
 import utils.response.Message;
@@ -23,10 +23,8 @@ import utils.response.Meta;
 
 import java.io.IOException;
 
-@WebFilter(filterName = "token-filter", urlPatterns = "/api/v1/*")
-public class TokenFilter implements Filter {
-    @Inject
-    private IUserPermissionDAO iUserPermissionDAO;
+@WebFilter(urlPatterns = {EndPoint.API + EndPoint.VERSION + "/schedules"})
+public class SchedulesFilter implements Filter {
     @Inject
     private IUserDAO iUserDAO;
 
@@ -37,24 +35,14 @@ public class TokenFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        System.out.println("token filter");
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
-        String path = httpRequest.getRequestURI();
-        System.out.println(path);
-        if (path.startsWith("/api/v1/auth/")
-                || path.startsWith("/test")
-                || path.startsWith("/chat")
-                || path.startsWith("/api/v1/stations")
-                || path.startsWith("/api/v1/schedules")) {
-            filterChain.doFilter(httpRequest, httpResponse);
-            return;
-        }
         String token;
         try {
             String authHeaderToken = httpRequest.getHeader("Authorization");
             if (authHeaderToken == null || authHeaderToken.isEmpty()) {
-                throw new UnauthorizedException("Token missing");
+                filterChain.doFilter(httpRequest, httpResponse);
+                return;
             }
             if (!authHeaderToken.startsWith("Bearer")) {
                 throw new UnauthorizedException("Invalid token format");
@@ -78,14 +66,7 @@ public class TokenFilter implements Filter {
 
             User user = this.iUserDAO.FindOneByUserId(userId.asString(), false);
             System.out.println(user);
-            if (user == null) throw new UnauthorizedException("Token invalid");
             httpRequest.setAttribute("user", user);
-//        Cookie[] cookies = httpRequest.getCookies();
-//
-//        for (Cookie c : cookies) {
-//            System.out.println(c.getValue());
-//            httpRequest.setAttribute("test", "nah");
-//        }
 
             filterChain.doFilter(httpRequest, httpResponse);
 

@@ -12,13 +12,15 @@ public class User {
     private String photo;
     private String phoneNumber;
     private String roleId;
-
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String role;
 
     private final long unix = System.currentTimeMillis() / 1000L;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String createdAt = unix + "";
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String updatedAt = unix + "";
+
     public String getUserId() {
         return userId;
     }
@@ -105,6 +107,14 @@ public class User {
 
     public void setRoleId(String roleId) {
         this.roleId = roleId;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
 }

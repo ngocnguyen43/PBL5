@@ -2,6 +2,7 @@ package dao.implement;
 
 import dao.interfaces.IUserDAO;
 import model.User;
+import utils.mapper.implement.RoleNameMapper;
 import utils.mapper.implement.UserMapper;
 
 import java.sql.SQLException;
@@ -41,6 +42,13 @@ public class UserDAO extends AbstractDAO<User> implements IUserDAO {
         String sql = "SELECT * FROM users WHERE username = ? OR email = ?";
         List<User> users = query(sql, new UserMapper(withPassword), username, email);
         return users.isEmpty() ? null : users.get(0);
+    }
+
+    @Override
+    public String FindMyRole(String userId) {
+        String sql = "SELECT roles.role_name from roles INNER JOIN users ON users.role_id = roles.role_id WHERE users.user_id = ?";
+        List<String> roles = query(sql, new RoleNameMapper(), userId);
+        return roles.isEmpty() ? null : roles.get(0);
     }
 
 }
