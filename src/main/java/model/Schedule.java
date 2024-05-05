@@ -3,6 +3,7 @@ package model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 public class Schedule {
+    private final long unix = System.currentTimeMillis() / 1000L;
     private String scheduleId;
     private String userId;
     private String tripCode;
@@ -10,6 +11,15 @@ public class Schedule {
     private String arrivalPoint;
     private String arrivalAt;
     private String startAt;
+    private float estimatedTravelTime;
+    private String notes;
+    private String photo;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String createdAt = unix + "";
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String updatedAt = unix + "";
+    private String status;
+    private String trainId;
 
     public String getStartAt() {
         return startAt;
@@ -18,10 +28,6 @@ public class Schedule {
     public void setStartAt(String startAt) {
         this.startAt = startAt;
     }
-
-    private float estimatedTravelTime;
-    private String notes;
-    private String photo;
 
     public String getPhoto() {
         return photo;
@@ -46,12 +52,6 @@ public class Schedule {
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-    private final long unix = System.currentTimeMillis() / 1000L;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String createdAt = unix + "";
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String updatedAt = unix + "";
 
     public String getScheduleId() {
         return scheduleId;
@@ -109,7 +109,6 @@ public class Schedule {
         this.estimatedTravelTime = estimatedTravelTime;
     }
 
-
     public String getNotes() {
         return notes;
     }
@@ -117,10 +116,6 @@ public class Schedule {
     public void setNotes(String notes) {
         this.notes = notes;
     }
-
-    private String status;
-    private String trainId;
-
 
     public String getStatus() {
         return status;

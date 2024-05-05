@@ -22,6 +22,7 @@ public class EmployeeDAO extends AbstractDAO<Employee> implements IEmployeeDAO {
         String sql = "SELECT * FROM employees";
         return query(sql, new EmployeeMapper());
     }
+
     @Override
     public Employee FindOneById(String employeeId) {
         String sql = "SELECT * FROM employees WHERE employee_id = ?";
@@ -32,7 +33,7 @@ public class EmployeeDAO extends AbstractDAO<Employee> implements IEmployeeDAO {
     @Override
     public void CreateOne(Employee employee) throws SQLException {
         String sql = "INSERT INTO employees (user_id," + "employee_id," + "full_name," + "email," + "gender," + "phone_number," + "position," + "photo)" + " VALUES(?,?,?,?,?,?,?,?)";
-        insert(sql,employee.getUserId(),employee.getEmployeeId(),employee.getFullName(),employee.getEmail(),employee.getGender(),employee.getPhoneNumber(),employee.getPosition(),employee.getPhoto());
+        insert(sql, employee.getUserId(), employee.getEmployeeId(), employee.getFullName(), employee.getEmail(), employee.getGender(), employee.getPhoneNumber(), employee.getPosition(), employee.getPhoto());
     }
 
     public void CreateAll(ArrayList<Employee> arr) throws SQLException {
@@ -41,25 +42,25 @@ public class EmployeeDAO extends AbstractDAO<Employee> implements IEmployeeDAO {
         }
     }
 
-    public void DeleteOneById(String employee_id) throws SQLException{
+    public void DeleteOneById(String employee_id) throws SQLException {
         String sql = "DELETE from employees WHERE employee_id =?";
         delete(sql, employee_id);
     }
 
-    public void DeleteAll(ArrayList<Employee> arr) throws SQLException{
+    public void DeleteAll(ArrayList<Employee> arr) throws SQLException {
         for (Employee employee : arr) {
             DeleteOneById(employee.getEmployeeId());
         }
     }
 
-    public void UpdateOne(Employee employee) throws SQLException{
-        String sql = "UPDATE employees "+
+    public void UpdateOne(Employee employee) throws SQLException {
+        String sql = "UPDATE employees " +
                 " SET " +
-                " full_name=?"+
-                ", email=?"+
-                ", gender=?"+
-                ", phone_number=?"+
-                ", position=?"+
+                " full_name=?" +
+                ", email=?" +
+                ", gender=?" +
+                ", phone_number=?" +
+                ", position=?" +
                 " WHERE employee_id=?";
         update(sql, employee.getFullName(), employee.getEmail(), employee.getGender(), employee.getPhoneNumber(), employee.getPosition(), employee.getEmployeeId());
     }

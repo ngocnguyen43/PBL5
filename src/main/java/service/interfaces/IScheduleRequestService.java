@@ -6,5 +6,5 @@ import utils.response.Message;
 public interface IScheduleRequestService {
     Message FindAll();
 
-    Message UpdateStatus(String id,String status) throws InternalServerException;
+    Message UpdateStatus(String id, String status) throws InternalServerException;
 }

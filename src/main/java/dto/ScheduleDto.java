@@ -13,6 +13,7 @@ public class ScheduleDto {
     private float seatPrice;
     private String notes;
     private String trainId;
+    private String photo;
 
     public String getTrainId() {
         return trainId;
@@ -93,6 +94,4 @@ public class ScheduleDto {
     public void setPhoto(String photo) {
         this.photo = photo;
     }
-
-    private String photo;
 }

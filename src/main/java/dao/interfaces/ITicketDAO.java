@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface ITicketDAO extends DAOInterface<Ticket> {
     void CreateOne(Ticket ticket) throws SQLException;
+
     void BulkCreate(List<Ticket> tickets, List<TicketInformation> ticketInformation, Order order) throws SQLException;
 }

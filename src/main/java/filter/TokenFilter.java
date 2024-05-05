@@ -91,8 +91,8 @@ public class TokenFilter implements Filter {
 
         } catch (Exception e) {
             if (e instanceof utils.exceptions.Exception) {
-                Meta meta = new Meta.Builder(((Exception) e).getStatusCode()).withErrCode(((Exception) e).getErrorCode()).withError(e.getMessage()).build();
-                httpResponse.setStatus(((Exception) e).getStatusCode());
+                Meta meta = new Meta.Builder(e.getStatusCode()).withErrCode(e.getErrorCode()).withError(e.getMessage()).build();
+                httpResponse.setStatus(e.getStatusCode());
                 httpResponse.getWriter().print(new ObjectMapper().writeValueAsString(new Message.Builder(meta).build()));
                 httpResponse.getWriter().flush();
                 return;

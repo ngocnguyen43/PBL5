@@ -46,6 +46,7 @@ public class CustomersController extends HttpServlet {
         CustomerDto customerDto = Helper.paramsToString(req.getParameterMap()).toModel(CustomerDto.class);
         ErrorHandler.handle(resp, () -> this.iCustomerService.UpdateCustomer(customerDto));
     }
+
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CustomerDto customerDto = Helper.paramsToString(req.getParameterMap()).toModel(CustomerDto.class);

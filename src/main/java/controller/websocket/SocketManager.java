@@ -8,8 +8,8 @@ import java.util.List;
 
 public class SocketManager {
 
-    private static HashMap<String, Session> users = new HashMap<>();
-
+    public static List<String> openUrls = new ArrayList<>();
+    private static final HashMap<String, Session> users = new HashMap<>();
     private static Session admin;
 
     public static HashMap<String, Session> getUserSessions() {
@@ -31,6 +31,4 @@ public class SocketManager {
     public static void setAdmin(Session admin) {
         SocketManager.admin = admin;
     }
-
-    public static List<String> openUrls = new ArrayList<>();
 }

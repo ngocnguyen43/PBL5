@@ -68,7 +68,7 @@ public class Ticket {
     }
 
     public static class Builder {
-        private String ticketId;
+        private final String ticketId;
         private String orderId;
         private String userId;
         private BigDecimal totalPrice;

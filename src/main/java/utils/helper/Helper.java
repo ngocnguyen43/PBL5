@@ -13,8 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Helper {
-    private final String data;
     private static final Logger logger = Logger.getLogger(Helper.class.getName());
+    private final String data;
 
     public Helper(String data) {
         this.data = data;

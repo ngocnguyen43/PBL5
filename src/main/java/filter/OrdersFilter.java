@@ -73,8 +73,8 @@ public class OrdersFilter implements Filter {
         } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage());
             if (e instanceof utils.exceptions.Exception) {
-                Meta meta = new Meta.Builder(((Exception) e).getStatusCode()).withErrCode(((Exception) e).getErrorCode()).withError(e.getMessage()).build();
-                httpResponse.setStatus(((Exception) e).getStatusCode());
+                Meta meta = new Meta.Builder(e.getStatusCode()).withErrCode(e.getErrorCode()).withError(e.getMessage()).build();
+                httpResponse.setStatus(e.getStatusCode());
                 httpResponse.getWriter().print(new ObjectMapper().writeValueAsString(new Message.Builder(meta).build()));
                 httpResponse.getWriter().flush();
                 return;

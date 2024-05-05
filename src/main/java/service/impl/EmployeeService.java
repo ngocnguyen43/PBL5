@@ -20,11 +20,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class EmployeeService implements IEmployeeService {
+    private final Logger logger = Logger.getLogger(AuthService.class.getName());
     @Inject
     private IEmployeeDAO iEmployeeDAO;
     @Inject
     private IUserDAO iUserDAO;
-    private final Logger logger = Logger.getLogger(AuthService.class.getName());
 
     @Override
     public Message FindAllEmployee() {

@@ -14,6 +14,7 @@ public interface ISeatDAO extends DAOInterface<Seat> {
     List<Seat> FindAllByScheduleId(String id, String status);
 
     List<Seat> FindAllByTrainId(String id);
+
     List<SeatStatus> FindAllSeatsStatusByCarriageId(String id, String scheduleId);
 
     BigDecimal FindPrice(List<TicketInformation> ticketInformation);

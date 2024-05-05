@@ -7,10 +7,14 @@ public class CustomerDto extends AbstractUserDto {
     private String email;
     private String phoneNumber;
     private String position;
-    private  String customerId;
+    private String customerId;
 
     public String getCustomerId() {
         return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     @Override
@@ -26,10 +30,6 @@ public class CustomerDto extends AbstractUserDto {
                 ", password='" + password + '\'' +
                 ", roleId='" + roleId + '\'' +
                 '}';
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
     }
 
     public String getFullName() {

@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 public class BookingMapper implements IMapper<Booking> {
     Logger logger = Logger.getLogger(BookingMapper.class.getName());
+
     @Override
     public Booking mapRow(ResultSet result) {
         Booking booking = new Booking();
@@ -17,10 +18,10 @@ public class BookingMapper implements IMapper<Booking> {
             booking.setTicketId(result.getString("ticket_id"));
             booking.setUserId(result.getString("user_id"));
             booking.setStatus(result.getString("status"));
-            return  booking;
-       }catch (Exception e){
-           logger.log(Level.WARNING,e.getMessage());
-       }
+            return booking;
+        } catch (Exception e) {
+            logger.log(Level.WARNING, e.getMessage());
+        }
         return null;
     }
 }

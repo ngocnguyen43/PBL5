@@ -38,6 +38,7 @@ public class ProvidersController extends HttpServlet {
         ProviderDto providerDto = Helper.paramsToString(req.getParameterMap()).toModel(ProviderDto.class);
         ErrorHandler.handle(resp, () -> this.iProviderService.UpdateProvider(providerDto));
     }
+
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProviderDto providerDto = Helper.paramsToString(req.getParameterMap()).toModel(ProviderDto.class);

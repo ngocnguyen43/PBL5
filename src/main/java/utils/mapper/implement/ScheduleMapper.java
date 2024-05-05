@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 public class ScheduleMapper implements IMapper<Schedule> {
     private final Logger logger = Logger.getLogger(Schedule.class.getName());
-    private Boolean shouldShowDate;
+    private final Boolean shouldShowDate;
 
     public ScheduleMapper(Boolean shouldShowDate) {
         this.shouldShowDate = shouldShowDate;
