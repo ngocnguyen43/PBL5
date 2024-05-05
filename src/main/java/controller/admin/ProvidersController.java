@@ -15,7 +15,7 @@ import utils.helper.Helper;
 
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {EndPoint.API + EndPoint.VERSION + EndPoint.PROVIDER})
+@WebServlet(urlPatterns = {EndPoint.API + EndPoint.VERSION + "/providers"})
 @MultipartConfig
 
 public class ProvidersController extends HttpServlet {
