@@ -24,6 +24,7 @@ public class ScheduleRequestController extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getPathInfo().substring(1);
+        System.out.println(id);
         ScheduleRequestUpdateDto dto = Helper.paramsToString(req.getParameterMap()).toModel(ScheduleRequestUpdateDto.class);
         ErrorHandler.handle(resp, () -> this.iScheduleRequestService.UpdateStatus(id, dto.getStatus()));
     }

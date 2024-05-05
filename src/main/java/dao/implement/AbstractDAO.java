@@ -1,7 +1,5 @@
 package dao.implement;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import config.EnvConfig;
 import dao.interfaces.DAOInterface;
 import utils.mapper.interfaces.IMapper;
@@ -40,6 +38,7 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
             statement = connection.prepareCall(sql);
             // set parameter
             setParams(statement, parameters);
+            System.out.println(statement);
             result = statement.executeQuery();
             while (result.next()) {
                 list.add(mapper.mapRow(result));
@@ -347,7 +346,6 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
                     statement.clearParameters();
                     setParams(statement, param);
                     statement.addBatch();
-//                    System.out.println(statement);
 
                 }
 

@@ -55,7 +55,7 @@ public class ScheduleService implements IScheduleService {
     public Message CreateOne(ScheduleDto dto) throws InternalServerException, BadRequestException {
         if (Objects.equals(dto.getArrivalAt(), dto.getStartAt()) || Long.parseLong(dto.getArrivalAt()) < Long.parseLong(dto.getStartAt()))
             throw new BadRequestException("Invalid properties");
-        List<Schedule> conflict = this.iScheduleDAO.FindAllConflicts(dto.getStartAt(), dto.getArrivalAt());
+        List<Schedule> conflict = this.iScheduleDAO.FindAllConflicts(dto.getTrainId(), dto.getStartAt(), dto.getArrivalAt());
         try {
             System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(conflict));
         } catch (JsonProcessingException e) {
@@ -72,10 +72,11 @@ public class ScheduleService implements IScheduleService {
         scheduleRequest.setRequestId(requestId);
         scheduleRequest.setType("Create");
         try {
-//            this.iScheduleDAO.CreateOne(model);
-//            this.iScheduleRequestDAO.CreateOne(scheduleRequest);
+            this.iScheduleDAO.CreateOne(model);
+            this.iScheduleRequestDAO.CreateOne(scheduleRequest);
             Meta meta = new Meta.Builder(HttpServletResponse.SC_CREATED).withMessage(MessageResponse.CREATED).build();
-            return new Message.Builder(meta).build();
+            Data data = new Data.Builder(null).withResults(scheduleRequest).build();
+            return new Message.Builder(meta).withData(data).build();
         } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage());
             throw new InternalServerException();
