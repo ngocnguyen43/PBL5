@@ -1,6 +1,5 @@
 package dao.implement;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import dao.interfaces.ISeatDAO;
 import model.Seat;
 import model.SeatStatus;
@@ -40,17 +39,28 @@ public class SeatDAO extends AbstractDAO<Seat> implements ISeatDAO {
     }
 
     @Override
-    public List<SeatStatus> FindAllSeatsStatusByCarriageId(String id,String scheduleId) {
+    public List<Seat> FindAllByTrainId(String id) {
+        String sql = """
+                SELECT seats.*
+                FROM seats
+                JOIN carriages ON seats.carriage_id = carriages.carriage_id
+                JOIN trains ON carriages.train_id = trains.train_id
+                WHERE trains.train_id = ?;""";
+        return query(sql, new SeatMapper(), id);
+    }
+
+    @Override
+    public List<SeatStatus> FindAllSeatsStatusByCarriageId(String id, String scheduleId) {
         String sql = """
                 SELECT  seats.seat_number, seats_tickets.status
                 FROM seats
                 INNER JOIN seats_tickets ON seats_tickets.seat_id = seats.seat_id
                 WHERE seats.carriage_id = ? AND seats_tickets.schedule_id = ?""";
-        return query(sql, new SeatStatusMapper(), id,scheduleId);
+        return query(sql, new SeatStatusMapper(), id, scheduleId);
     }
 
     @Override
-    public BigDecimal FindPrice(List<TicketInformation> ticketInformation)  {
+    public BigDecimal FindPrice(List<TicketInformation> ticketInformation) {
         String[] sqls = new String[ticketInformation.size()];
         Arrays.fill(sqls, """
                 SELECT seats.price

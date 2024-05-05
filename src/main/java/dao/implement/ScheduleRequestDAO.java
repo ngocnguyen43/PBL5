@@ -2,9 +2,10 @@ package dao.implement;
 
 import dao.interfaces.IScheduleRequestDAO;
 import model.ScheduleRequest;
-import utils.mapper.implement.ScheduleRequetMapper;
+import utils.mapper.implement.ScheduleRequestMapper;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 public class ScheduleRequestDAO extends AbstractDAO<ScheduleRequest> implements IScheduleRequestDAO {
@@ -17,19 +18,32 @@ public class ScheduleRequestDAO extends AbstractDAO<ScheduleRequest> implements 
     @Override
     public List<ScheduleRequest> FindAll() {
         String sql = "SELECT * FROM schedule_requests ORDER BY created_at DESC";
-        return query(sql, new ScheduleRequetMapper());
+        return query(sql, new ScheduleRequestMapper());
     }
 
     @Override
-    public void UpdateStatus(String id, String status) throws SQLException {
-        String sql = "UPDATE schedule_requests SET status = ? WHERE request_id = ?";
-        update(sql, status, id);
+    public void UpdateStatus(String requestId, String scheduleId, String status) throws SQLException {
+        String scheduleRequestSql = "UPDATE schedule_requests SET status = ? WHERE request_id = ?";
+        String scheduleSql = "UPDATE schedules SET status = ? WHERE schedule_id = ?";
+        List<Object[]> scheduleRequest = Arrays.asList(new Object[][]{
+                {
+                        status,
+                        requestId,
+                }
+        });
+        List<Object[]> schedule = Arrays.asList(new Object[][]{
+                {
+                        status,
+                        scheduleId,
+                }
+        });
+        bulkCreate(Arrays.asList(scheduleRequestSql, scheduleSql), Arrays.asList(scheduleRequest, schedule));
     }
 
     @Override
     public ScheduleRequest FindOneById(String id) {
-        String sql = "SELECT * FROM schedule_requests WHERE request_id = ?";
-        List<ScheduleRequest> scheduleRequests = query(sql, new ScheduleRequetMapper(),id);
+        String sql = " SELECT schedule_requests.*,schedules.* FROM schedule_requests JOIN schedules ON schedule_requests.schedule_id = schedules.schedule_id WHERE schedule_requests.request_id =?";
+        List<ScheduleRequest> scheduleRequests = query(sql, new ScheduleRequestMapper(true), id);
         return scheduleRequests.isEmpty() ? null : scheduleRequests.get(0);
     }
 

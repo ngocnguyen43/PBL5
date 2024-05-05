@@ -29,16 +29,18 @@ public class SchedulesDAO extends AbstractDAO<Schedule> implements IScheduleDAO 
     }
 
     @Override
-    public List<Schedule> FindAllConflicts(String startAt, String arrivalAt) {
+    public List<Schedule> FindAllConflicts(String trainId, String startAt, String arrivalAt) {
         String sql = """
                 SELECT *
                 FROM pbl5_1.schedules
-                WHERE (CAST(start_at AS UNSIGNED) > CAST(? AS UNSIGNED)
-                AND CAST(start_at AS UNSIGNED) < CAST(? AS UNSIGNED)) OR\s
-                (CAST(arrival_at AS UNSIGNED) > CAST(? AS UNSIGNED)
-                AND CAST(arrival_at AS UNSIGNED) < CAST(? AS UNSIGNED));""";
+                WHERE ((CAST(start_at AS UNSIGNED) >= CAST(? AS UNSIGNED)
+                AND CAST(start_at AS UNSIGNED) <= CAST(? AS UNSIGNED)) OR
+                (CAST(arrival_at AS UNSIGNED) >= CAST(? AS UNSIGNED)
+                AND CAST(arrival_at AS UNSIGNED) <= CAST(? AS UNSIGNED)))
+                AND train_id = ?
+                ;""";
 
-        return query(sql, new ScheduleMapper(false), startAt, arrivalAt, startAt, arrivalAt);
+        return query(sql, new ScheduleMapper(false), startAt, arrivalAt, startAt, arrivalAt, trainId);
     }
 
     @Override

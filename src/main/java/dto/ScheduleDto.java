@@ -1,5 +1,8 @@
 package dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ScheduleDto {
     private String userId;
     private String departurePoint;
@@ -10,8 +13,6 @@ public class ScheduleDto {
     private float seatPrice;
     private String notes;
     private String trainId;
-
-
 
     public String getTrainId() {
         return trainId;

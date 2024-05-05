@@ -1,25 +1,12 @@
-package model;
+package dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ScheduleRequest {
+public class ScheduleRequestDto {
     private String requestId;
     private String scheduleId;
     private String status;
     private String createdAt;
     private String updatedAt;
     private String type;
-
-    private Schedule schedule;
-
-    public Schedule getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
-    }
 
     public String getRequestId() {
         return requestId;

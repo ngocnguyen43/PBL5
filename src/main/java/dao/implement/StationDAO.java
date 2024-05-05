@@ -12,4 +12,10 @@ public class StationDAO extends AbstractDAO<Station> implements IStationDAO {
         String sql = "SELECT * FROM stations";
         return query(sql, new StationMapper());
     }
+
+    @Override
+    public List<Station> FindAllByName(String name) {
+        String sql = "SELECT * FROM stations WHERE station_poin like ?";
+        return query(sql, new StationMapper(), "%" + name + "%");
+    }
 }
