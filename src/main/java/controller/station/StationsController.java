@@ -19,7 +19,8 @@ public class StationsController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ErrorHandler.handle(resp, () -> this.iStationService.FindAll());
+        String query = req.getParameter("name");
+        ErrorHandler.handle(resp, () -> this.iStationService.FindAll(query));
     }
 
 }

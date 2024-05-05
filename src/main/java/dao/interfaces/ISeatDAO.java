@@ -1,6 +1,5 @@
 package dao.interfaces;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import model.Seat;
 import model.SeatStatus;
 import model.TicketInformation;
@@ -13,6 +12,9 @@ public interface ISeatDAO extends DAOInterface<Seat> {
     void BulkCreate(List<Seat> seats) throws SQLException;
 
     List<Seat> FindAllByScheduleId(String id, String status);
-    List<SeatStatus> FindAllSeatsStatusByCarriageId(String id,String scheduleId);
+
+    List<Seat> FindAllByTrainId(String id);
+    List<SeatStatus> FindAllSeatsStatusByCarriageId(String id, String scheduleId);
+
     BigDecimal FindPrice(List<TicketInformation> ticketInformation);
 }

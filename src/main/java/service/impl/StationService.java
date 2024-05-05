@@ -17,11 +17,21 @@ public class StationService implements IStationService {
     private IStationDAO iStationDAO;
 
     @Override
-    public Message FindAll() {
-        List<Station> stations = this.iStationDAO.FindAll();
-        Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
+    public Message FindAll(String name) {
+        System.out.println(name);
+        List<Station> stations;
+        if (name == null) {
+            stations = this.iStationDAO.FindAll();
+            Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
 
-        Data data = new Data.Builder(null).withResults(stations).build();
-        return new Message.Builder(meta).withData(data).build();
+            Data data = new Data.Builder(null).withResults(stations).build();
+            return new Message.Builder(meta).withData(data).build();
+        } else {
+            stations = this.iStationDAO.FindAllByName(name);
+            Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
+
+            Data data = new Data.Builder(null).withResults(stations).build();
+            return new Message.Builder(meta).withData(data).build();
+        }
     }
 }
