@@ -34,7 +34,7 @@ public class TicketDAO extends AbstractDAO<Ticket> implements ITicketDAO {
                 UPDATE seats_tickets
                 INNER JOIN seats ON seats.seat_id = seats_tickets.seat_id
                 SET seats_tickets.ticket_id = ?, seats_tickets.status = 'Pending'
-                WHERE seats_tickets.carriage_id = ? AND seats_tickets.schedule_id = ?
+                WHERE seats_tickets.carriage_id = ? AND seats_tickets.schedule_id = ? AND seats.seat_number = ?
                 """;
         String orderSql = "INSERT INTO pbl5_1.order (order_id, user_id, order_date, confirm_url_id) VALUES (?,?,?,?) ";
         List<Object[]> listTickets = tickets.stream().map(e ->
@@ -53,6 +53,7 @@ public class TicketDAO extends AbstractDAO<Ticket> implements ITicketDAO {
                 e.getTicketId(),
                 e.getCarriageId(),
                 e.getScheduleId(),
+                e.getSeatNumber()
 
         }).toList();
         List<Object[]> orderObject = Arrays.asList(new Object[][]{
