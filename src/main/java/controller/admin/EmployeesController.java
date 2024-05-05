@@ -51,6 +51,7 @@ public class EmployeesController extends HttpServlet {
         EmployeeDto employeeDto = Helper.paramsToString(req.getParameterMap()).toModel(EmployeeDto.class);
         ErrorHandler.handle(resp, () -> this.iEmployeeService.UpdateEmployee(employeeDto));
     }
+
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         EmployeeDto employeeDto = Helper.paramsToString(req.getParameterMap()).toModel(EmployeeDto.class);

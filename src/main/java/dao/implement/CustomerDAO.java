@@ -28,15 +28,17 @@ public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
         List<Customer> customers = query(sql, new CustomerMapper(), customerId);
         return customers.isEmpty() ? null : customers.get(0);
     }
+
     public Customer FindOneByUserId(String userId) {
         String sql = "SELECT * FROM customer WHERE user_id = ?";
         List<Customer> customers = query(sql, new CustomerMapper(), userId);
         return customers.isEmpty() ? null : customers.get(0);
     }
+
     @Override
     public void CreateOne(Customer customer) throws SQLException {
         String sql = "INSERT INTO customer (user_id," + "customer_id," + "email," + "phone_number," + "position," + "photo)" + " VALUES(?,?,?,?,?,?)";
-        insert(sql,customer.getUserId(),customer.getCustomerId(),customer.getEmail(),customer.getPhoneNumber(),customer.getPosition(),customer.getPhoto());
+        insert(sql, customer.getUserId(), customer.getCustomerId(), customer.getEmail(), customer.getPhoneNumber(), customer.getPosition(), customer.getPhoto());
     }
 
     public void CreateAll(ArrayList<Customer> arr) throws SQLException {
@@ -45,24 +47,24 @@ public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
         }
     }
 
-    public void DeleteOneById(String customer_id) throws SQLException{
+    public void DeleteOneById(String customer_id) throws SQLException {
         String sql = "DELETE from customer WHERE customer_id =?";
         delete(sql, customer_id);
     }
 
-    public void DeleteAll(ArrayList<Customer> arr) throws SQLException{
+    public void DeleteAll(ArrayList<Customer> arr) throws SQLException {
         for (Customer customer : arr) {
             DeleteOneById(customer.getCustomerId());
         }
     }
 
-    public void UpdateOne(Customer customer) throws SQLException{
-        String sql = "UPDATE customer "+
+    public void UpdateOne(Customer customer) throws SQLException {
+        String sql = "UPDATE customer " +
                 " SET " +
-                " full_name=?"+
-                ", email=?"+
-                ", phone_number=?"+
-                ", position=?"+
+                " full_name=?" +
+                ", email=?" +
+                ", phone_number=?" +
+                ", position=?" +
                 " WHERE customer_id=?";
         update(sql, customer.getFullName(), customer.getEmail(), customer.getPhoneNumber(), customer.getPosition(), customer.getCustomerId());
     }

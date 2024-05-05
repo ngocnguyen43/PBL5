@@ -26,12 +26,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ScheduleService implements IScheduleService {
+    private final Logger logger = Logger.getLogger(ScheduleService.class.getName());
     @Inject
     private IScheduleDAO iScheduleDAO;
-
     @Inject
     private IScheduleRequestDAO iScheduleRequestDAO;
-    private final Logger logger = Logger.getLogger(ScheduleService.class.getName());
 
     @Override
     public Message FindAll() {

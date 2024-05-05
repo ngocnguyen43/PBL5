@@ -2,11 +2,6 @@ package dto;
 
 public class TokenDto {
     private String accessToken;
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
     private String refreshToken;
 
     public String getAccessToken() {
@@ -19,5 +14,9 @@ public class TokenDto {
 
     public String getRefreshToken() {
         return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

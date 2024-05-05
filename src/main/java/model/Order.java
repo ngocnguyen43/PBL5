@@ -2,11 +2,11 @@ package model;
 
 
 public class Order {
+    private final long unix = System.currentTimeMillis() / 1000L;
     private String orderId;
     private String userId;
     private String status;
     private String paidDate;
-    private final long unix = System.currentTimeMillis() / 1000L;
     private String orderDate = unix + "";
     private String confirmUrlId;
 
@@ -59,7 +59,7 @@ public class Order {
     }
 
     public static class Builder {
-        private String orderId;
+        private final String orderId;
         private String userId;
         private String status;
         private String confirmUrlId;

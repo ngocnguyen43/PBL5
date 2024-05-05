@@ -20,11 +20,6 @@ public class Message {
         this.messageType = messageType;
     }
 
-    public enum MessageType {
-        CUSTOMER,
-        EMPLOYEE
-    }
-
     public String getMessageId() {
         return messageId;
     }
@@ -101,6 +96,11 @@ public class Message {
                 ", messageDate=" + messageDate +
                 ", messageType=" + messageType +
                 '}';
+    }
+
+    public enum MessageType {
+        CUSTOMER,
+        EMPLOYEE
     }
 }
 

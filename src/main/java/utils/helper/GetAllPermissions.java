@@ -65,7 +65,7 @@ public class GetAllPermissions {
             if (field.getType().equals(String.class)) {
                 try {
                     String permission = (String) field.get(null);
-                    if ( permission.endsWith("_REQUESTS")
+                    if (permission.endsWith("_REQUESTS")
                             || permission.endsWith("_REQUEST")
                             || permission.endsWith("_SCHEDULE")
                             || permission.endsWith("_SCHEDULES")

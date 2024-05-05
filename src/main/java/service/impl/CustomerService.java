@@ -19,11 +19,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CustomerService implements ICustomerService {
+    private final Logger logger = Logger.getLogger(AuthService.class.getName());
     @Inject
     private ICustomerDAO iCustomerDAO;
     @Inject
     private IUserDAO iUserDAO;
-    private final Logger logger = Logger.getLogger(AuthService.class.getName());
 
     @Override
     public Message FindAllCustomers() {
@@ -34,8 +34,9 @@ public class CustomerService implements ICustomerService {
         return new Message.Builder(meta).withData(data).build();
 
     }
+
     @Override
-    public Message FindOneByID(String customerId){
+    public Message FindOneByID(String customerId) {
         Customer customers = iCustomerDAO.FindOneById(customerId);
         Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
 
@@ -43,8 +44,9 @@ public class CustomerService implements ICustomerService {
         return new Message.Builder(meta).withData(data).build();
 
     }
+
     @Override
-    public Message FindOneByUserID(String userId){
+    public Message FindOneByUserID(String userId) {
         Customer customers = iCustomerDAO.FindOneByUserId(userId);
         Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
 
@@ -52,19 +54,21 @@ public class CustomerService implements ICustomerService {
         return new Message.Builder(meta).withData(data).build();
 
     }
+
     @Override
-    public Message UpdateCustomer(CustomerDto customerDto) throws DatabaseOperationException{
+    public Message UpdateCustomer(CustomerDto customerDto) throws DatabaseOperationException {
         Customer customer = Helper.objectMapper(customerDto, Customer.class);
         try {
             iCustomerDAO.UpdateOne(customer);
             Meta meta = new Meta.Builder(HttpServletResponse.SC_CREATED).withMessage(MessageResponse.CREATED).build();
             return new Message.Builder(meta).build();
-        } catch (Exception e){
+        } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage());
             throw new DatabaseOperationException(e.getMessage());
         }
     }
-    public Message DeleteCustomer(CustomerDto customerDto) throws DatabaseOperationException{
+
+    public Message DeleteCustomer(CustomerDto customerDto) throws DatabaseOperationException {
         Customer customer = Helper.objectMapper(customerDto, Customer.class);
         try {
             Customer customer1 = iCustomerDAO.FindOneById(customer.getCustomerId());
@@ -73,7 +77,7 @@ public class CustomerService implements ICustomerService {
             iUserDAO.DeleteOneById(userId);
             Meta meta = new Meta.Builder(HttpServletResponse.SC_CREATED).withMessage(MessageResponse.CREATED).build();
             return new Message.Builder(meta).build();
-        } catch (Exception e){
+        } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage());
             throw new DatabaseOperationException(e.getMessage());
         }

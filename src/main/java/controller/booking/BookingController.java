@@ -20,12 +20,12 @@ public class BookingController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
-        if(path != null && path.split("/").length > 0){
+        if (path != null && path.split("/").length > 0) {
             String id = path.split("/")[1];
-            ErrorHandler.handle(resp,()->this.iBookingService.GetOneById(id));
-        }else{
+            ErrorHandler.handle(resp, () -> this.iBookingService.GetOneById(id));
+        } else {
 
-            ErrorHandler.handle(resp,()->this.iBookingService.GetAll());
+            ErrorHandler.handle(resp, () -> this.iBookingService.GetAll());
         }
 
     }

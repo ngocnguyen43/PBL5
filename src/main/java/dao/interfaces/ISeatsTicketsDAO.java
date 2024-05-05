@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ISeatsTicketsDAO extends DAOInterface<SeatsTickets> {
     void BulkCreate(List<SeatsTickets> seatsTickets) throws SQLException;
-    
+
 }

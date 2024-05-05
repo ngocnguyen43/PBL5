@@ -10,7 +10,7 @@ public interface ITrainService {
 
     Message CreateOne(TrainDto dto) throws BadRequestException, InternalServerException;
 
-    Message UpdateOne(TrainDto dto,String id) throws BadRequestException, InternalServerException;
+    Message UpdateOne(TrainDto dto, String id) throws BadRequestException, InternalServerException;
 
     Message FindOne(String id);
 
