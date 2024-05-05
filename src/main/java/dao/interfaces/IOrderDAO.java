@@ -9,4 +9,8 @@ public interface IOrderDAO extends DAOInterface<Order> {
     void CreateOne(Order order) throws SQLException;
 
     List<Order> FindAll();
+
+    List<Order> FindAll(String userId);
+
+    List<Order> FindAllForProvider(String userId);
 }

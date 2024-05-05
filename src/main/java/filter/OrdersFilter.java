@@ -55,7 +55,6 @@ public class OrdersFilter implements Filter {
                 throw new MethodNotAllowedException();
             }
             httpRequest.setAttribute("userId", user.getUserId());
-            System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(user));
             switch (httpRequest.getMethod()) {
                 case "GET": {
                     UserPermission userPermission = this.iUserPermissionDAO.FindOneByUserIdAndRoleName(user.getUserId(), USER_PERMISSIONS.READ_ORDERS);
