@@ -4,12 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.interfaces.IScheduleDAO;
 import dao.interfaces.IScheduleRequestDAO;
+import dao.interfaces.IStationDAO;
 import dto.ScheduleDto;
 import dto.UpdateScheduleStatusDto;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Schedule;
 import model.ScheduleRequest;
+import model.Station;
 import service.interfaces.IScheduleService;
 import utils.exceptions.api.BadRequestException;
 import utils.exceptions.server.InternalServerException;
@@ -31,6 +33,8 @@ public class ScheduleService implements IScheduleService {
     private IScheduleDAO iScheduleDAO;
     @Inject
     private IScheduleRequestDAO iScheduleRequestDAO;
+    @Inject
+    private IStationDAO iStationDAO;
 
     @Override
     public Message FindAll() {
@@ -41,10 +45,15 @@ public class ScheduleService implements IScheduleService {
     }
 
     @Override
-    public Message FindAll(String startAt, String arrivalAt, boolean isReturn) throws BadRequestException {
-        if (startAt == null) throw new BadRequestException("Invalid properties");
+    public Message FindAll(String startAt, String arrivalAt, String start, String arrival, boolean isReturn) throws BadRequestException {
+        if (startAt == null || start == null || arrival == null) throw new BadRequestException("Invalid properties");
         if (arrivalAt == null && isReturn) throw new BadRequestException("Invalid properties");
-        List<Schedule> schedules = this.iScheduleDAO.FindAll(startAt, arrivalAt, isReturn);
+        List<Station> stations = this.iStationDAO.FindAll();
+        Station stationStart = stations.stream().filter(e -> Objects.equals(e.getStationPoint(), start)).findAny().orElse(null);
+        Station stationArrival = stations.stream().filter(e -> Objects.equals(e.getStationPoint(), arrival)).findAny().orElse(null);
+        if (stationStart == null) throw new BadRequestException("Invalid start point");
+        if (stationArrival == null) throw new BadRequestException("Invalid arrival point");
+        List<Schedule> schedules = this.iScheduleDAO.FindAll(startAt, arrivalAt, stationStart.getStationId(), stationArrival.getStationId(), isReturn);
         Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
         Data data = new Data.Builder(null).withResults(schedules).build();
         return new Message.Builder(meta).withData(data).build();
