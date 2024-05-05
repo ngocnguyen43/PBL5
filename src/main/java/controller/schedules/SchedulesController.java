@@ -23,6 +23,7 @@ public class SchedulesController extends HttpServlet {
     @Inject
     private IScheduleService iScheduleService;
 
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User) req.getAttribute("user");
@@ -30,7 +31,11 @@ public class SchedulesController extends HttpServlet {
             boolean isReturn = Boolean.parseBoolean(req.getParameter("return"));
             String startAt = req.getParameter("startAt");
             String arrivalAt = req.getParameter("arrivalAt");
-            ErrorHandler.handle(resp, () -> this.iScheduleService.FindAll(startAt, arrivalAt, isReturn));
+            String start = req.getParameter("start");
+            String arrival = req.getParameter("arrival");
+
+
+            ErrorHandler.handle(resp, () -> this.iScheduleService.FindAll(startAt, arrivalAt, start, arrival, isReturn));
         } else {
             ErrorHandler.handle(resp, () -> this.iScheduleService.FindAll());
         }
