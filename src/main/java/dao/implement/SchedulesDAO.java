@@ -16,16 +16,15 @@ public class SchedulesDAO extends AbstractDAO<Schedule> implements IScheduleDAO 
     }
 
     @Override
-    public List<Schedule> FindAll(String startAt, String arrivalAt, boolean isReturn) {
-        String start = 86400000 + Long.parseLong(startAt) + "";
+    public List<Schedule> FindAll(String startAt, String arrivalAt, String start, String arrival, boolean isReturn) {
+        String startDay = 86400000 + Long.parseLong(startAt) + "";
 
-//        String arrival =  86400000 + Long.parseLong(startAt) + "";
         String sql = """
                 SELECT *
                 FROM pbl5_1.schedules
                 WHERE (CAST(start_at AS UNSIGNED) > CAST(? AS UNSIGNED)
-                AND CAST(start_at AS UNSIGNED) < CAST(? AS UNSIGNED)) ;""";
-        return query(sql, new ScheduleMapper(true), startAt, start);
+                AND CAST(start_at AS UNSIGNED) < CAST(? AS UNSIGNED)) AND departure_id = ? AND arrival_id = ? AND status = 'Approved';""";
+        return query(sql, new ScheduleMapper(true), startAt, startDay, start, arrival);
     }
 
     @Override
