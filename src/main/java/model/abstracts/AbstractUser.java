@@ -5,6 +5,7 @@ public abstract class AbstractUser {
     protected String username;
     protected String password;
     protected String roleId;
+
     public String getUserId() {
         return userId;
     }

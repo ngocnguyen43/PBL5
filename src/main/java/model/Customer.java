@@ -11,19 +11,6 @@ public class Customer {
     private String position;
     private String photo;
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "customerId='" + customerId + '\'' +
-                ", userId='" + userId + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", position='" + position + '\'' +
-                ", photo='" + photo + '\'' +
-                '}';
-    }
-
     public Customer(String customerId, String userId, String fullName, String email, String phoneNumber, String position, String photo) {
         this.customerId = customerId;
         this.userId = userId;
@@ -35,6 +22,19 @@ public class Customer {
     }
 
     public Customer() {
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "customerId='" + customerId + '\'' +
+                ", userId='" + userId + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", position='" + position + '\'' +
+                ", photo='" + photo + '\'' +
+                '}';
     }
 
     public String getPhoto() {

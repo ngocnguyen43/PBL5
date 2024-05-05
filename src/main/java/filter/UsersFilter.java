@@ -21,10 +21,9 @@ import java.util.logging.Logger;
 
 @WebFilter(urlPatterns = {EndPoint.API + EndPoint.VERSION + "/users"})
 public class UsersFilter implements Filter {
+    private final Logger logger = Logger.getLogger(UsersFilter.class.getName());
     @Inject
     private IUserPermissionDAO iUserPermissionDAO;
-
-    private final Logger logger = Logger.getLogger(UsersFilter.class.getName());
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -46,8 +45,8 @@ public class UsersFilter implements Filter {
         } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage());
             if (e instanceof utils.exceptions.Exception) {
-                Meta meta = new Meta.Builder(((Exception) e).getStatusCode()).withErrCode(((Exception) e).getErrorCode()).withError(e.getMessage()).build();
-                httpResponse.setStatus(((Exception) e).getStatusCode());
+                Meta meta = new Meta.Builder(e.getStatusCode()).withErrCode(e.getErrorCode()).withError(e.getMessage()).build();
+                httpResponse.setStatus(e.getStatusCode());
                 httpResponse.getWriter().print(new ObjectMapper().writeValueAsString(new Message.Builder(meta).build()));
                 httpResponse.getWriter().flush();
                 return;

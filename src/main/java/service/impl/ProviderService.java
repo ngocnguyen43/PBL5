@@ -24,13 +24,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ProviderService implements IProviderService {
+    private final Logger logger = Logger.getLogger(AuthService.class.getName());
     @Inject
     private IProviderDAO iProviderDAO;
     @Inject
     private IUserDAO iUserDAO;
     @Inject
     private ICustomerDAO iCustomerDAO;
-    private final Logger logger = Logger.getLogger(AuthService.class.getName());
 
     @Override
     public Message FindAllProvider() {
@@ -111,7 +111,7 @@ public class ProviderService implements IProviderService {
         String providerId = IDGenerator.generate(10);
         provider.setProvidersId(providerId);
 
-        System.out.println("Provider New:" + provider.toString());
+        System.out.println("Provider New:" + provider);
         try {
             this.iProviderDAO.CreateOne(provider);
             Meta meta = new Meta.Builder(HttpServletResponse.SC_CREATED).withMessage(MessageResponse.CREATED).build();

@@ -3,6 +3,7 @@ package model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 public class User {
+    private final long unix = System.currentTimeMillis() / 1000L;
     private String userId;
     private String username;
     private String password;
@@ -14,8 +15,6 @@ public class User {
     private String roleId;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String role;
-
-    private final long unix = System.currentTimeMillis() / 1000L;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String createdAt = unix + "";
     @JsonInclude(JsonInclude.Include.NON_NULL)

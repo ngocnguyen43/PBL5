@@ -13,17 +13,8 @@ public class Provider {
     private String contactInfo;
     private String photo;
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
     public Provider() {
     }
-
 
     public Provider(String providersId, String userId, String fullName, String email, String phoneNumber, String position, String providerName, String contactInfo, int isConfirmed, String photo) {
         this.providersId = providersId;
@@ -34,6 +25,14 @@ public class Provider {
         this.position = position;
         this.providerName = providerName;
         this.contactInfo = contactInfo;
+        this.photo = photo;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
         this.photo = photo;
     }
 

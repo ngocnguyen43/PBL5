@@ -23,20 +23,20 @@ public class Employee extends AbstractUser {
         this.photo = photo;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
     public String getGender() {
         return gender;
     }
 
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public Date getDateOfBirth() {
         return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getEmployeeId() {
@@ -86,7 +86,6 @@ public class Employee extends AbstractUser {
     public void setPosition(String position) {
         this.position = position;
     }
-
 
 
 }

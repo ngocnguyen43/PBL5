@@ -1,7 +1,6 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.List;
 
@@ -10,9 +9,9 @@ public class Carriage {
     String name;
     Integer totalSeats;
     String trainId;
-    @JsonInclude( content= JsonInclude.Include.NON_NULL)
+    @JsonInclude(content = JsonInclude.Include.NON_NULL)
     List<Integer> availableSeats;
-    @JsonInclude( content= JsonInclude.Include.NON_NULL)
+    @JsonInclude(content = JsonInclude.Include.NON_NULL)
     List<Integer> bookedSeats;
 
     public String getId() {

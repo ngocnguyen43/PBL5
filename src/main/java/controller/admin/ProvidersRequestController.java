@@ -30,12 +30,14 @@ public class ProvidersRequestController extends HttpServlet {
         ProviderDto providerDto = Helper.paramsToString(req.getParameterMap()).toModel(ProviderDto.class);
         ErrorHandler.handle(resp, () -> this.iProviderService.RequestProvider(providerDto));
     }
+
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProviderDto providerDto = Helper.paramsToString(req.getParameterMap()).toModel(ProviderDto.class);
-        System.out.println("ProDto :"+providerDto.toString());
+        System.out.println("ProDto :" + providerDto.toString());
         ErrorHandler.handle(resp, () -> this.iProviderService.ConfirmProvider(providerDto));
     }
+
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     }

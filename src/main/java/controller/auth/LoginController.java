@@ -20,9 +20,10 @@ import java.io.IOException;
 public class LoginController extends HttpServlet {
     @Inject
     private IAuthService authService;
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserDto dto = Helper.paramsToString(req.getParameterMap()).toModel(UserDto.class);
-        ErrorHandler.handle(resp,()->this.authService.Login(dto));
+        ErrorHandler.handle(resp, () -> this.authService.Login(dto));
     }
 }

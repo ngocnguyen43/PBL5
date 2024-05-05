@@ -9,7 +9,7 @@ public class ProviderDto extends AbstractUserDto {
     private String position;
     private String providerName;
     private String contactInfo;
-    private  String providersId;
+    private String providersId;
     private String photo;
 
 

@@ -8,8 +8,8 @@ public class EmployeeDto extends AbstractUserDto {
     private String email;
     private String phoneNumber;
     private String position;
-    private  String photo;
-    private  String employeeId;
+    private String photo;
+    private String employeeId;
 
     @Override
     public String toString() {

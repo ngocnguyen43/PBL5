@@ -12,7 +12,7 @@ import utils.errorHandler.ErrorHandler;
 
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {EndPoint.API + EndPoint.VERSION +  "/schedule_requests"})
+@WebServlet(urlPatterns = {EndPoint.API + EndPoint.VERSION + "/schedule_requests"})
 public class ScheduleRequestsController extends HttpServlet {
     @Inject
     private IScheduleRequestService iScheduleRequestService;
