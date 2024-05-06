@@ -1,7 +1,5 @@
 package service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.interfaces.IRevenueDAO;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +22,7 @@ public class RevenueService implements IRevenueService {
     @Override
     public Message FindAll(String query) {
         List<Revenue> list = this.iRevenueDAO.FindAll();
-        var revenueByDay = list.stream()
+        var revenues = list.stream()
                 .collect(Collectors.groupingBy(
                         o -> {
                             switch (query) {
@@ -48,12 +46,8 @@ public class RevenueService implements IRevenueService {
                     obj.put("revenue", e.getValue());
                     return obj;
                 }).toList();
-        try {
-            System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(revenueByDay));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        Data data = new Data.Builder(null).withResults(revenueByDay).build();
+
+        Data data = new Data.Builder(null).withResults(revenues).build();
         Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
         return new Message.Builder(meta).withData(data).build();
     }

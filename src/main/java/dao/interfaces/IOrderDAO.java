@@ -14,9 +14,9 @@ public interface IOrderDAO extends DAOInterface<Order> {
 
     List<Order> FindAllForProvider(String userId);
 
-    Boolean FindConfirmId(String orderId );
+    Boolean FindConfirmId(String orderId);
 
     Order FindOneByConfirmId(String confirmId);
 
-    void ConfirmOrder(String orderId,List<String> ticketIds);
+    void ConfirmOrder(String orderId, List<String> ticketIds);
 }

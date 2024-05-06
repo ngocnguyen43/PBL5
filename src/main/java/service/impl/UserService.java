@@ -1,6 +1,5 @@
 package service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.interfaces.IUserDAO;
 import dto.MeDto;
 import dto.RoleNameDto;
@@ -17,6 +16,8 @@ import utils.response.Data;
 import utils.response.Message;
 import utils.response.MessageResponse;
 import utils.response.Meta;
+
+import java.sql.SQLIntegrityConstraintViolationException;
 
 public class UserService implements IUserService {
     @Inject
@@ -53,11 +54,12 @@ public class UserService implements IUserService {
         if (existUser == null) throw new BadRequestException("invalid properties");
         try {
             User merged = ObjectMerge.merge(user, existUser);
-            System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(merged));
             this.iUserDAO.UpdateOne(merged);
+            Data data = new Data.Builder(null).withResults(merged).build();
             Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
-            return new Message.Builder(meta).build();
+            return new Message.Builder(meta).withData(data).build();
         } catch (Exception e) {
+            if (e instanceof SQLIntegrityConstraintViolationException) throw new BadRequestException("Duplicate entry");
             throw new InternalServerException();
         }
     }
