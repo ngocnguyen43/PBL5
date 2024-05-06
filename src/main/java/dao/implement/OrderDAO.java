@@ -2,6 +2,7 @@ package dao.implement;
 
 import dao.interfaces.IOrderDAO;
 import model.Order;
+import utils.mapper.implement.ConfirmURLMapper;
 import utils.mapper.implement.OrderMapper;
 
 import java.sql.SQLException;
@@ -36,5 +37,30 @@ public class OrderDAO extends AbstractDAO<Order> implements IOrderDAO {
                                  JOIN pbl5_1.schedules ON pbl5_1.schedules.schedule_id = pbl5_1.seats_tickets.schedule_id
                                 WHERE pbl5_1.schedules.user_id = ? ;""";
         return query(sql, new OrderMapper(), userId);
+    }
+
+    @Override
+    public Boolean FindConfirmId(String orderId) {
+        String sql = "SELECT confirm_url_id FROM pbl5_1.order WHERE confirm_url_id = ?";
+        List<String> ids = query(sql, new ConfirmURLMapper(), orderId);
+        return !ids.isEmpty();
+    }
+
+    @Override
+    public Order FindOneByConfirmId(String confirmId) {
+        String sql = "SELECT * FROM pbl5_1.order WHERE confirm_url_id = ?";
+        List<Order> orders = query(sql, new OrderMapper(), confirmId);
+        return orders.isEmpty() ? null : orders.get(0);
+    }
+
+    @Override
+    public void ConfirmOrder(String orderId, List<String> ticketIds) {
+        String orderSql = "";
+        String ticketSql = "";
+        Object[] orderParams = new Object[]{orderId};
+        Object[] ticketParams = new List[]{ticketIds.stream().map(e -> new Object[]{
+                e
+        }).toList()};
+
     }
 }

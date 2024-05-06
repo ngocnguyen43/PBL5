@@ -2,7 +2,9 @@ package dao.implement;
 
 import dao.interfaces.ICustomerDAO;
 import model.Customer;
+import model.User;
 import utils.mapper.implement.CustomerMapper;
+import utils.mapper.implement.UserMapper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -67,5 +69,11 @@ public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
                 ", position=?" +
                 " WHERE customer_id=?";
         update(sql, customer.getFullName(), customer.getEmail(), customer.getPhoneNumber(), customer.getPosition(), customer.getCustomerId());
+    }
+
+    @Override
+    public List<User> FindAllCustomer() {
+        String sql = "SELECT * FROM users INNER JOIN roles ON roles.role_id = users.role_id WHERE roles.role_name = 'CUSTOMER'";
+        return query(sql, new UserMapper(false));
     }
 }

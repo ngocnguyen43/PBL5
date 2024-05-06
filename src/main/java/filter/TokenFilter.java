@@ -43,7 +43,7 @@ public class TokenFilter implements Filter {
         String path = httpRequest.getRequestURI();
         System.out.println(path);
         if (path.startsWith("/api/v1/auth/")
-                || path.startsWith("/test")
+                || path.startsWith("/api/v1/test")
                 || path.startsWith("/chat")
                 || path.startsWith("/api/v1/stations")
                 || path.startsWith("/api/v1/schedules")) {

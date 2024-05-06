@@ -62,7 +62,9 @@ public class TicketDAO extends AbstractDAO<Ticket> implements ITicketDAO {
                         order.getOrderDate(),
                         order.getConfirmUrlId()}
         });
-
+        System.out.println(listTickets.size());
+        System.out.println(listSeatTickets.size());
+        System.out.println(orderObject.size());
         bulkCreate(Arrays.asList(orderSql, ticketsSql, seatTicketSql), Arrays.asList(orderObject, listTickets, listSeatTickets));
     }
 }

@@ -1,13 +1,18 @@
 package service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.interfaces.IUserDAO;
 import dto.MeDto;
 import dto.RoleNameDto;
+import dto.UserDto;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import model.User;
 import service.interfaces.IUserService;
+import utils.exceptions.api.BadRequestException;
+import utils.exceptions.server.InternalServerException;
 import utils.helper.Helper;
+import utils.helper.ObjectMerge;
 import utils.response.Data;
 import utils.response.Message;
 import utils.response.MessageResponse;
@@ -34,5 +39,37 @@ public class UserService implements IUserService {
         Data data = new Data.Builder(null).withResults(dto).build();
         Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
         return new Message.Builder(meta).withData(data).build();
+    }
+
+    @Override
+    public Message FindOneById(String id) {
+        return null;
+    }
+
+    @Override
+    public Message UpdateOne(String id, UserDto userDto) throws BadRequestException, InternalServerException {
+        User user = Helper.objectMapper(userDto, User.class);
+        User existUser = this.iUserDAO.FindOneByUserId(id, false);
+        if (existUser == null) throw new BadRequestException("invalid properties");
+        try {
+            User merged = ObjectMerge.merge(user, existUser);
+            System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(merged));
+            this.iUserDAO.UpdateOne(merged);
+            Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
+            return new Message.Builder(meta).build();
+        } catch (Exception e) {
+            throw new InternalServerException();
+        }
+    }
+
+    @Override
+    public Message DeleteOne(String id) throws InternalServerException {
+        try {
+            this.iUserDAO.DeleteOneById(id);
+            Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
+            return new Message.Builder(meta).build();
+        } catch (Exception e) {
+            throw new InternalServerException();
+        }
     }
 }

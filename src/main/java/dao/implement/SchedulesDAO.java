@@ -18,10 +18,10 @@ public class SchedulesDAO extends AbstractDAO<Schedule> implements IScheduleDAO 
     @Override
     public List<Schedule> FindAll(String startAt, String arrivalAt, String start, String arrival, boolean isReturn) {
         String startDay = 86400000 + Long.parseLong(startAt) + "";
-        System.out.println(startAt);
-        System.out.println(arrivalAt);
-        System.out.println(start);
-        System.out.println(arrival);
+//        System.out.println(startAt);
+//        System.out.println(arrivalAt);
+//        System.out.println(start);
+//        System.out.println(arrival);
         String sql = """
                 SELECT *
                 FROM pbl5_1.schedules
@@ -66,5 +66,10 @@ public class SchedulesDAO extends AbstractDAO<Schedule> implements IScheduleDAO 
     public void UpdateStatus(String id, String status) throws SQLException {
         String sql = "UPDATE schedules SET status = ? WHERE schedule_id = ?";
         update(sql, status, id);
+    }
+
+    @Override
+    public Schedule FindOne(String id) {
+        return null;
     }
 }

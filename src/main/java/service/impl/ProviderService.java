@@ -9,6 +9,7 @@ import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Customer;
 import model.Provider;
+import model.User;
 import service.interfaces.IProviderService;
 import utils.exceptions.api.DatabaseOperationException;
 import utils.exceptions.api.RegistrationFailedException;
@@ -34,10 +35,7 @@ public class ProviderService implements IProviderService {
 
     @Override
     public Message FindAllProvider() {
-        List<Provider> providers = iProviderDAO.FindAll();
-        for (Provider provider : providers) {
-            System.out.printf(provider.toString());
-        }
+        List<User> providers = this.iProviderDAO.FindAll();
         Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
 
         Data data = new Data.Builder(null).withResults(providers).build();
