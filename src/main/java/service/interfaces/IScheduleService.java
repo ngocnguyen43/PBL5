@@ -9,7 +9,7 @@ import utils.response.Message;
 public interface IScheduleService {
     Message FindAll();
 
-    Message FindAll(String startAt, String arrivalAt,String start,String arrival ,boolean isReturn) throws BadRequestException;
+    Message FindAll(String startAt, String arrivalAt, String start, String arrival, boolean isReturn) throws BadRequestException;
 
     Message CreateOne(ScheduleDto dto) throws BadRequestException, InternalServerException;
 
