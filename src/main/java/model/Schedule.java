@@ -20,6 +20,15 @@ public class Schedule {
     private String updatedAt = unix + "";
     private String status;
     private String trainId;
+    private Train train;
+
+    public Train getTrain() {
+        return train;
+    }
+
+    public void setTrain(Train train) {
+        this.train = train;
+    }
 
     public String getStartAt() {
         return startAt;

@@ -17,4 +17,6 @@ public interface IScheduleDAO extends DAOInterface<Schedule> {
     void CreateOne(Schedule schedule) throws SQLException, JsonProcessingException;
 
     void UpdateStatus(String id, String status) throws SQLException;
+
+    Schedule FindOne(String id);
 }

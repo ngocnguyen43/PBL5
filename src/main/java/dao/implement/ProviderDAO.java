@@ -2,7 +2,9 @@ package dao.implement;
 
 import dao.interfaces.IProviderDAO;
 import model.Provider;
+import model.User;
 import utils.mapper.implement.ProviderMapper;
+import utils.mapper.implement.UserMapper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,9 +20,9 @@ public class ProviderDAO extends AbstractDAO<Provider> implements IProviderDAO {
     }
 
     @Override
-    public List<Provider> FindAll() {
-        String sql = "SELECT * FROM ticket_providers";
-        return query(sql, new ProviderMapper());
+    public List<User> FindAll() {
+        String sql = "SELECT * FROM users INNER JOIN roles ON roles.role_id = users.role_id WHERE roles.role_name = 'PROVIDER'";
+        return query(sql, new UserMapper(false));
     }
 
     public Provider FindOneById(String providerId) {

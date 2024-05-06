@@ -8,4 +8,5 @@ public interface IOrderService {
 
     Message FindAllOrdersByUserId();
 
+    Message ConfirmOrder(String confirmId);
 }

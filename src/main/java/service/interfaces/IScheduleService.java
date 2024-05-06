@@ -14,4 +14,6 @@ public interface IScheduleService {
     Message CreateOne(ScheduleDto dto) throws BadRequestException, InternalServerException;
 
     Message UpdateStatus(UpdateScheduleStatusDto dto) throws InternalServerException;
+
+    Message FindOne(String id);
 }

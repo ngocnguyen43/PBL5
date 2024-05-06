@@ -1,6 +1,7 @@
 package dao.interfaces;
 
 import model.Provider;
+import model.User;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 public interface IProviderDAO {
     Provider FindOneByEmail(String email);
 
-    List<Provider> FindAll();
+    List<User> FindAll();
 
     Provider FindOneById(String TicketProvidersId);
 

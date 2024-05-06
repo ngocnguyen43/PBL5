@@ -49,4 +49,12 @@ public class OrderService implements IOrderService {
     public Message FindAllOrdersByUserId() {
         return null;
     }
+
+    @Override
+    public Message ConfirmOrder(String confirmId) {
+        Boolean isExist = this.iOrderDAO.FindConfirmId(confirmId);
+        if (!isExist) throw new RuntimeException();
+        Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
+        return new Message.Builder(meta).build();
+    }
 }

@@ -17,4 +17,7 @@ public interface IUserDAO extends DAOInterface<User> {
     User FindOneByUsernameOrEmail(String username, String email, boolean withPassword);
 
     String FindMyRole(String userId);
+
+    void UpdateOne(User user) throws SQLException;
+
 }
