@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import service.interfaces.IScheduleService;
 import utils.contants.EndPoint;
-import utils.errorHandler.ErrorHandler;
 
 import java.io.IOException;
 
