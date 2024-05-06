@@ -104,4 +104,10 @@ public class ScheduleService implements IScheduleService {
             throw new InternalServerException();
         }
     }
+
+    @Override
+    public Message FindOne(String id) {
+//        this.iScheduleDAO
+        return null;
+    }
 }

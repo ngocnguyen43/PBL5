@@ -1,11 +1,13 @@
 package service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.interfaces.ICustomerDAO;
 import dao.interfaces.IUserDAO;
 import dto.CustomerDto;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Customer;
+import model.User;
 import service.interfaces.ICustomerService;
 import utils.exceptions.api.DatabaseOperationException;
 import utils.helper.Helper;
@@ -27,7 +29,7 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public Message FindAllCustomers() {
-        List<Customer> customers = iCustomerDAO.FindAll();
+        List<User> customers = iCustomerDAO.FindAllCustomer();
         Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
 
         Data data = new Data.Builder(null).withResults(customers).build();
@@ -60,6 +62,7 @@ public class CustomerService implements ICustomerService {
         Customer customer = Helper.objectMapper(customerDto, Customer.class);
         try {
             iCustomerDAO.UpdateOne(customer);
+            System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(customer));
             Meta meta = new Meta.Builder(HttpServletResponse.SC_CREATED).withMessage(MessageResponse.CREATED).build();
             return new Message.Builder(meta).build();
         } catch (Exception e) {

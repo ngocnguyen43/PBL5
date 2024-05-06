@@ -6,6 +6,7 @@ public class User {
     private final long unix = System.currentTimeMillis() / 1000L;
     private String userId;
     private String username;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String password;
     private String email;
     private String fullName;

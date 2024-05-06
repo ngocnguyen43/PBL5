@@ -27,22 +27,10 @@ public class ProvidersController extends HttpServlet {
         ErrorHandler.handle(resp, () -> this.iProviderService.FindAllProvider());
     }
 
+    //  loi
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProviderDto providerDto = Helper.paramsToString(req.getParameterMap()).toModel(ProviderDto.class);
         ErrorHandler.handle(resp, () -> this.iProviderService.InsertProvider(providerDto));
-    }
-
-
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ProviderDto providerDto = Helper.paramsToString(req.getParameterMap()).toModel(ProviderDto.class);
-        ErrorHandler.handle(resp, () -> this.iProviderService.UpdateProvider(providerDto));
-    }
-
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ProviderDto providerDto = Helper.paramsToString(req.getParameterMap()).toModel(ProviderDto.class);
-        ErrorHandler.handle(resp, () -> this.iProviderService.DeleteProvider(providerDto));
     }
 
 }

@@ -51,4 +51,10 @@ public class UserDAO extends AbstractDAO<User> implements IUserDAO {
         return roles.isEmpty() ? null : roles.get(0);
     }
 
+    @Override
+    public void UpdateOne(User user) throws SQLException {
+        String sql = "UPDATE users SET full_name = ? ,phone_number = ?,email = ?  WHERE user_id = ?";
+        update(sql, user.getFullName(), user.getPhoneNumber(), user.getEmail(), user.getUserId());
+    }
+
 }

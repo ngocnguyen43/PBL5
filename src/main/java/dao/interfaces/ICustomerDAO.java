@@ -1,6 +1,7 @@
 package dao.interfaces;
 
 import model.Customer;
+import model.User;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,5 +25,7 @@ public interface ICustomerDAO extends DAOInterface<Customer> {
     void DeleteAll(ArrayList<Customer> arr) throws SQLException;
 
     void UpdateOne(Customer customer) throws SQLException;
+
+    List<User> FindAllCustomer();
 
 }
