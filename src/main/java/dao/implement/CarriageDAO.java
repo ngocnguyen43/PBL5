@@ -52,4 +52,10 @@ public class CarriageDAO extends AbstractDAO<Carriage> implements ICarriageDAO {
         }).toList();
         bulkCreate(sql, objects);
     }
+
+    @Override
+    public List<Carriage> FindAllByScheduleId(String id) {
+        String sql = "SELECT carriages.*  FROM schedules JOIN trains ON trains.train_id = schedules.train_id JOIN carriages on carriages.train_id = trains.train_id WHERE schedules.schedule_id = ?;";
+        return query(sql, new CarriageMapper(), id);
+    }
 }

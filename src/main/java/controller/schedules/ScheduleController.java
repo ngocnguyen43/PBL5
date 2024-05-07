@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import service.interfaces.IScheduleService;
 import utils.contants.EndPoint;
+import utils.errorHandler.ErrorHandler;
 
 import java.io.IOException;
 
@@ -21,6 +22,6 @@ public class ScheduleController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getPathInfo().substring(1);
-//        ErrorHandler.handle(resp,()->this.iScheduleService.);
+        ErrorHandler.handle(resp, () -> this.iScheduleService.FindOne(id));
     }
 }

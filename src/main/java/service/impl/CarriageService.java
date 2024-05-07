@@ -58,6 +58,7 @@ public class CarriageService implements ICarriageService {
 
     @Override
     public Message UpdateOne(CarriageDto dto, String id) throws BadRequestException, InternalServerException {
+        if (id == null) throw new BadRequestException("Invalid properties");
         Carriage updateData = Helper.objectMapper(dto, Carriage.class);
         updateData.setId(id);
         try {
