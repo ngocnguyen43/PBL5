@@ -49,6 +49,7 @@ public class UserService implements IUserService {
 
     @Override
     public Message UpdateOne(String id, UserDto userDto) throws BadRequestException, InternalServerException {
+        if (id == null) throw new BadRequestException("Invalid properties");
         User user = Helper.objectMapper(userDto, User.class);
         User existUser = this.iUserDAO.FindOneByUserId(id, false);
         if (existUser == null) throw new BadRequestException("invalid properties");

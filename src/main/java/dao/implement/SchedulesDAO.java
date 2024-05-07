@@ -70,6 +70,8 @@ public class SchedulesDAO extends AbstractDAO<Schedule> implements IScheduleDAO 
 
     @Override
     public Schedule FindOne(String id) {
-        return null;
+        String sql = "SELECT * FROM schedules where schedule_id = ?";
+        List<Schedule> schedules = query(sql, new ScheduleMapper(true), id);
+        return schedules.isEmpty() ? null : schedules.get(0);
     }
 }

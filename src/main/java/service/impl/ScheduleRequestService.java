@@ -10,6 +10,7 @@ import model.ScheduleRequest;
 import model.Seat;
 import model.SeatsTickets;
 import service.interfaces.IScheduleRequestService;
+import utils.exceptions.api.BadRequestException;
 import utils.exceptions.server.InternalServerException;
 import utils.helper.Helper;
 import utils.response.Data;
@@ -46,7 +47,8 @@ public class ScheduleRequestService implements IScheduleRequestService {
     }
 
     @Override
-    public Message UpdateStatus(String id, String status) throws InternalServerException {
+    public Message UpdateStatus(String id, String status) throws InternalServerException, BadRequestException {
+        if (id == null) throw new BadRequestException("Invalid properties");
         ScheduleRequest current = this.iScheduleRequestDAO.FindOneById(id);
         List<Seat> seats = this.iSeatDAO.FindAllByTrainId(current.getSchedule().getTrainId());
         List<SeatsTickets> seatsTicketsList = new ArrayList<>();

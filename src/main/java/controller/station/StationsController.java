@@ -1,5 +1,6 @@
 package controller.station;
 
+import dto.StationDto;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import service.interfaces.IStationService;
 import utils.contants.EndPoint;
 import utils.errorHandler.ErrorHandler;
+import utils.helper.Helper;
 
 import java.io.IOException;
 
@@ -23,4 +25,9 @@ public class StationsController extends HttpServlet {
         ErrorHandler.handle(resp, () -> this.iStationService.FindAll(query));
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        StationDto dto = Helper.paramsToString(req.getParameterMap()).toModel(StationDto.class);
+        ErrorHandler.handle(resp, () -> this.iStationService.CreateOne(dto));
+    }
 }

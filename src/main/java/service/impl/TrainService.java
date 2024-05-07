@@ -86,6 +86,7 @@ public class TrainService implements ITrainService {
 
     @Override
     public Message UpdateOne(TrainDto dto, String id) throws BadRequestException, InternalServerException {
+        if (id == null) throw new BadRequestException("Invalid properties");
         Train updateData = Helper.objectMapper(dto, Train.class);
         updateData.setId(id);
         try {
@@ -109,6 +110,7 @@ public class TrainService implements ITrainService {
 
     @Override
     public Message DeleteOne(String id) throws BadRequestException, InternalServerException {
+        if (id == null) throw new BadRequestException("Invalid properties");
         try {
             this.iTrainDAO.DeleteOne(id);
             Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();

@@ -2,6 +2,8 @@ package model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
+
 public class Schedule {
     private final long unix = System.currentTimeMillis() / 1000L;
     private String scheduleId;
@@ -20,7 +22,19 @@ public class Schedule {
     private String updatedAt = unix + "";
     private String status;
     private String trainId;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Train train;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<Carriage> carriages;
+
+
+    public List<Carriage> getCarriages() {
+        return carriages;
+    }
+
+    public void setCarriages(List<Carriage> carriages) {
+        this.carriages = carriages;
+    }
 
     public Train getTrain() {
         return train;
