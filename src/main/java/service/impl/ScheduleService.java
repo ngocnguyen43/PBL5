@@ -2,13 +2,12 @@ package service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dao.interfaces.IScheduleDAO;
-import dao.interfaces.IScheduleRequestDAO;
-import dao.interfaces.IStationDAO;
+import dao.interfaces.*;
 import dto.ScheduleDto;
 import dto.UpdateScheduleStatusDto;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Carriage;
 import model.Schedule;
 import model.ScheduleRequest;
 import model.Station;
@@ -35,6 +34,10 @@ public class ScheduleService implements IScheduleService {
     private IScheduleRequestDAO iScheduleRequestDAO;
     @Inject
     private IStationDAO iStationDAO;
+    @Inject
+    private ICarriageDAO iCarriageDAO;
+    @Inject
+    private ISeatDAO iSeatDAO;
 
     @Override
     public Message FindAll() {
@@ -107,7 +110,12 @@ public class ScheduleService implements IScheduleService {
 
     @Override
     public Message FindOne(String id) {
-//        this.iScheduleDAO
-        return null;
+        List<Carriage> carriages = this.iCarriageDAO.FindAllByScheduleId(id);
+        Schedule schedule = this.iScheduleDAO.FindOne(id);
+        schedule.setCarriages(carriages);
+
+        Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
+        Data data = new Data.Builder(null).withResults(schedule).build();
+        return new Message.Builder(meta).withData(data).build();
     }
 }

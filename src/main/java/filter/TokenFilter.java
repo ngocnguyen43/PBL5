@@ -80,12 +80,6 @@ public class TokenFilter implements Filter {
             System.out.println(user);
             if (user == null) throw new UnauthorizedException("Token invalid");
             httpRequest.setAttribute("user", user);
-//        Cookie[] cookies = httpRequest.getCookies();
-//
-//        for (Cookie c : cookies) {
-//            System.out.println(c.getValue());
-//            httpRequest.setAttribute("test", "nah");
-//        }
 
             filterChain.doFilter(httpRequest, httpResponse);
 

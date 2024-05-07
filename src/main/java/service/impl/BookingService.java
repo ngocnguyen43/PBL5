@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Booking;
 import service.interfaces.IBookingService;
+import utils.exceptions.api.BadRequestException;
 import utils.response.Data;
 import utils.response.Message;
 import utils.response.MessageResponse;
@@ -17,7 +18,8 @@ public class BookingService implements IBookingService {
     private IBookingDAO iBookingDAO;
 
     @Override
-    public Message GetOneById(String id) {
+    public Message GetOneById(String id) throws BadRequestException {
+        if (id == null) throw new BadRequestException("Invalid properties");
         Booking booking = iBookingDAO.FindOne(id);
         Data data = new Data.Builder(null).withResults(booking).build();
         Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();

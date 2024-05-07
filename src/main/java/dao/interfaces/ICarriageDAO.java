@@ -17,4 +17,6 @@ public interface ICarriageDAO extends DAOInterface<Carriage> {
     void DeleteOne(String id);
 
     void BulkCreate(List<Carriage> carriages) throws SQLException;
+
+    List<Carriage> FindAllByScheduleId(String id);
 }
