@@ -349,7 +349,7 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
                 }
 
                 assert statement != null;
-                statement.executeBatch();
+//                statement.executeBatch();
 
             }
             // Execute batch
