@@ -9,6 +9,7 @@ import model.Order;
 import model.Role;
 import model.User;
 import service.interfaces.IOrderService;
+import utils.exceptions.server.InternalServerException;
 import utils.response.Data;
 import utils.response.Message;
 import utils.response.MessageResponse;
@@ -51,10 +52,16 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public Message ConfirmOrder(String confirmId) {
-        Boolean isExist = this.iOrderDAO.FindConfirmId(confirmId);
-        if (!isExist) throw new RuntimeException();
-        Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
-        return new Message.Builder(meta).build();
+    public Message ConfirmOrder(String confirmId) throws InternalServerException {
+        Order order = this.iOrderDAO.FindOneByConfirmId(confirmId);
+        if (order == null) throw new RuntimeException();
+        try {
+            this.iOrderDAO.ConfirmOrder(order.getOrderId());
+            Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
+            return new Message.Builder(meta).build();
+        } catch (Exception e) {
+            throw new InternalServerException();
+        }
+
     }
 }

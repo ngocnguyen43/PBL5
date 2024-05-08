@@ -1,6 +1,7 @@
 package service.interfaces;
 
 import model.User;
+import utils.exceptions.server.InternalServerException;
 import utils.response.Message;
 
 public interface IOrderService {
@@ -8,5 +9,5 @@ public interface IOrderService {
 
     Message FindAllOrdersByUserId();
 
-    Message ConfirmOrder(String confirmId);
+    Message ConfirmOrder(String confirmId) throws InternalServerException;
 }
