@@ -18,5 +18,5 @@ public interface IOrderDAO extends DAOInterface<Order> {
 
     Order FindOneByConfirmId(String confirmId);
 
-    void ConfirmOrder(String orderId, List<String> ticketIds);
+    void ConfirmOrder(String orderId) throws SQLException;
 }

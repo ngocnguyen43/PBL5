@@ -6,6 +6,7 @@ import utils.mapper.implement.ConfirmURLMapper;
 import utils.mapper.implement.OrderMapper;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 public class OrderDAO extends AbstractDAO<Order> implements IOrderDAO {
@@ -54,13 +55,16 @@ public class OrderDAO extends AbstractDAO<Order> implements IOrderDAO {
     }
 
     @Override
-    public void ConfirmOrder(String orderId, List<String> ticketIds) {
-        String orderSql = "";
-        String ticketSql = "";
-        Object[] orderParams = new Object[]{orderId};
-        Object[] ticketParams = new List[]{ticketIds.stream().map(e -> new Object[]{
-                e
-        }).toList()};
-
+    public void ConfirmOrder(String orderId) throws SQLException {
+        String orderSql = "update pbl5_1.order set order.status = ? where order_id = ?";
+        String ticketSql = """
+                update seats_tickets join tickets on tickets.ticket_id = seats_tickets.ticket_id\s
+                join pbl5_1.order on tickets.order_id = order.order_id
+                set seats_tickets.status= 'Booked' where order.order_id = ?;""";
+        List<List<Object[]>> params = List.of(Arrays.asList(
+                (new Object[][]{new Object[]{orderId}}),
+                (new Object[][]{new Object[]{orderId}})
+        ));
+        bulkCreate(Arrays.asList(orderSql, ticketSql), params);
     }
 }
