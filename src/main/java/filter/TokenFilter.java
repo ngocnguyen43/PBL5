@@ -46,7 +46,8 @@ public class TokenFilter implements Filter {
                 || path.startsWith("/api/v1/test")
                 || path.startsWith("/chat")
                 || path.startsWith("/api/v1/stations")
-                || path.startsWith("/api/v1/schedules")) {
+                || path.startsWith("/api/v1/schedules")
+                || path.startsWith("/api/v1/trains")) {
             filterChain.doFilter(httpRequest, httpResponse);
             return;
         }
