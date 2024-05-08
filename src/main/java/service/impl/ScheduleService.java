@@ -21,6 +21,8 @@ import utils.response.Message;
 import utils.response.MessageResponse;
 import utils.response.Meta;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -56,8 +58,8 @@ public class ScheduleService implements IScheduleService {
         Station stationArrival = stations.stream().filter(e -> Objects.equals(e.getStationPoint(), arrival)).findAny().orElse(null);
         if (stationStart == null) throw new BadRequestException("Invalid start point");
         if (stationArrival == null) throw new BadRequestException("Invalid arrival point");
-        System.out.println(stationStart.getStationId());
-        System.out.println(stationArrival.getStationId());
+
+
         List<Schedule> schedules = this.iScheduleDAO.FindAll(startAt, arrivalAt, stationStart.getStationId(), stationArrival.getStationId(), isReturn);
         Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
         Data data = new Data.Builder(null).withResults(schedules).build();
