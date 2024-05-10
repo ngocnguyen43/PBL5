@@ -16,6 +16,7 @@ import model.Order;
 import model.Ticket;
 import model.TicketInformation;
 import service.interfaces.ITicketService;
+import utils.exceptions.api.BadRequestException;
 import utils.helper.IDGenerator;
 import utils.response.Data;
 import utils.response.Message;
@@ -26,9 +27,8 @@ import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.Inet4Address;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class TicketService implements ITicketService {
     @Inject
@@ -42,18 +42,32 @@ public class TicketService implements ITicketService {
     public Message BulkCreate(List<TicketDto> dto, String userId) {
         List<TicketInformation> information = new ArrayList<>();
         List<String> ticketIds = dto.stream().map(e -> IDGenerator.generate(10)).toList();
-        for (var element : dto) {
-            var index = dto.indexOf(element);
-            var ticketId = ticketIds.get(index);
-            var list = element.getSeats().stream().map(e -> {
-                TicketInformation ticketInformation = new TicketInformation();
-                ticketInformation.setCarriageId(e.getCarriageId());
-                ticketInformation.setScheduleId(element.getScheduleId());
-                ticketInformation.setSeatNumber(e.getSeatNumber());
-                ticketInformation.setTicketId(ticketId);
-                return ticketInformation;
-            }).toList();
-            information.addAll(list);
+        Set<Integer> seatNumber = new HashSet<>();
+        AtomicInteger isValid = new AtomicInteger();
+        try {
+            for (var element : dto) {
+                var index = dto.indexOf(element);
+                var ticketId = ticketIds.get(index);
+                var list = element.getSeats().stream().map(e -> {
+                    TicketInformation ticketInformation = new TicketInformation();
+                    ticketInformation.setCarriageId(e.getCarriageId());
+                    ticketInformation.setScheduleId(element.getScheduleId());
+                    ticketInformation.setSeatNumber(e.getSeatNumber());
+                    ticketInformation.setTicketId(ticketId);
+                    if (seatNumber.contains(e.getSeatNumber())) {
+                        isValid.getAndIncrement();
+                    } else {
+                        seatNumber.add(e.getSeatNumber());
+                    }
+                    return ticketInformation;
+                }).toList();
+                information.addAll(list);
+            }
+            if (isValid.get() > 0) {
+                throw new BadRequestException("iNvalid properties");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 
@@ -74,7 +88,7 @@ public class TicketService implements ITicketService {
         try {
             String address = Inet4Address.getLocalHost().getHostAddress();
             QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            BitMatrix matrix = qrCodeWriter.encode(address + ":8080/api/v1/confirm/" + order.getConfirmUrlId(), BarcodeFormat.QR_CODE, 200, 200);
+            BitMatrix matrix = qrCodeWriter.encode("http://" + address + ":8080/api/v1/confirm/" + order.getConfirmUrlId(), BarcodeFormat.QR_CODE, 200, 200);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
             MatrixToImageWriter.writeToStream(matrix, "PNG", bos);

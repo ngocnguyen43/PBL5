@@ -1,6 +1,7 @@
 package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import controller.websocket.WebSocket;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,7 +9,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import service.interfaces.IRevenueService;
-import utils.errorHandler.ErrorHandler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,11 +19,14 @@ import java.util.List;
 public class TestController extends HttpServlet {
     @Inject
     private IRevenueService iRevenueService;
+    @Inject
+    private WebSocket webSocket;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String query = req.getParameter("query");
-        ErrorHandler.handle(resp, () -> this.iRevenueService.FindAll(query));
+        webSocket.emitMessage("123", "alo");
+
     }
 
     @Override
