@@ -56,13 +56,16 @@ public class OrderDAO extends AbstractDAO<Order> implements IOrderDAO {
 
     @Override
     public void ConfirmOrder(String orderId) throws SQLException {
-        String orderSql = "update pbl5_1.order set order.status = ? where order_id = ?";
+        final String unix = "" + System.currentTimeMillis() / 1000L;
+
+        String orderSql = "update pbl5_1.order set order.status = 'Confirmed', paid_date = ? where order_id = ?";
         String ticketSql = """
                 update seats_tickets join tickets on tickets.ticket_id = seats_tickets.ticket_id\s
                 join pbl5_1.order on tickets.order_id = order.order_id
                 set seats_tickets.status= 'Booked' where order.order_id = ?;""";
         List<List<Object[]>> params = List.of(Arrays.asList(
-                (new Object[][]{new Object[]{orderId}}),
+                (new Object[][]{new Object[]{unix, orderId}})
+        ), Arrays.asList(
                 (new Object[][]{new Object[]{orderId}})
         ));
         bulkCreate(Arrays.asList(orderSql, ticketSql), params);

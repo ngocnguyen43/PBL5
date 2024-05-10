@@ -60,6 +60,7 @@ public class OrderService implements IOrderService {
             Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
             return new Message.Builder(meta).build();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new InternalServerException();
         }
 

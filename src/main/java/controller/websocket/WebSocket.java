@@ -6,12 +6,12 @@ import jakarta.inject.Inject;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
+import jakarta.websocket.server.ServerEndpointConfig;
 
 import java.io.IOException;
 
-@ServerEndpoint(value = "/chat/{username}")
+@ServerEndpoint(value = "/{username}", configurator = WebSocket.MyConfigurator.class)
 public class WebSocket {
-    private Session session;
 
     @Inject
     private ISeatDAO iSeatDAO;
@@ -23,16 +23,11 @@ public class WebSocket {
             @PathParam("username") String username) throws IOException {
         String query = session.getRequestURI().getQuery();
 
-        this.session = session;
-        SocketManager.setUserSession(session.getId(), session);
+        SocketManager.setUserSession(username, session);
         String uri = session.getRequestURI().toString();
         System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(SocketManager.openUrls));
         boolean isExist = SocketManager.openUrls.contains(uri);
         System.out.println(uri);
-        if (!isExist) {
-            SocketManager.openUrls.add(uri);
-            session.close();
-        }
 
     }
 
@@ -40,19 +35,31 @@ public class WebSocket {
     public void onMessage(Session session, String message)
             throws IOException {
         System.out.println(message);
-//        message.setFrom(users.get(session.getId()));
-//        broadcast(message);
     }
 
     @OnClose
-    public void onClose(Session session) throws IOException {
+    public void onClose(Session session, @PathParam("username") String userId) throws IOException {
         System.out.println(session.getId());
-        SocketManager.removeUserSession(session.getId());
+        SocketManager.removeUserSession(userId);
 
     }
 
     @OnError
     public void onError(Session session, Throwable throwable) {
         // Do error handling here
+    }
+
+    public static class MyConfigurator extends ServerEndpointConfig.Configurator {
+        // Implement any custom configuration here if needed
+    }
+
+    public void emitMessage(String id, String message) {
+        Session session = SocketManager.getUser(id);
+        if (session == null) return;
+        try {
+            session.getBasicRemote().sendText(message);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
