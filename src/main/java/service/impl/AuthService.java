@@ -127,6 +127,7 @@ public class AuthService implements IAuthService {
                 .withClaim("jti", IDGenerator.generate(20))
                 .sign(algorithm);
         TokenDto tokenDto = new TokenDto();
+        tokenDto.setUserId(user.getUserId());
         tokenDto.setAccessToken(access);
         tokenDto.setRefreshToken(refresh);
         Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.LOGIN_SUCCESS).build();

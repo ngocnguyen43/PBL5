@@ -20,6 +20,10 @@ public class SocketManager {
         users.put(id, session);
     }
 
+    public static Session getUser(String id) {
+        return users.get(id);
+    }
+
     public static void removeUserSession(String id) {
         users.remove(id);
     }
