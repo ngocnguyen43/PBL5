@@ -18,11 +18,15 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {EndPoint.API + EndPoint.VERSION + EndPoint.AUTH + "/login"})
 @MultipartConfig
 public class LoginController extends HttpServlet {
-    @Inject
     private IAuthService authService;
 
+    @Inject
+    public void setAuthService(IAuthService authService) {
+        this.authService = authService;
+    }
+
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserDto dto = Helper.paramsToString(req.getParameterMap()).toModel(UserDto.class);
         ErrorHandler.handle(resp, () -> this.authService.Login(dto));
     }
