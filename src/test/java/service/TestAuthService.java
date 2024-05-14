@@ -20,14 +20,12 @@ import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestAuthService extends TestCase {
-    @Mock
-    private UserDAO iUserDAO;
-
-    @InjectMocks
-    private AuthService authService;
     @Rule
     public MockitoRule rule = MockitoJUnit.rule().silent();
-
+    @Mock
+    private UserDAO iUserDAO;
+    @InjectMocks
+    private AuthService authService;
 
     @Test
     @DisplayName("Login with null fields")
