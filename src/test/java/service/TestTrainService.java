@@ -45,4 +45,11 @@ public class TestTrainService extends TestCase {
         assertEquals(BadRequestException.class, throwable.getClass());
         assertEquals(throwable.getMessage(), "Invalid properties");
     }
+
+    @Test
+    @DisplayName("get all trains")
+    public void testGetAll() throws Exception {
+        var message = this.trainService.FindAll();
+        assertTrue(message.getMeta().getStatusCode() == 200);
+    }
 }
