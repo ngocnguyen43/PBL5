@@ -10,7 +10,6 @@ public interface IUserService {
 
     Message FindRole(String id);
 
-    Message FindOneById(String id);
 
     Message UpdateOne(String id, UserDto userDto) throws BadRequestException, InternalServerException;
 
