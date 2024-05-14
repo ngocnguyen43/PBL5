@@ -2,6 +2,7 @@ package dao.implement;
 
 import dao.interfaces.ISeatsTicketsDAO;
 import model.SeatsTickets;
+import utils.mapper.implement.SeatsTicketsMapper;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -17,5 +18,12 @@ public class SeatsTicketsDAO extends AbstractDAO<SeatsTickets> implements ISeats
 
         }).toList();
         bulkCreate(sql, objects);
+    }
+
+    @Override
+    public List<SeatsTickets> FindAllConflicts(String scheduleId, String carriageId, Integer seatId) {
+        String sql = "SELECT seats_tickets.* FROM seats_tickets JOIN seats ON seats.carriage_id = seats_tickets.carriage_id WHERE seats_tickets.carriage_id = ? AND schedule_id = ? AND seats.seat_number = ? AND seats_tickets.status = 'Pending';";
+        return query(sql, new SeatsTicketsMapper(), carriageId, scheduleId, seatId);
+
     }
 }
