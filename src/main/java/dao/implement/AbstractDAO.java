@@ -302,7 +302,6 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
                 setParams(statement, pos, params);
                 pos += params.length;
             }
-            System.out.println(statement.toString());
             // Execute batch
             result = statement.executeQuery();
             while (result.next()) {

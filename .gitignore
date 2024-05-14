@@ -33,7 +33,7 @@ src/main/resources/env
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
-
+/htmlReport/**/*
 ### VS Code ###
 .vscode/
 
