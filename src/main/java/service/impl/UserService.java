@@ -43,11 +43,6 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Message FindOneById(String id) {
-        return null;
-    }
-
-    @Override
     public Message UpdateOne(String id, UserDto userDto) throws BadRequestException, InternalServerException {
         if (id == null) throw new BadRequestException("Invalid properties");
         User user = Helper.objectMapper(userDto, User.class);
