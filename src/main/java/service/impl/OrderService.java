@@ -46,10 +46,6 @@ public class OrderService implements IOrderService {
         return new Message.Builder(meta).withData(data).build();
     }
 
-    @Override
-    public Message FindAllOrdersByUserId() {
-        return null;
-    }
 
     @Override
     public Message ConfirmOrder(String confirmId) throws InternalServerException {
