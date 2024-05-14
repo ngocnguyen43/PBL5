@@ -9,7 +9,7 @@ import utils.contants.EndPoint;
 
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {EndPoint.API + EndPoint.VERSION +"/stations/*"})
+@WebServlet(urlPatterns = {EndPoint.API + EndPoint.VERSION + "/stations/*"})
 public class StationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
