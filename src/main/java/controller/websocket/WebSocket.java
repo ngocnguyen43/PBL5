@@ -49,10 +49,6 @@ public class WebSocket {
         // Do error handling here
     }
 
-    public static class MyConfigurator extends ServerEndpointConfig.Configurator {
-        // Implement any custom configuration here if needed
-    }
-
     public void emitMessage(String id, String message) {
         Session session = SocketManager.getUser(id);
         if (session == null) return;
@@ -61,5 +57,9 @@ public class WebSocket {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static class MyConfigurator extends ServerEndpointConfig.Configurator {
+        // Implement any custom configuration here if needed
     }
 }
