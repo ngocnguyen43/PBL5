@@ -19,13 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestCarriageService extends TestCase {
-    @Mock
-    private CarriageDAO carriageDAO;
-
-    @InjectMocks
-    private CarriageService carriageService;
     @Rule
     public MockitoRule rule = MockitoJUnit.rule().silent();
+    @Mock
+    private CarriageDAO carriageDAO;
+    @InjectMocks
+    private CarriageService carriageService;
 
     @Test
     @DisplayName("Update with null id")
