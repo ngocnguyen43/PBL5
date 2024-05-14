@@ -7,7 +7,5 @@ import utils.response.Message;
 public interface IOrderService {
     Message FindAllOrders(User user);
 
-    Message FindAllOrdersByUserId();
-
     Message ConfirmOrder(String confirmId) throws InternalServerException;
 }
