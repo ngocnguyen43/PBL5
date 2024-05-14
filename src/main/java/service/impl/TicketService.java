@@ -1,6 +1,5 @@
 package service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
@@ -17,6 +16,7 @@ import model.Ticket;
 import model.TicketInformation;
 import service.interfaces.ITicketService;
 import utils.exceptions.api.BadRequestException;
+import utils.exceptions.server.InternalServerException;
 import utils.helper.IDGenerator;
 import utils.response.Data;
 import utils.response.Message;
@@ -39,11 +39,12 @@ public class TicketService implements ITicketService {
     private ITicketDAO iTicketDAO;
 
     @Override
-    public Message BulkCreate(List<TicketDto> dto, String userId) {
+    public Message BulkCreate(List<TicketDto> dto, String userId) throws BadRequestException, InternalServerException {
         List<TicketInformation> information = new ArrayList<>();
         List<String> ticketIds = dto.stream().map(e -> IDGenerator.generate(10)).toList();
         Set<Integer> seatNumber = new HashSet<>();
         AtomicInteger isValid = new AtomicInteger();
+        AtomicInteger isBookedSeat = new AtomicInteger();
         try {
             for (var element : dto) {
                 var index = dto.indexOf(element);
@@ -54,6 +55,9 @@ public class TicketService implements ITicketService {
                     ticketInformation.setScheduleId(element.getScheduleId());
                     ticketInformation.setSeatNumber(e.getSeatNumber());
                     ticketInformation.setTicketId(ticketId);
+                    var seatsTickets = this.iSeatsTicketsDAO.FindAllConflicts(e.getCarriageId(), element.getScheduleId(), e.getSeatNumber());
+                    System.out.println(seatsTickets.size());
+                    if (!seatsTickets.isEmpty()) isBookedSeat.getAndIncrement();
                     if (seatNumber.contains(e.getSeatNumber())) {
                         isValid.getAndIncrement();
                     } else {
@@ -63,14 +67,15 @@ public class TicketService implements ITicketService {
                 }).toList();
                 information.addAll(list);
             }
-            if (isValid.get() > 0) {
-                throw new BadRequestException("iNvalid properties");
-            }
+
         } catch (Exception e) {
             e.printStackTrace();
+            throw new InternalServerException();
         }
-
-
+        if (isValid.get() > 0) {
+            throw new BadRequestException("invalid properties");
+        }
+        if (isBookedSeat.get() > 0) throw new BadRequestException("Seats invalid");
         BigDecimal price = this.iSeatDAO.FindPrice(information);
         BigDecimal extraFee = price.multiply(BigDecimal.valueOf(0.15)).setScale(2, RoundingMode.UP);
 
@@ -93,13 +98,8 @@ public class TicketService implements ITicketService {
 
             MatrixToImageWriter.writeToStream(matrix, "PNG", bos);
             String image = Base64.getEncoder().encodeToString(bos.toByteArray());
-            System.out.println(image);
             QRDto qrDto = new QRDto(image);
             this.iTicketDAO.BulkCreate(tickets, information, order);
-            System.out.println(Inet4Address.getLocalHost().getHostAddress());
-            System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(tickets));
-            System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(information));
-            System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(order));
             Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
             Data data = new Data.Builder(null).withResults(qrDto).build();
             return new Message.Builder(meta).withData(data).build();
