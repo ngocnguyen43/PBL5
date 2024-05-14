@@ -1,17 +1,14 @@
 package service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.implement.UserDAO;
 import dto.UserDto;
 import junit.framework.TestCase;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.MockitoRule;
@@ -20,7 +17,6 @@ import utils.exceptions.api.InvalidCredentialsException;
 import utils.response.MessageResponse;
 
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestAuthService extends TestCase {
