@@ -3,9 +3,6 @@ package utils.encoder;
 import jakarta.websocket.EncodeException;
 import jakarta.websocket.Encoder;
 import jakarta.websocket.EndpointConfig;
-import jakarta.ws.rs.Encoded;
-
-import java.lang.annotation.Annotation;
 
 public class MessageEncoder implements Encoder.Text<String> {
 
