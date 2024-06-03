@@ -22,7 +22,11 @@ public class SeatsTicketsDAO extends AbstractDAO<SeatsTickets> implements ISeats
 
     @Override
     public List<SeatsTickets> FindAllConflicts(String scheduleId, String carriageId, Integer seatId) {
-        String sql = "SELECT seats_tickets.* FROM seats_tickets JOIN seats ON seats.carriage_id = seats_tickets.carriage_id WHERE seats_tickets.carriage_id = ? AND schedule_id = ? AND seats.seat_number = ? AND seats_tickets.status = 'Pending';";
+        String sql = """
+                SELECT   seats_tickets.*
+                FROM seats
+                INNER JOIN seats_tickets ON seats_tickets.seat_id = seats.seat_id
+                WHERE seats_tickets.status = 'Booked' AND seats.carriage_id = ? AND seats_tickets.schedule_id = ?  AND seats.seat_number = ? ;""";
         return query(sql, new SeatsTicketsMapper(), carriageId, scheduleId, seatId);
 
     }

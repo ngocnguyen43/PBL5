@@ -47,8 +47,8 @@ public class CarriagesFilter implements Filter {
             System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(user));
             switch (httpRequest.getMethod()) {
                 case "GET": {
-                    UserPermission userPermission = this.iUserPermissionDAO.FindOneByUserIdAndRoleName(user.getUserId(), USER_PERMISSIONS.READ_CARRIAGES);
-                    if (userPermission == null) throw new ForbiddenException();
+//                    UserPermission userPermission = this.iUserPermissionDAO.FindOneByUserIdAndRoleName(user.getUserId(), USER_PERMISSIONS.READ_CARRIAGES);
+//                    if (userPermission == null) throw new ForbiddenException();
                     filterChain.doFilter(httpRequest, httpResponse);
                     break;
                 }

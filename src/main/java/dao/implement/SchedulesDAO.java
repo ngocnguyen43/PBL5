@@ -11,24 +11,20 @@ import java.util.List;
 public class SchedulesDAO extends AbstractDAO<Schedule> implements IScheduleDAO {
     @Override
     public List<Schedule> FindAll() {
-        String sql = "SELECT * FROM schedules";
-        return query(sql, new ScheduleMapper(false));
+        String sql = "SELECT schedules.*,trains.train_name as train_name FROM schedules INNER JOIN trains ON schedules.train_id = trains.train_id ";
+        return query(sql, new ScheduleMapper(false, true));
     }
 
     @Override
     public List<Schedule> FindAll(String startAt, String arrivalAt, String start, String arrival, boolean isReturn) {
 
-//        System.out.println(startAt);
-//        System.out.println(arrivalAt);
-//        System.out.println(start);
-//        System.out.println(arrival);
         String sql = """
                 SELECT *
                 FROM pbl5_1.schedules
                 WHERE  DATE(FROM_UNIXTIME(start_at)) = DATE(FROM_UNIXTIME(?))
                 OR  DATE(FROM_UNIXTIME(start_at)) = DATE(FROM_UNIXTIME(?)) AND  DATE(FROM_UNIXTIME(arrival_at)) = DATE(FROM_UNIXTIME(?))
                 AND departure_id = ? AND arrival_id = ? AND status = 'Approved';""";
-        return query(sql, new ScheduleMapper(true), startAt, startAt, arrivalAt, start, arrival);
+        return query(sql, new ScheduleMapper(true, false), startAt, startAt, arrivalAt, start, arrival);
     }
 
     @Override
@@ -43,7 +39,7 @@ public class SchedulesDAO extends AbstractDAO<Schedule> implements IScheduleDAO 
                 AND train_id = ?
                 ;""";
 
-        return query(sql, new ScheduleMapper(false), startAt, arrivalAt, startAt, arrivalAt, trainId);
+        return query(sql, new ScheduleMapper(false, false), startAt, arrivalAt, startAt, arrivalAt, trainId);
     }
 
     @Override
@@ -70,8 +66,8 @@ public class SchedulesDAO extends AbstractDAO<Schedule> implements IScheduleDAO 
 
     @Override
     public Schedule FindOne(String id) {
-        String sql = "SELECT * FROM schedules where schedule_id = ?";
-        List<Schedule> schedules = query(sql, new ScheduleMapper(true), id);
+        String sql = "SELECT schedules.*,trains.train_name as train_name FROM schedules INNER JOIN trains ON schedules.train_id = trains.train_id where schedule_id = ?";
+        List<Schedule> schedules = query(sql, new ScheduleMapper(true, true), id);
         return schedules.isEmpty() ? null : schedules.get(0);
     }
 }

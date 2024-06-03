@@ -1,6 +1,7 @@
 package utils.mapper.implement;
 
 import model.Schedule;
+import model.Train;
 import utils.mapper.interfaces.IMapper;
 
 import java.sql.ResultSet;
@@ -10,9 +11,11 @@ import java.util.logging.Logger;
 public class ScheduleMapper implements IMapper<Schedule> {
     private final Logger logger = Logger.getLogger(Schedule.class.getName());
     private final Boolean shouldShowDate;
+    private final Boolean shouldIncludeTrain;
 
-    public ScheduleMapper(Boolean shouldShowDate) {
+    public ScheduleMapper(Boolean shouldShowDate, Boolean shouldIncludeTrain) {
         this.shouldShowDate = shouldShowDate;
+        this.shouldIncludeTrain = shouldIncludeTrain;
     }
 
     @Override
@@ -34,6 +37,11 @@ public class ScheduleMapper implements IMapper<Schedule> {
             } else {
                 schedule.setCreatedAt(null);
                 schedule.setUpdatedAt(null);
+            }
+            if (shouldIncludeTrain) {
+                Train train = new Train();
+                train.setName(result.getString("train_name"));
+                schedule.setTrain(train);
             }
             schedule.setPhoto(result.getString("photo"));
             schedule.setStatus(result.getString("status"));
