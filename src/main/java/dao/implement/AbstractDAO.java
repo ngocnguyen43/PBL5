@@ -38,6 +38,7 @@ public abstract class AbstractDAO<T> implements DAOInterface<T> {
             statement = connection.prepareCall(sql);
             // set parameter
             setParams(statement, parameters);
+            System.out.println(statement);
             result = statement.executeQuery();
             while (result.next()) {
                 list.add(mapper.mapRow(result));

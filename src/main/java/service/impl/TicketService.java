@@ -1,5 +1,6 @@
 package service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
@@ -46,6 +47,7 @@ public class TicketService implements ITicketService {
         AtomicInteger isValid = new AtomicInteger();
         AtomicInteger isBookedSeat = new AtomicInteger();
         try {
+            System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(dto));
             for (var element : dto) {
                 var index = dto.indexOf(element);
                 var ticketId = ticketIds.get(index);
@@ -55,9 +57,8 @@ public class TicketService implements ITicketService {
                     ticketInformation.setScheduleId(element.getScheduleId());
                     ticketInformation.setSeatNumber(e.getSeatNumber());
                     ticketInformation.setTicketId(ticketId);
-                    var seatsTickets = this.iSeatsTicketsDAO.FindAllConflicts(e.getCarriageId(), element.getScheduleId(), e.getSeatNumber());
-                    System.out.println(seatsTickets.size());
-                    if (!seatsTickets.isEmpty()) isBookedSeat.getAndIncrement();
+                    var seatsTickets = this.iSeatsTicketsDAO.FindAllConflicts(element.getScheduleId(), e.getCarriageId(), e.getSeatNumber());
+                    if (!(seatsTickets == null || seatsTickets.isEmpty())) isBookedSeat.getAndIncrement();
                     if (seatNumber.contains(e.getSeatNumber())) {
                         isValid.getAndIncrement();
                     } else {
@@ -89,17 +90,16 @@ public class TicketService implements ITicketService {
             return new Ticket.Builder(ticketId).WithOrderId(orderId).WithPrice(price).WithExtraFee(extraFee).WithPhoto(IDGenerator.generate(20)).WithUserId(e.getUserId()).build();
         }).toList();
 
-
         try {
             String address = Inet4Address.getLocalHost().getHostAddress();
             QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            BitMatrix matrix = qrCodeWriter.encode("http://" + address + ":8080/api/v1/confirm/" + order.getConfirmUrlId(), BarcodeFormat.QR_CODE, 200, 200);
+            BitMatrix matrix = qrCodeWriter.encode("http://" + address + ":8080/api/v1/confirm?order=" + order.getConfirmUrlId() + "&id=" + userId, BarcodeFormat.QR_CODE, 200, 200);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
             MatrixToImageWriter.writeToStream(matrix, "PNG", bos);
             String image = Base64.getEncoder().encodeToString(bos.toByteArray());
             QRDto qrDto = new QRDto(image);
-            this.iTicketDAO.BulkCreate(tickets, information, order);
+//            this.iTicketDAO.BulkCreate(tickets, information, order);
             Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
             Data data = new Data.Builder(null).withResults(qrDto).build();
             return new Message.Builder(meta).withData(data).build();

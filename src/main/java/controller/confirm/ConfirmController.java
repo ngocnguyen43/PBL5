@@ -8,7 +8,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.User;
 import service.interfaces.IOrderService;
 import utils.contants.EndPoint;
 import utils.errorHandler.ErrorHandler;
@@ -16,7 +15,7 @@ import utils.response.Message;
 
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {EndPoint.API + EndPoint.VERSION + "/confirm/*"})
+@WebServlet(urlPatterns = {EndPoint.API + EndPoint.VERSION + "/confirm"})
 public class ConfirmController extends HttpServlet {
     @Inject
     private IOrderService iOrderService;
@@ -25,12 +24,11 @@ public class ConfirmController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String id = req.getPathInfo().substring(1);
-        User user = (User) req.getAttribute("user");
-        System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(user));
+        String order = req.getParameter("order");
+        String id = req.getParameter("id");
         ErrorHandler.handle(resp, () -> {
-            Message message = this.iOrderService.ConfirmOrder(id);
-            webSocket.emitMessage(user.getUserId(), "paid success");
+            Message message = this.iOrderService.ConfirmOrder(order);
+            webSocket.emitMessage(id, "paid success");
             return message;
         });
     }

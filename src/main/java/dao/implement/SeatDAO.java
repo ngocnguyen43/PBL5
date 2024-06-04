@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class SeatDAO extends AbstractDAO<Seat> implements ISeatDAO {
     @Override
@@ -78,5 +79,19 @@ public class SeatDAO extends AbstractDAO<Seat> implements ISeatDAO {
         }).toList();
         List<BigDecimal> prices = query(sql, new TicketPriceMapper(), objects);
         return prices.isEmpty() ? null : prices.get(0);
+    }
+
+    @Override
+    public List<SeatStatus> FindBySeatNumberCarriageIdAndScheduleId(List<Integer> seatNumbers, String carriageId, String scheduleId) {
+        StringJoiner joiner = new StringJoiner(", ", "IN (", ")");
+        for (Integer value : seatNumbers) {
+            joiner.add(value.toString());
+        }
+        String sql = """
+                SELECT  seats.seat_number, seats_tickets.status
+                FROM seats
+                INNER JOIN seats_tickets ON seats_tickets.seat_id = seats.seat_id
+                WHERE seats.carriage_id = ? AND seats_tickets.schedule_id = ? AND status = 'Booked' AND seats.seat_number """ + joiner;
+        return query(sql, new SeatStatusMapper(), carriageId, scheduleId);
     }
 }
