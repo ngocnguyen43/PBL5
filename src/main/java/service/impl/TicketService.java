@@ -99,7 +99,7 @@ public class TicketService implements ITicketService {
             MatrixToImageWriter.writeToStream(matrix, "PNG", bos);
             String image = Base64.getEncoder().encodeToString(bos.toByteArray());
             QRDto qrDto = new QRDto(image);
-//            this.iTicketDAO.BulkCreate(tickets, information, order);
+            this.iTicketDAO.BulkCreate(tickets, information, order);
             Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
             Data data = new Data.Builder(null).withResults(qrDto).build();
             return new Message.Builder(meta).withData(data).build();
