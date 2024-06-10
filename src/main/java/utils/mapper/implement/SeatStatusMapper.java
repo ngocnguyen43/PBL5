@@ -17,6 +17,7 @@ public class SeatStatusMapper implements IMapper<SeatStatus> {
         try {
             seatStatus.setSeatNumber(result.getInt("seat_number"));
             seatStatus.setStatus(result.getString("status"));
+            seatStatus.setPrice(result.getBigDecimal("price"));
             return seatStatus;
         } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage());

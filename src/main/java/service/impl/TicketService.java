@@ -28,7 +28,9 @@ import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.Inet4Address;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TicketService implements ITicketService {
@@ -43,7 +45,7 @@ public class TicketService implements ITicketService {
     public Message BulkCreate(List<TicketDto> dto, String userId) throws BadRequestException, InternalServerException {
         List<TicketInformation> information = new ArrayList<>();
         List<String> ticketIds = dto.stream().map(e -> IDGenerator.generate(10)).toList();
-        Set<Integer> seatNumber = new HashSet<>();
+        List<SeatInfomation> seatInformations = new ArrayList<>();
         AtomicInteger isValid = new AtomicInteger();
         AtomicInteger isBookedSeat = new AtomicInteger();
         try {
@@ -59,10 +61,16 @@ public class TicketService implements ITicketService {
                     ticketInformation.setTicketId(ticketId);
                     var seatsTickets = this.iSeatsTicketsDAO.FindAllConflicts(element.getScheduleId(), e.getCarriageId(), e.getSeatNumber());
                     if (!(seatsTickets == null || seatsTickets.isEmpty())) isBookedSeat.getAndIncrement();
-                    if (seatNumber.contains(e.getSeatNumber())) {
+
+                    var existSeatInformation = seatInformations.stream().filter(s -> element.getScheduleId().equals(s.scheduleId) && e.getSeatNumber().equals(s.seatNumber)).findAny().orElse(null);
+
+                    if (existSeatInformation != null) {
                         isValid.getAndIncrement();
                     } else {
-                        seatNumber.add(e.getSeatNumber());
+                        SeatInfomation seatInfomation = new SeatInfomation();
+                        seatInfomation.setSeatNumber(e.getSeatNumber());
+                        seatInfomation.setScheduleId(element.getScheduleId());
+                        seatInformations.add(seatInfomation);
                     }
                     return ticketInformation;
                 }).toList();
@@ -73,6 +81,7 @@ public class TicketService implements ITicketService {
             e.printStackTrace();
             throw new InternalServerException();
         }
+        System.out.println(isValid);
         if (isValid.get() > 0) {
             throw new BadRequestException("invalid properties");
         }
@@ -108,5 +117,26 @@ public class TicketService implements ITicketService {
         }
         return null;
 
+    }
+
+    class SeatInfomation {
+        private Integer seatNumber;
+        private String scheduleId;
+
+        public Integer getSeatNumber() {
+            return seatNumber;
+        }
+
+        public void setSeatNumber(Integer seatNumber) {
+            this.seatNumber = seatNumber;
+        }
+
+        public String getScheduleId() {
+            return scheduleId;
+        }
+
+        public void setScheduleId(String scheduleId) {
+            this.scheduleId = scheduleId;
+        }
     }
 }

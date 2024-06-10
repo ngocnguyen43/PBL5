@@ -1,8 +1,19 @@
 package model;
 
+import java.math.BigDecimal;
+
 public class SeatStatus {
     private Integer seatNumber;
     private String status;
+    private BigDecimal price;
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 
     public Integer getSeatNumber() {
         return seatNumber;
