@@ -58,7 +58,6 @@ public class ScheduleService implements IScheduleService {
         if (stationStart == null) throw new BadRequestException("Invalid start point");
         if (stationArrival == null) throw new BadRequestException("Invalid arrival point");
 
-
         List<Schedule> schedules = this.iScheduleDAO.FindAll(startAt, arrivalAt, stationStart.getStationId(), stationArrival.getStationId(), isReturn);
         List<Schedule> departures = new java.util.ArrayList<>(schedules.stream().map(e ->
                 {
@@ -72,7 +71,7 @@ public class ScheduleService implements IScheduleService {
 
         List<Schedule> returns = new java.util.ArrayList<>(schedules.stream().map(e ->
                 {
-                    if (Objects.equals(e.getArrivalPoint(), stationArrival.getStationId())) {
+                    if (Objects.equals(e.getDeparturePoint(), stationArrival.getStationId())) {
                         return e;
                     }
                     return null;
