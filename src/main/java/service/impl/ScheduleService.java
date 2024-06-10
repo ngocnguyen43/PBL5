@@ -3,6 +3,7 @@ package service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.interfaces.*;
+import dto.FindAllSchedulesDto;
 import dto.ScheduleDto;
 import dto.UpdateScheduleStatusDto;
 import jakarta.inject.Inject;
@@ -59,8 +60,32 @@ public class ScheduleService implements IScheduleService {
 
 
         List<Schedule> schedules = this.iScheduleDAO.FindAll(startAt, arrivalAt, stationStart.getStationId(), stationArrival.getStationId(), isReturn);
+        List<Schedule> departures = new java.util.ArrayList<>(schedules.stream().map(e ->
+                {
+                    if (Objects.equals(e.getDeparturePoint(), stationStart.getStationId())) {
+                        return e;
+                    }
+                    return null;
+                }
+        ).toList());
+        departures.remove(null);
+
+        List<Schedule> returns = new java.util.ArrayList<>(schedules.stream().map(e ->
+                {
+                    if (Objects.equals(e.getArrivalPoint(), stationArrival.getStationId())) {
+                        return e;
+                    }
+                    return null;
+                }
+        ).toList());
+        departures.remove(null);
+        returns.remove(null);
+
+        FindAllSchedulesDto dto = new FindAllSchedulesDto();
+        dto.setDepartures(departures);
+        dto.setReturns(returns);
         Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
-        Data data = new Data.Builder(null).withResults(schedules).build();
+        Data data = new Data.Builder(null).withResults(dto).build();
         return new Message.Builder(meta).withData(data).build();
     }
 
@@ -74,6 +99,7 @@ public class ScheduleService implements IScheduleService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+
         if (!conflict.isEmpty()) throw new BadRequestException("Invalid properties");
         Schedule model = Helper.objectMapper(dto, Schedule.class);
         String scheduleId = IDGenerator.generate(10);
