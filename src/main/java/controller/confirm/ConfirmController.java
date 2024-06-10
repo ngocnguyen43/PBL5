@@ -1,6 +1,5 @@
 package controller.confirm;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import controller.websocket.WebSocket;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
@@ -28,7 +27,11 @@ public class ConfirmController extends HttpServlet {
         String id = req.getParameter("id");
         ErrorHandler.handle(resp, () -> {
             Message message = this.iOrderService.ConfirmOrder(order);
-            webSocket.emitMessage(id, "paid success");
+            if (message.getMeta().getStatusCode() == 200) {
+                webSocket.emitMessage(id, "paid success");
+            } else {
+                webSocket.emitMessage(id, "paid failed");
+            }
             return message;
         });
     }

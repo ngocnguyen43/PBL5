@@ -3,6 +3,7 @@ package service.impl;
 import dao.interfaces.ICarriageDAO;
 import dao.interfaces.ISeatDAO;
 import dto.CarriageDto;
+import dto.SeatPriceDto;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Carriage;
@@ -77,20 +78,26 @@ public class CarriageService implements ICarriageService {
         if (id == null || scheduleId == null) throw new BadRequestException("Invalid properties");
         Carriage carriage = this.iCarriageDAO.FindOne(id);
         List<SeatStatus> seatStatus = this.iSeatDAO.FindAllSeatsStatusByCarriageId(id, scheduleId);
-        List<Integer> availableSeats = new java.util.ArrayList<>(seatStatus.stream().map(element -> {
+        List<SeatPriceDto> availableSeats = new java.util.ArrayList<>(seatStatus.stream().map(element -> {
             if (Objects.equals(element.getStatus(), "Available")) {
-                return element.getSeatNumber();
+                SeatPriceDto dto = new SeatPriceDto();
+                dto.setSeatPrice(element.getPrice());
+                dto.setSeatNumber(element.getSeatNumber());
+                return dto;
             }
             return null;
         }).filter(Objects::nonNull).toList());
-        availableSeats.sort(Comparator.naturalOrder());
-        List<Integer> bookedSeats = new java.util.ArrayList<>(seatStatus.stream().map(element -> {
+        availableSeats.sort(Comparator.comparingInt(SeatPriceDto::getSeatNumber));
+        List<SeatPriceDto> bookedSeats = new java.util.ArrayList<>(seatStatus.stream().map(element -> {
             if (Objects.equals(element.getStatus(), "Booked")) {
-                return element.getSeatNumber();
+                SeatPriceDto dto = new SeatPriceDto();
+                dto.setSeatPrice(element.getPrice());
+                dto.setSeatNumber(element.getSeatNumber());
+                return dto;
             }
             return null;
         }).filter(Objects::nonNull).toList());
-        bookedSeats.sort(Comparator.naturalOrder());
+        bookedSeats.sort(Comparator.comparingInt(SeatPriceDto::getSeatNumber));
         carriage.setAvailableSeats(availableSeats);
         carriage.setBookedSeats(bookedSeats);
         Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();

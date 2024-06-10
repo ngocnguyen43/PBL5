@@ -53,7 +53,7 @@ public class SeatDAO extends AbstractDAO<Seat> implements ISeatDAO {
     @Override
     public List<SeatStatus> FindAllSeatsStatusByCarriageId(String id, String scheduleId) {
         String sql = """
-                SELECT  seats.seat_number, seats_tickets.status
+                SELECT  seats.seat_number, seats_tickets.status, seats.price
                 FROM seats
                 INNER JOIN seats_tickets ON seats_tickets.seat_id = seats.seat_id
                 WHERE seats.carriage_id = ? AND seats_tickets.schedule_id = ?""";

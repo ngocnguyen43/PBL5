@@ -53,7 +53,9 @@ public class OrderService implements IOrderService {
         if (order == null) throw new RuntimeException();
         try {
             this.iOrderDAO.ConfirmOrder(order.getOrderId());
-            Meta meta = new Meta.Builder(HttpServletResponse.SC_OK).withMessage(MessageResponse.OK).build();
+            Meta meta = new Meta.Builder(Objects.equals(order.getStatus(), "Confirmed") ? HttpServletResponse.SC_CONFLICT : HttpServletResponse.SC_OK)
+                    .withMessage(Objects.equals(order.getStatus(), "Confirmed") ?
+                            MessageResponse.FAILED : MessageResponse.OK).build();
             return new Message.Builder(meta).build();
         } catch (Exception e) {
             e.printStackTrace();

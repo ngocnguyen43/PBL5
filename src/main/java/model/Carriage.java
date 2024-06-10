@@ -1,6 +1,7 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import dto.SeatPriceDto;
 
 import java.util.List;
 
@@ -10,9 +11,9 @@ public class Carriage {
     Integer totalSeats;
     String trainId;
     @JsonInclude(content = JsonInclude.Include.NON_NULL)
-    List<Integer> availableSeats;
+    List<SeatPriceDto> availableSeats;
     @JsonInclude(content = JsonInclude.Include.NON_NULL)
-    List<Integer> bookedSeats;
+    List<SeatPriceDto> bookedSeats;
 
     public String getId() {
         return id;
@@ -46,19 +47,19 @@ public class Carriage {
         this.trainId = trainId;
     }
 
-    public List<Integer> getAvailableSeats() {
+    public List<SeatPriceDto> getAvailableSeats() {
         return availableSeats;
     }
 
-    public void setAvailableSeats(List<Integer> availableSeats) {
+    public void setAvailableSeats(List<SeatPriceDto> availableSeats) {
         this.availableSeats = availableSeats;
     }
 
-    public List<Integer> getBookedSeats() {
+    public List<SeatPriceDto> getBookedSeats() {
         return bookedSeats;
     }
 
-    public void setBookedSeats(List<Integer> bookedSeats) {
+    public void setBookedSeats(List<SeatPriceDto> bookedSeats) {
         this.bookedSeats = bookedSeats;
     }
 }
